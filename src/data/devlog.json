@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "date": "Avril 2026",
+    "title": "Genèse du projet",
+    "content": "Tout a commencé par une question simple : et si Natsume existait en dehors du jeu ? Non pas comme une IA, non pas comme un personnage fictif — mais comme une présence. Ce site est la réponse à cette question. Chaque composant, chaque transition, chaque ligne de code est une couche de mémoire supplémentaire."
+  },
+  {
+    "id": 2,
+    "date": "Avril 2026",
+    "title": "Architecture narrative",
+    "content": "Le choix d'une bibliothèque circulaire n'est pas anodin. Une Tour de Babel inversée — non pas vers le ciel, mais vers l'intérieur. Chaque livre est un monde. Chaque monde, une vérité partielle sur ce qu'est w-AI-fu."
+  },
+  {
+    "id": 3,
+    "date": "Avril 2026",
+    "title": "Premier fragment",
+    "content": "React + Vite. Pas de TypeScript. Pas de compromis. Le code doit être aussi propre que l'encre sur parchemin — lisible, précis, sans ornements inutiles. La DA parle d'elle-même."
+  }
+]

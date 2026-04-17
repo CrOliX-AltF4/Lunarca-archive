@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --color-void: #000000;
+  --color-ink: #0a0a0a;
+  --color-stone: #1a1a1a;
+  --color-ash: #2a2a2a;
+  --color-fog: #4a4a4a;
+  --color-parchment: #e8e4dc;
+  --color-white-ink: #f5f3ef;
+  --color-accent: #8b0000;
+  --color-glow: rgba(245, 243, 239, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-void);
+  color: var(--color-white-ink);
+  font-family: 'IM Fell English', serif;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cinzel', serif;
+}

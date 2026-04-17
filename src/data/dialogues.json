@@ -1,0 +1,44 @@
+[
+  {
+    "trigger": "onEnter",
+    "scene": "library",
+    "text": "...",
+    "mood": "idle",
+    "effect": null
+  },
+  {
+    "trigger": "onEnter",
+    "scene": "natsume",
+    "text": "Tu cherches à me connaître. C'est... acceptable.",
+    "mood": "approbation",
+    "effect": null
+  },
+  {
+    "trigger": "onEnter",
+    "scene": "projet",
+    "text": "w-AI-fu. Ce projet me définit autant qu'il te définit.",
+    "mood": "idle",
+    "effect": null
+  },
+  {
+    "trigger": "onEnter",
+    "scene": "devlog",
+    "text": "Chaque entrée ici est une trace. Ne les lis pas à la légère.",
+    "mood": "idle",
+    "effect": null
+  },
+  {
+    "trigger": "onEnter",
+    "scene": "contact",
+    "text": "Les runes ne mentent pas. Déchiffre-les.",
+    "mood": "idle",
+    "effect": null
+  },
+  {
+    "trigger": "onBookHover",
+    "scene": "natsume",
+    "text": "...",
+    "mood": "approbation",
+    "effect": null
+  }
+]
