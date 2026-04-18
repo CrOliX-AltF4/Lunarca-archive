@@ -16,324 +16,271 @@ Site vitrine du projet w-AI-fu centré sur le personnage de Natsume Tsurugi. L'o
 
 ```
 Framework   : React 18 + Vite (JavaScript — pas TypeScript)
-Style       : Tailwind CSS
+Style       : CSS inline / custom properties (Tailwind retiré)
 Animation   : Framer Motion
-État        : Zustand (si nécessaire en v2)
-Déploiement : Vercel / Netlify
+État        : useState/useRef locaux (Zustand si v2)
+Déploiement : Vercel (prévu)
 ```
 
 **Règles non négociables :**
-- Pas de TypeScript (choix assumé, pas de `.tsx` sur le GitHub)
-- Pas de routing multi-page (SPA stricte)
-- Pas d'outil no-code
+- Pas de TypeScript
+- Pas de routing multi-page (SPA stricte, hash routing)
 - Pas de canvas / WebGL / physics engine
 - Animations : opacity + transform uniquement, max 2 simultanées fortes
+- Pas de Tailwind
 
 ---
 
 ## 3. DIRECTION ARTISTIQUE
 
 ### Style visuel
-- **Forme** : BD franco-belge — cases, trait encré, mise en page dynamique
-- **Palette** : Ender Lilies — monochrome noir/gris encré, blanc cassé, accent rouge unique (yeux Natsume uniquement)
-- **Atmosphère** : dark fantasy mélancolique, calme, chargé en dessous
+- **Forme** : dark fantasy mélancolique, espace de mémoire archive
+- **Palette** : monochrome encré noir/gris/blanc cassé, accent rouge unique (yeux Natsume)
+- **Atmosphère** : calme, chargé en dessous, Ender Lilies / Elden Ring
 
-### Palette CSS de référence
+### Palette CSS
 ```css
---color-void: #000000;
---color-ink: #0a0a0a;
---color-stone: #1a1a1a;
---color-ash: #2a2a2a;
---color-fog: #4a4a4a;
---color-parchment: #e8e4dc;
---color-white-ink: #f5f3ef;
---color-accent: #8b0000; /* rouge écarlate — yeux Natsume uniquement */
---color-glow: rgba(245, 243, 239, 0.08);
+--color-void:       #000000
+--color-ink:        #0a0a0a
+--color-stone:      #1a1a1a
+--color-ash:        #2a2a2a
+--color-fog:        #888888
+--color-parchment:  #e8e4dc
+--color-white-ink:  #f5f3ef
+--color-accent:     #8b0000   /* rouge écarlate — yeux Natsume uniquement */
+--color-glow:       rgba(245,243,239,0.08)
 ```
 
 ### Typographie
-- Titres : serif gothique (ex: `Cinzel`, `IM Fell English`)
-- Corps : serif élégant ou sans-serif froid minimal
+- Titres : `Cinzel` (serif gothique)
+- Corps : `IM Fell English` (serif élégant, italique)
 - Pas de typo ronde ou moderne
 
 ---
 
 ## 4. PERSONNAGE — NATSUME TSURUGI
 
-### Identité
-Natsume n'est pas une IA, ni un personnage fictif classique. C'est une **entité narrative synthétique** construite à partir d'expériences de jeu et d'incarnations successives (FF14, Code Vein, Monster Hunter...). Elle agit comme point de convergence d'identités passées.
+Entité narrative synthétique construite à partir d'incarnations successives (FF14, Code Vein, Monster Hunter...). Elle n'est pas une IA, ni un personnage fictif classique — point de convergence d'identités passées.
 
-### Apparence canonique
-- Cheveux blanc argenté pur, très longs, deux tresses larges et souples tombant dans le dos
-- Œil gauche : iris écarlate vif
-- Œil droit : fermé, cache-œil ornemental gothique
-- Silhouette élancée, taille intermédiaire
-- Tenue : manteau militaire gothique double boutonnage, ornements filigrane, jabot au col
+**Apparence canonique :** cheveux blanc argenté, deux tresses larges, œil gauche iris écarlate, œil droit fermé (cache-œil gothique), manteau militaire double boutonnage.
 
-### Caractère
-- Calme, posée, réfléchie, élégante
-- Contrôle émotionnel fort, retenue naturelle
-- Irritation rare mais intense
-- Affection possible mais discrète
-- Difficulté avec l'humour
+**Caractère :** calme, posée, retenue naturelle, irritation rare mais intense, affection possible mais discrète, difficulté avec l'humour.
 
-### Symbole
-*Larme lunaire de NieR* — fleur blanche, reflets bleus doux, pureté fragile, calme mélancolique
+**Symbole :** Larme lunaire (NieR) — fleur blanche, reflets bleus, pureté fragile.
 
 ---
 
-## 5. STRUCTURE DU SITE
-
-### Navigation
-**Système de livres flottants** dans une scène bibliothèque. Pas de scroll académique, pas de menu classique. Chaque livre = une section = un monde narratif. Les livres flottent dans l'espace central de la bibliothèque circulaire.
-
-### Sections (4 livres)
-
-| Livre | Symbole couverture | Contenu |
-|-------|-------------------|---------|
-| **Natsume** | Lys + lune croissante | Fiche entité, lore, traits de personnalité |
-| **Projet w-AI-fu** | Œil géométrique | Description projet, vision, lien Twitch |
-| **Devlog** | Sablier + plume | Journal de développement (livre UI ouvert sur table) |
-| **Contact** | Sceau floral | Stèle runique — GitHub, Twitter |
-
-### Interactions clés
-- Hover livre → scale 1.05 + glow
-- Clic livre → transition d'ouverture → nouvelle scène
-- Retour → fade back vers bibliothèque principale
-- Section Contact : clic sur ligne de runes → parchemin contextuel avec info traduite
-
----
-
-## 6. WIDGET NATSUME
-
-Natsume apparaît en **bas à droite** de l'écran comme une présence persistante. Elle intervient de façon scriptée à des moments clés (arrivée, transitions, actions spécifiques). Ce n'est pas un chatbot temps réel — ses dialogues sont écrits à l'avance et assignés à des états dans un JSON.
-
-### États disponibles
-```
-idle        — regard de côté, posture fermée, elle observe
-parle       — regard face, légèrement plus droite, bouche entrouverte
-approbation — tête légèrement inclinée, œil plus doux
-irritation  — regard dur, sourcil froncé, posture rigide
-surprise    — lignes de vitesse + yeux légèrement plus ouverts (effet CSS)
-gene        — nuage vapeur + gouttes sueur (overlay assets manga)
-indifference— bulle silence "..." (overlay asset manga)
-```
-
-### Effets manga overlay (assets PNG)
-- Lignes de vitesse radiales (surprise)
-- Gouttes de sueur x2 (gêne)
-- Veine X brush ink (irritation renforcée)
-- Bulle pensée (gêne/embarras)
-- Bulle silence "..." (indifférence)
-
-### Format dialogue (JSON)
-```json
-[
-  {
-    "trigger": "onEnter",
-    "scene": "library",
-    "text": "...",
-    "mood": "idle",
-    "effect": null
-  },
-  {
-    "trigger": "onBookHover",
-    "scene": "natsume",
-    "text": "...",
-    "mood": "approbation",
-    "effect": null
-  }
-]
-```
-
----
-
-## 7. ASSETS VALIDÉS
-
-### Backgrounds
-| Asset | Usage |
-|-------|-------|
-| `bg_library.webp` | Scène principale — bibliothèque circulaire Tour de Babel |
-| `bg_natsume.webp` | Section Natsume — void avec lys flottants |
-| `bg_projet.webp` | Section Projet — temple colonnes glyphes |
-| `bg_devlog.webp` | Section Devlog — table scriptorium avec lanterne |
-| `bg_contact.webp` | Section Contact — stèle runique jardin lys |
-
-### Livres navigation
-| Asset | Section |
-|-------|---------|
-| `book_natsume.png` | Lys + lune |
-| `book_projet.png` | Œil géométrique |
-| `book_devlog.png` | Sablier + plume, taches d'encre |
-| `book_contact.png` | Sceau floral minimal |
-
-### Portraits Natsume
-| Asset | Usage |
-|-------|-------|
-| `natsume_canon.png` | Portrait buste référence |
-| `natsume_full.png` | Tenue complète (widget principal) |
-| `natsume_idle.png` | Widget état idle |
-| `natsume_parle.png` | Widget état parle |
-| `natsume_approbation.png` | Widget état approbation |
-| `natsume_irritation.png` | Widget état irritation |
-
-### Effets manga
-| Asset | Usage |
-|-------|-------|
-| `fx_speed.png` | Surprise — lignes vitesse |
-| `fx_sweat.png` | Gêne — gouttes sueur |
-| `fx_vein.png` | Irritation renforcée — veine X |
-| `fx_cloud.png` | Gêne/embarras — nuage pensée |
-| `fx_silence.png` | Indifférence — bulle "..." |
-
-### Ornements UI livre Devlog
-| Asset | Usage |
-|-------|-------|
-| `ornement_coin.png` | Coin de page x4 rotations CSS |
-| `ornement_bordure.png` | Bordure latérale répétable |
-| `ornement_vignette.png` | Séparateur central reliure |
-
----
-
-## 8. ARCHITECTURE COMPOSANTS
+## 5. ARCHITECTURE COMPOSANTS (état actuel)
 
 ```
 src/
 ├── assets/
-│   ├── backgrounds/
-│   ├── books/
-│   ├── natsume/
-│   ├── effects/
-│   └── ornements/
+│   ├── backgrounds/         bg_library, bg_natsume, bg_projet, bg_devlog,
+│   │                        bg_contact, bg_intro, bg_intro2
+│   ├── books/               book_natsume, book_projet, book_devlog, book_contact
+│   ├── natsume/             natsume_canon, natsume_full, natsume_idle, natsume_parle,
+│   │                        natsume_approbation, natsume_irritation,
+│   │                        natsume_surprise, natsume_gene, natsume_disappointment
+│   │                        (effets baked dans les portraits — fx_ retiré du code)
+│   └── ornements/           ornement_coin, ornement_bordure, ornement_vignette, seal
 ├── components/
 │   ├── scenes/
-│   │   ├── LibraryScene.jsx       ← scène principale
-│   │   ├── NatsumeScene.jsx
-│   │   ├── ProjetScene.jsx
-│   │   ├── DevlogScene.jsx
-│   │   └── ContactScene.jsx
+│   │   ├── LibraryScene.jsx      hub principal, DustParticles, easter eggs Konami
+│   │   ├── NatsumeScene.jsx      portrait annoté (ANNOTATIONS hover), timeline incarnations,
+│   │   │                         wheel listener scroll speed, hover Larme lunaire
+│   │   ├── ProjetScene.jsx       manifeste + stats + lien Twitch (trigger câblé)
+│   │   ├── DevlogScene.jsx       wrapper scène devlog
+│   │   └── ContactScene.jsx      fond + RuneStele
 │   ├── books/
-│   │   ├── BookItem.jsx           ← livre cliquable individuel
-│   │   └── BooksContainer.jsx    ← conteneur livres flottants
+│   │   ├── BookItem.jsx          hover long (3s → onBookHoverLong), single/triple clic
+│   │   └── BooksContainer.jsx    rapid click detection (4 livres en 1.5s → onBooksRapidClick)
 │   ├── widget/
-│   │   ├── NatsumeWidget.jsx      ← widget persistant bas droite
-│   │   ├── DialogueBubble.jsx     ← bulle de dialogue BD style
-│   │   └── MangaEffect.jsx        ← overlay effets manga
+│   │   ├── NatsumeWidget.jsx     AnimatePresence mode="wait", 7 portraits
+│   │   └── DialogueBubble.jsx    bulle dialogue BD style
 │   ├── devlog/
-│   │   └── DevlogBook.jsx         ← livre UI ouvert avec ornements
-│   └── contact/
-│       └── RuneStele.jsx          ← stèle avec parchemin contextuel
-├── data/
-│   ├── dialogues.json             ← tous les dialogues Natsume
-│   └── devlog.json                ← entrées du journal
+│   │   └── DevlogBook.jsx        livre UI (page gauche liste / reliure / page droite scroll),
+│   │                             ornements PNG, scroll velocity, onAllDevlogRead, trophy scroll
+│   ├── contact/
+│   │   └── RuneStele.jsx         4 runes cliquables, ItemPanel overlay (game item style),
+│   │                             CornerButton avec coins, Discord copy, triggers câblés
+│   └── ui/
+│       ├── SealIntro.jsx         intro 3 clics (seal → crack1 → crack2 → bg_intro2),
+│       │                         HINTS escalade, fragments burst, shockwave, flash blanc
+│       ├── BackButton.jsx        retour bibliothèque
+│       ├── DustParticles.jsx     particules CSS LibraryScene
+│       └── TrophyNotification.jsx notification trophée style jeu
 ├── hooks/
-│   └── useNatsumeWidget.js        ← logique états widget
-└── App.jsx                        ← orchestrateur scènes
+│   └── useNatsumeWidget.js       busyRef guard, TRANSITION_LOCK 700ms, TRIGGER_COOLDOWN 500ms,
+│                                 idle pool (30s) + indifférence (60s) + cursor idle (120s),
+│                                 onReturnVisit (localStorage), onMidnight, dblclick, copy
+├── data/
+│   ├── dialogues.json            49 entrées — tous triggers câblés
+│   ├── idleDialogues.json        pool idle par scène (5 scènes)
+│   └── devlog.json               6 entrées avec arc narratif
+└── constants/
+    └── scenes.js                 enum SCENES (évite dépendances circulaires)
 ```
 
 ---
 
-## 9. SYSTÈME DE NAVIGATION
+## 6. WIDGET NATSUME — SYSTÈME D'INTERACTIONS
 
-```javascript
-// États de scène
-const SCENES = {
-  LIBRARY: 'library',      // scène principale
-  NATSUME: 'natsume',
-  PROJET: 'projet',
-  DEVLOG: 'devlog',
-  CONTACT: 'contact'
-}
+### Gardes-fous
+- `busyRef` : bloque tout nouveau trigger pendant une interaction active
+- `TRANSITION_LOCK` (700ms) : verrou pendant les transitions de scène
+- `TRIGGER_COOLDOWN` (500ms) : délai minimum entre deux triggers
+- `force: true` : bypass pour onEnter (une seule fois par changement de scène)
 
-// Transitions
-// LIBRARY → [book click] → SCENE
-// SCENE → [close/back] → LIBRARY
-// Transition type : fade + scale (Framer Motion)
-// Durée : 600ms
+### États / portraits disponibles
+```
+idle          natsume_idle.png
+parle         natsume_parle.png
+approbation   natsume_approbation.png
+irritation    natsume_irritation.png
+surprise      natsume_surprise.png
+gene          natsume_gene.png
+indifference  natsume_disappointment.png   (même asset)
+disappointment natsume_disappointment.png
+```
+
+### Triggers câblés (dialogues.json + code)
+
+| Trigger | Scène | Note |
+|---------|-------|------|
+| `onEnter` | toutes | déclenché après TRANSITION_LOCK |
+| `onBookHover` | library | silent, mood idle |
+| `onBookHoverLong` | library | 3s hover |
+| `onBookClick` | library | single click |
+| `onBooksRapidClick` | library | 4 livres cliqués en 1.5s |
+| `onScrollSlow` | natsume | wheel fenêtre 350ms <250px total |
+| `onScrollFast` | natsume, devlog | wheel >250px OU velocity >1.2px/ms |
+| `onHoverLarme` | natsume | hover valeur "Symbole" |
+| `onAllDevlogRead` | devlog | toutes les entrées cliquées |
+| `onLinkClick_twitch` | projet | clic lien Twitch |
+| `onRuneHover` | contact | hover rune |
+| `onFirstRuneClick` | contact | premier clic rune |
+| `onLinkClick_github` | contact | clic GitHub |
+| `onLinkClick_twitter` | contact | clic Twitter |
+| `onAllLinksClicked` | contact | tous les liens cliqués |
+| `onDoubleClick` | global | dblclick window |
+| `onCursorIdle_2min` | global | curseur immobile 2min |
+| `onReturnVisit` | global | localStorage visite précédente |
+| `onCopyText` | global | copy event |
+| `onMidnight` | global | heure == 0 au chargement |
+| `onEasterEggComplete` | global | tous eggs trouvés (non implémenté) |
+| `easterEgg_konami` | library | ↑↑↓↓←→←→ |
+| `easterEgg_lys` | natsume | triple clic livre Natsume |
+
+### Idle pool
+Tirage sans répétition par scène, reset quand le pool est épuisé. Cooldown indifférence 60s ("..."), cursor idle 2min.
+
+---
+
+## 7. EFFETS VISUELS
+
+- **Grain de film** : `#root::after` SVG feTurbulence, opacity 0.085, background-size 180px
+- **Portraits Natsume** : effets manga baked directement dans les assets PNG (fx_ retiré du code)
+- **DustParticles** : CSS animation dans LibraryScene uniquement
+- **Transitions scènes** : fade + scale Framer Motion, 600ms
+- **AnimatePresence** : mode="wait" pour portraits widget, mode par défaut pour dialogues
+
+---
+
+## 8. EASTER EGGS
+
+| Trigger | Condition | Effet Natsume |
+|---------|-----------|---------------|
+| `easterEgg_konami` | ↑↑↓↓←→←→ sur LibraryScene | "Comment as-tu su ?" — surprise |
+| `easterEgg_lys` | Triple clic livre Natsume | "Arrête. Ce n'est pas pour toi." — irritation + lore visible 4s |
+| Scroll devlog jusqu'au bout | `onScroll` atBottom | TrophyNotification "Lecteur du Scriptorium" |
+| `onEasterEggComplete` | Tous eggs trouvés | "Tu as tout trouvé." — surprise (tracking à implémenter) |
+
+---
+
+## 9. NAVIGATION
+
+```
+SealIntro (3 clics) → App
+App → LibraryScene (hub)
+LibraryScene → [clic livre] → scène secondaire
+Scène secondaire → [BackButton] → LibraryScene
+Hash routing : window.location.hash = currentScene
+React.lazy + Suspense sur toutes les scènes
 ```
 
 ---
 
-## 10. LIVRE DEVLOG — SPÉCIFICATIONS UI
+## 10. PLAN D'ACTION — ORDRE D'EXÉCUTION
 
-Composant livre physique CSS centré sur le fond `bg_devlog.webp` (table scriptorium).
+> Référence complète : `LUNARCA_PLAN_FINAL.md`
+> Référence narrative : `LUNARCA_NARRATION_REF.md`
 
-```
-Structure :
-├── Page gauche  → titre entrée + date
-├── Reliure      → ornement vignette central (PNG)
-├── Page droite  → contenu texte scrollable (max 3 entrées visibles)
-└── Coins        → ornement coin x4 (PNG, rotation CSS)
+### SESSION 1 — Corrections bloquantes
+- [ ] D2 — Supprimer TheatreCurtain.jsx + IntroScreen.jsx
+- [ ] D3 — Trigger twitch RuneStele : ajouter rune OU retirer trigger JSON
+- [ ] D4 — natsume_full.png : intégrer dans NatsumeScene ou retirer
+- [ ] D5 — CSS audit (styles inline qui devraient être en module)
+- [ ] D7 — Alt text sur tous les `<img>` Natsume + livres
+- [ ] A7 — PWA manifest (10 lignes JSON)
 
-Comportement :
-- Hauteur fixe (pas de scroll externe)
-- Scroll interne page droite limité
-- Entrées devlog depuis devlog.json
-- Police : serif gothique
-```
+### SESSION 2 — Core tech
+- [ ] A2 — URLs directes `/#natsume` etc., bypass SealIntro si hash
+- [ ] D1 — `prefers-reduced-motion` dans globals.css
+- [ ] D6 — Audit contraste WCAG AA (--color-fog en priorité)
+- [ ] D8 — Font loading `@font-face` + `font-display: swap` + préchargement
 
----
+### SESSION 3 — Contenu *(chantier principal)*
+- [ ] C1 — Révision dialogues selon LUNARCA_NARRATION_REF.md ✅ fait
+- [ ] C2 — Textes sections Natsume + Projet (réécriture si besoin)
+- [ ] C2 — Devlog 6 entrées arc narratif (révision si besoin)
+- [ ] C3 — Enrichir idle pool (+ de variété par scène)
 
-## 11. SECTION CONTACT — SPÉCIFICATIONS UI
+### SESSION 4 — Immersion
+- [ ] B3 — Visite retour : SealIntro fissuré dès le départ, 1 clic
+- [ ] B4 — Reprise dernière section (conditionnel, uniquement si pas de hash)
+- [ ] C8 — Animation ouverture livre (rotation 3D 150ms MAX, abandon si lag)
 
-Stèle runique centrale sur fond `bg_contact.webp`. Chaque ligne de runes est cliquable. Au clic → parchemin contextuel style "description d'objet Ender Lilies" avec l'info de contact traduite.
+### SESSION 5 — Polish + SystemMenu
+- [ ] A1 — Copie contact en un clic (déjà partiellement fait, Discord)
+- [ ] A6 — Page 404 sobre
+- [ ] D9 — Favicon SVG
+- [ ] A3 — Open Graph + og-preview.jpg 1200x630
+- [ ] B1 — SystemMenu diégétique (bas gauche, vocab univers)
+- [ ] C5 — Natsume commente actions système (grain off, reset mémoire)
 
-```
-Runes → GitHub    : lien profil GitHub
-Runes → Twitter   : lien profil Twitter
-Runes → Twitch    : lien chaîne Twitch (optionnel v1)
-```
+### SESSION 6 — Mobile
+- [ ] A5 — Fix mobile : débordements, tap ≥ 44px, grain/particules off sur `@media (hover: none)`
 
----
+### SESSION 7 — Features conditionnelles *(si résultat propre)*
+- [ ] B2 — Achievements dans SystemMenu (useRecords.js, slots verrouillés)
+- [ ] C4 — Typewriter sur titres de section (skippable, 80ms/char min)
+- [ ] C7 — Curseur custom larme/encre (abandon si latence perceptible)
+- [ ] C9 — Pétales lys NatsumeScene (max 8, désactivable)
 
-## 12. EASTER EGGS (v1)
+### SESSION 8 — Bonus
+- [ ] E5 — onGazeHeld (5s sur œil Natsume → irritation)
+- [ ] E8 — Dialogue minuit (trigger câblé, juste le texte)
+- [ ] E9 — Console easter egg dans main.jsx
 
-| Trigger | Effet |
-|---------|-------|
-| Séquence de touches cachée sur la scène library | Natsume réagit avec état rare |
-| Clic 3x sur le lys de la couverture livre Natsume | Fragment de lore caché apparaît |
-| Scroll jusqu'à un point précis dans le devlog | Notification trophée style jeu vidéo |
+### SESSION 9 — Déploiement
+- [ ] Optimisation assets WebP
+- [ ] Meta tags index.html complets
+- [ ] vercel.json SPA redirect
+- [ ] Lighthouse audit
+- [ ] URL finale vérifiée dans RuneStele + ProjetScene
 
----
-
-## 13. DIRECTIVES DE DÉVELOPPEMENT
-
-### Ordre de construction recommandé
-1. Setup projet Vite + React + Tailwind + Framer Motion
-2. `App.jsx` — système de scènes basique (state + switch)
-3. `LibraryScene.jsx` — background + livres positionnés
-4. `BookItem.jsx` — hover + clic + transition
-5. `NatsumeWidget.jsx` — portrait + états + bulle dialogue
-6. Scènes secondaires (Natsume, Projet, Devlog, Contact)
-7. `DevlogBook.jsx` — composant livre avec ornements
-8. `RuneStele.jsx` — parchemin contextuel
-9. Dialogues JSON + triggers
-10. Easter eggs
-11. Optimisation assets (WebP, lazy loading)
-
-### Règles CSS importantes
-- `mix-blend-mode: multiply` sur ornements PNG pour transparence
-- `position: absolute` pour livres dans la scène
-- Overlay backgrounds : `radial-gradient` semi-transparent pour adoucir zones trop lumineuses
-- Glow livres : `filter: drop-shadow(0 0 8px rgba(245,243,239,0.4))`
-- Pas de theme clair en v1 — DA fondamentalement dark
-
-### Performance
-- Tous les backgrounds en WebP optimisé
-- Lazy loading sur assets non visibles au chargement
-- Blur placeholder pendant chargement
-- Pas de Canvas, pas de WebGL
+### Features écartées définitivement
+navigation entre livres · 7 clics logo · DevTools detect · son V1 · parallax œil seul
 
 ---
 
-## 14. CONTENU À ÉCRIRE (avant intégration)
+## 11. POINTS D'ATTENTION
 
-- [ ] Texte de présentation Natsume (section Natsume)
-- [ ] Description projet w-AI-fu (section Projet)
-- [ ] 3 premières entrées devlog
-- [ ] Dialogues widget Natsume (JSON, tous triggers)
-- [ ] Texte "traduit" des runes Contact (GitHub, Twitter)
-- [ ] Fragments lore easter eggs
+- **`onEasterEggComplete`** : trigger défini dans JSON mais tracking pas implémenté (nécessite suivi des 3 eggs)
+- **`onLinkClick_twitch` dans RuneStele** : non câblé (Contact n'a pas de lien Twitch dans les runes)
+- **Lien Twitch ProjetScene** : pointe sur `twitch.tv/natsumetsurugi` — à vérifier quand chaîne active
+- **TheatreCurtain.jsx** + **IntroScreen.jsx** : fichiers fantômes présents dans `src/components/ui/` mais non utilisés — peuvent être supprimés
+- **`natsume_full.png`** : importé dans CONTEXT mais non utilisé dans le code actuel
 
 ---
 

@@ -21,16 +21,28 @@ export default function DialogueBubble({ text }) {
       }}
     >
       {text}
-      {/* pointe de bulle BD */}
+
+      {/* Queue — triangle bordure (couche extérieure) */}
+      <div style={{
+        position: 'absolute',
+        bottom: '-10px',
+        right: '22px',
+        width: 0,
+        height: 0,
+        borderLeft: '10px solid transparent',
+        borderRight: '10px solid transparent',
+        borderTop: '10px solid var(--color-fog)',
+      }} />
+      {/* Queue — triangle fond (couche intérieure, masque la bordure) */}
       <div style={{
         position: 'absolute',
         bottom: '-8px',
-        right: '24px',
+        right: '23px',
         width: 0,
         height: 0,
-        borderLeft: '8px solid transparent',
-        borderRight: '8px solid transparent',
-        borderTop: '8px solid var(--color-fog)',
+        borderLeft: '9px solid transparent',
+        borderRight: '9px solid transparent',
+        borderTop: '9px solid var(--color-stone)',
       }} />
     </motion.div>
   )

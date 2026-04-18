@@ -1,9 +1,50 @@
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 
-export default function BookItem({ book, onClick }) {
+function dispatch(trigger, scene) {
+  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene } }))
+}
+
+export default function BookItem({ book, onClick, onTripleClick }) {
+  const clickDataRef     = useRef({ count: 0, timer: null })
+  const hoverLongRef     = useRef(null)
+
+  const handleClick = () => {
+    const data = clickDataRef.current
+    data.count += 1
+    clearTimeout(data.timer)
+
+    if (data.count >= 3 && onTripleClick) {
+      data.count = 0
+      onTripleClick()
+      return
+    }
+
+    data.timer = setTimeout(() => {
+      if (data.count === 1) {
+        dispatch('onBookClick', book.id)
+        onClick()
+      }
+      data.count = 0
+    }, 300)
+  }
+
+  const handleHoverStart = () => {
+    dispatch('onBookHover', book.id)
+    hoverLongRef.current = setTimeout(() => {
+      dispatch('onBookHoverLong', book.id)
+    }, 3000)
+  }
+
+  const handleHoverEnd = () => {
+    clearTimeout(hoverLongRef.current)
+  }
+
   return (
     <motion.div
-      onClick={onClick}
+      onClick={handleClick}
+      onHoverStart={handleHoverStart}
+      onHoverEnd={handleHoverEnd}
       style={{
         position: 'absolute',
         left: book.position.left,

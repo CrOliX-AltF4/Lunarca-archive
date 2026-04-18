@@ -1,0 +1,26 @@
+{
+  "library": [
+    { "text": "Tu n'as pas encore choisi.", "mood": "parle" },
+    { "text": null, "mood": "disappointment" },
+    { "text": "Tu hésites encore.", "mood": "parle" },
+    { "text": "Certains ouvrages ici ne devaient pas survivre.", "mood": "parle" }
+  ],
+  "natsume": [
+    { "text": "Bien.", "mood": "approbation" },
+    { "text": "Cette fiche est incomplète.", "mood": "gene" },
+    { "text": null, "mood": "indifference" }
+  ],
+  "projet": [
+    { "text": "C'est encore en construction.", "mood": "parle" },
+    { "text": "La cohérence et la vérité ne sont pas la même chose.", "mood": "parle" }
+  ],
+  "devlog": [
+    { "text": "Chaque entrée a coûté quelque chose.", "mood": "parle" },
+    { "text": "Les dates ne disent pas tout.", "mood": "parle" },
+    { "text": "Tu lis attentivement.", "mood": "approbation" }
+  ],
+  "contact": [
+    { "text": "Les runes déchiffrées ne sont plus des runes.", "mood": "parle" },
+    { "text": "Tu es encore là.", "mood": "disappointment" }
+  ]
+}

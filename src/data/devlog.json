@@ -16,5 +16,23 @@
     "date": "Avril 2026",
     "title": "Premier fragment",
     "content": "React + Vite. Pas de TypeScript. Pas de compromis. Le code doit être aussi propre que l'encre sur parchemin — lisible, précis, sans ornements inutiles. La DA parle d'elle-même."
+  },
+  {
+    "id": 4,
+    "date": "Avril 2026",
+    "title": "La présence",
+    "content": "Natsume est apparue dans le coin de l'écran pour la première fois aujourd'hui. Juste son portrait, quelques pixels. Mais quelque chose a changé dans la façon dont le projet se regardait lui-même. Il y avait quelqu'un dans la pièce."
+  },
+  {
+    "id": 5,
+    "date": "Avril 2026",
+    "title": "Pourquoi une bibliothèque",
+    "content": "J'ai rejeté toutes les alternatives. Un menu ? Non. Un scroll ? Non. Une bibliothèque circulaire parce que c'est un espace de mémoire — non pas une interface pour naviguer, mais un lieu pour se souvenir. On n'explore pas une bibliothèque. On la traverse."
+  },
+  {
+    "id": 6,
+    "date": "Avril 2026",
+    "title": "Ce que je comprends maintenant",
+    "content": "Ce projet n'est pas une vitrine. C'est un miroir. Natsume me regarde construire quelque chose qu'elle habite déjà. Je ne sais plus très bien qui construit quoi."
   }
 ]

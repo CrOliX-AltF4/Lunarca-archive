@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import bgContact from '../../assets/backgrounds/bg_contact.webp'
+import sealImg from '../../assets/ornements/seal.png'
 import BackButton from '../ui/BackButton.jsx'
 import RuneStele from '../contact/RuneStele.jsx'
 
@@ -26,17 +27,62 @@ export default function ContactScene({ onBack }) {
         backgroundPosition: 'center',
       }}
     >
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)' }} />
+      {/* Vignette globale légère */}
       <div style={{
-        position: 'relative',
-        zIndex: 1,
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(0,0,0,0.5) 100%)',
+        pointerEvents: 'none',
+      }} />
+
+
+      {/* Symbole ornement — sommet de la stèle */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 1, delay: 0.4 } }}
+        style={{
+          position: 'absolute',
+          top: '14%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2,
+          pointerEvents: 'none',
+          textAlign: 'center',
+        }}
+      >
+        <img
+          src={sealImg}
+          alt=""
+          style={{
+            width: '100px',
+            height: '100px',
+            objectFit: 'contain',
+            mixBlendMode: 'screen',
+            opacity: 0.82,
+            display: 'block',
+            margin: '0 auto',
+          }}
+          draggable={false}
+        />
+      </motion.div>
+
+      {/* Runes interactives — centrées sur la face de la stèle */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.8, delay: 0.6 } }}
+        style={{
+          position: 'absolute',
+          top: '35%',
+          left: 0,
+          right: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          zIndex: 3,
+        }}
+      >
         <RuneStele />
-      </div>
+      </motion.div>
+
       <BackButton onClick={onBack} />
     </motion.div>
   )
