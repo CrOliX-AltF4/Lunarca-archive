@@ -1,90 +1,103 @@
-# w-AI-fu — Site Vitrine
+# Lunarca — Natsume Archive
 
-Site vitrine du projet **w-AI-fu**, centré sur le personnage de Natsume Tsurugi.  
-L'univers narratif et le code sont indissociables — le site *est* le projet.
+Lunarca is not a portfolio.
+
+It is an interactive archive built around **Natsume Tsurugi** — the core of w-AI-fu, a private AI/VTuber framework project.
+
+---
+
+## Concept
+
+Most personal sites present information. Lunarca presents a space.
+
+Navigation is diegetic — the user enters a library, discovers books, opens sections. There is no nav bar, no scroll, no conventional UI. Every interaction is a deliberate choice inside the narrative.
+
+Natsume is present throughout. She does not guide. She observes, reacts, occasionally speaks. Her presence is ambient — a signal that this place was inhabited before you arrived.
+
+> The goal is simple: break the boundary of a "portfolio" and create a presence.
+
+---
+
+## Experience Design
+
+- Calm, controlled pacing — no noise, no gamification
+- Subtle interactions over explicit UI
+- Narrative tone inspired by contemplative RPGs
+- The user is not guided — exploration is intentional
+- Return visits are remembered
 
 ---
 
 ## Stack
 
-| Outil | Usage |
-|-------|-------|
-| React 18 + Vite | Framework + bundler |
-| Tailwind CSS v4 | Styles utilitaires |
-| Framer Motion | Animations (opacity + transform uniquement) |
-| JavaScript pur | Pas de TypeScript — choix assumé |
-
----
-
-## Lancer le projet
-
-```bash
-npm install
-npm run dev
+```
+React 18 + Vite     SPA, no routing library
+CSS Modules         custom properties, no utility framework
+Framer Motion       scene transitions, AnimatePresence
+Plain JS            no TypeScript
 ```
 
-```bash
-npm run build    # build production
-npm run preview  # prévisualiser le build
-```
+Deliberately minimal. No heavy framework, no abstraction layer between the code and the experience.
 
 ---
 
-## Structure
+## Architecture
 
 ```
-src/
-├── assets/          # Backgrounds, portraits, effets manga, ornements
-├── components/
-│   ├── scenes/      # Une scène par section (Library, Natsume, Projet, Devlog, Contact)
-│   ├── books/       # Livres flottants — navigation principale
-│   ├── widget/      # Widget Natsume persistant (portrait + bulles BD)
-│   ├── devlog/      # Composant livre physique avec ornements
-│   ├── contact/     # Stèle runique avec parchemin contextuel
-│   └── ui/          # Composants partagés
-├── data/
-│   ├── dialogues.json   # Dialogues Natsume par trigger/scène
-│   └── devlog.json      # Entrées du journal de développement
-├── hooks/
-│   └── useNatsumeWidget.js
-└── App.jsx          # Orchestrateur de scènes (SPA stricte)
+SPA → SealIntro (seal break) → Library (hub)
+Library → scene navigation via book clicks
+Each scene is isolated, loaded lazily
+Natsume widget persists across all scenes
 ```
 
----
-
-## Contraintes techniques
-
-- **SPA stricte** — pas de routing multi-page
-- **Pas de Canvas / WebGL / physics engine**
-- **Animations** : opacity + transform uniquement, max 2 simultanées fortes
-- **Assets** : backgrounds en WebP, sprites en PNG sans fond
+Core systems:
+- Scene-based navigation (library → sections)
+- Contextual dialogue engine (Natsume reactions per trigger)
+- Persistent state via localStorage (return visits, memory)
+- Lightweight interaction layer — scroll speed, hover duration, idle detection
 
 ---
 
-## Natsume Widget
+## Artistic Direction
 
-Natsume apparaît en bas à droite en présence persistante. Ses dialogues sont scriptés dans `dialogues.json` — ce n'est pas un chatbot temps réel.
-
-États disponibles : `idle` · `parle` · `approbation` · `irritation` · `surprise` · `gene` · `indifference`
-
----
-
-## Ajouter une entrée devlog
-
-Éditer `src/data/devlog.json` :
-
-```json
-{
-  "id": 4,
-  "date": "Avril 2026",
-  "title": "Titre de l'entrée",
-  "content": "Contenu de l'entrée..."
-}
+```
+Palette     monochrome cold — black, dark grey, off-white
+Accent      deep red — symbolic, reserved for Natsume's eye only
+Linework    ink-based, franco-belgian BD influence
+Atmosphere  Ender Lilies × Gravity Rush × NieR:Automata
 ```
 
+Every visual decision serves atmosphere over aesthetics. The constraint is simple:
+
+> Technology should never overpower the atmosphere.
+
 ---
 
-## Licence
+## Natsume
 
-MIT — voir [LICENSE](./LICENSE).  
-Les assets visuels (illustrations, portraits de Natsume) sont la propriété de leurs auteurs respectifs et ne sont pas couverts par cette licence.
+Natsume Tsurugi is not an AI assistant and not a fictional character in the traditional sense.
+
+She is a **composite identity** — the same name used across different games (FF14, Code Vein, Monster Hunter, others), each instance carrying its own memories, its own world. What remains constant: silver hair, a sealed right eye, a calm that is not indifference.
+
+Her character did not come from a design document. It accumulated.
+
+---
+
+## Status
+
+Work in progress.
+
+Current focus:
+- Narrative writing (dialogues, section texts, devlog)
+- Interaction refinement
+- Visual consistency across scenes
+
+---
+
+## Author
+
+Built by **CrOliX-AltF4** — full-stack developer
+
+Part of a broader personal project exploring the intersection of narrative design, character identity, and web development.
+
+→ [lunarca-archive.vercel.app](https://lunarca-archive.vercel.app)
