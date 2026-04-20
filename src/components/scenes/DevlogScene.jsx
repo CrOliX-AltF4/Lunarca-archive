@@ -35,7 +35,7 @@ export default function DevlogScene({ onBack }) {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <DevlogBook />
+        <DevlogBook onClose={onBack} />
       </div>
       <BackButton onClick={onBack} />
     </motion.div>

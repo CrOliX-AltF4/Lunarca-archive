@@ -1,34 +1,94 @@
 import { useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import ornementCoin from '../../assets/ornements/ornement_coin.png'
-import ornementVignette from '../../assets/ornements/ornement_vignette.png'
-import ornementBordure from '../../assets/ornements/ornement_bordure.png'
-import devlogData from '../../data/devlog.json'
+import { AnimatePresence, motion } from 'framer-motion'
+import styles from './DevlogBook.module.css'
+import useBookAnimation from '../../hooks/useBookAnimation.js'
+import bookMementoOpen from '../../assets/books/book_memento_open.png'
+import devlogData      from '../../data/devlog.json'
 import TrophyNotification from '../ui/TrophyNotification.jsx'
-
-const CORNERS = [
-  { key: 'tl', style: { top: 0, left: 0 }, rotation: '0deg' },
-  { key: 'tr', style: { top: 0, right: 0 }, rotation: '90deg' },
-  { key: 'br', style: { bottom: 0, right: 0 }, rotation: '180deg' },
-  { key: 'bl', style: { bottom: 0, left: 0 }, rotation: '270deg' },
-]
 
 function dispatchDevlog(trigger) {
   window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'devlog' } }))
 }
 
-export default function DevlogBook() {
-  const [selectedId, setSelectedId] = useState(devlogData[0]?.id ?? null)
+/* ─── SOUS-COMPOSANTS ─────────────────────────────────────── */
+
+function SummaryPage({ onSelect }) {
+  return (
+    <>
+      <h2 className={styles.summaryTitle}>Journal de<br />Développement</h2>
+      <div className={styles.summaryDivider} />
+      <ul className={styles.summaryList}>
+        {devlogData.map((entry) => (
+          <li key={entry.id} className={styles.summaryEntry} onClick={() => onSelect(entry)}>
+            <span className={styles.summaryEntryDate}>{entry.date}</span>
+            <span className={styles.summaryEntryTitle}>{entry.title}</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+function SummaryIllustration() {
+  return (
+    <div className={styles.illustration}>
+      <p className={styles.illustrationQuote}>Chaque entrée a coûté quelque chose.</p>
+    </div>
+  )
+}
+
+function EntryMeta({ entry, onSelect, activeId }) {
+  return (
+    <div className={styles.entryMeta}>
+      <span className={styles.entryMetaDate}>{entry.date}</span>
+      <h3 className={styles.entryMetaTitle}>{entry.title}</h3>
+      <div className={styles.entryMetaDivider} />
+      <nav className={styles.entryMetaNav}>
+        {devlogData.map((e) => (
+          <button
+            key={e.id}
+            className={`${styles.entryNavItem} ${e.id === activeId ? styles.active : ''}`}
+            onClick={() => onSelect(e)}
+          >
+            {e.title}
+          </button>
+        ))}
+      </nav>
+    </div>
+  )
+}
+
+function EntryContent({ entry, onScroll }) {
+  return (
+    <div className={styles.entryContentWrap} onScroll={onScroll}>
+      <p className={styles.entryContent}>{entry.content}</p>
+    </div>
+  )
+}
+
+/* ─── COMPOSANT PRINCIPAL ─────────────────────────────────── */
+
+export default function DevlogBook({ onClose }) {
+  const [bookState, setBookState]     = useState('ENCODED')
+  const [activeEntry, setActiveEntry] = useState(null)
   const [trophyVisible, setTrophyVisible] = useState(false)
+
   const trophyShownRef  = useRef(false)
-  const readRef         = useRef(new Set([devlogData[0]?.id].filter(Boolean)))
+  const readRef         = useRef(new Set())
   const allReadFiredRef = useRef(false)
   const scrollRef       = useRef({ lastTop: 0, lastTime: 0, cooldown: 0 })
-  const selectedEntry = devlogData.find((e) => e.id === selectedId)
 
-  const handleEntryClick = (id) => {
-    setSelectedId(id)
-    readRef.current.add(id)
+  useBookAnimation(bookState, setBookState)
+
+  const handleDecipher = () => {
+    dispatchDevlog('onDevlogOpen')
+    setBookState('DECODING')
+  }
+
+  const handleSelect = (entry) => {
+    setActiveEntry(entry)
+    setBookState('READING')
+    readRef.current.add(entry.id)
     if (!allReadFiredRef.current && readRef.current.size >= devlogData.length) {
       allReadFiredRef.current = true
       dispatchDevlog('onAllDevlogRead')
@@ -36,10 +96,9 @@ export default function DevlogBook() {
   }
 
   const handleScroll = (e) => {
-    const el = e.currentTarget
+    const el  = e.currentTarget
     const now = Date.now()
-    const s = scrollRef.current
-
+    const s   = scrollRef.current
     if (now > s.cooldown) {
       const elapsed = now - s.lastTime
       if (elapsed > 0 && elapsed < 500) {
@@ -50,7 +109,7 @@ export default function DevlogBook() {
         }
       }
     }
-    s.lastTop = el.scrollTop
+    s.lastTop  = el.scrollTop
     s.lastTime = now
 
     if (trophyShownRef.current) return
@@ -63,168 +122,88 @@ export default function DevlogBook() {
   }
 
   return (
-    <>
-      <div style={{
-        display: 'flex',
-        width: '780px',
-        height: '520px',
-        background: 'var(--color-ink)',
-        border: '1px solid var(--color-ash)',
-        position: 'relative',
-        boxShadow: '0 0 40px rgba(0,0,0,0.8)',
-      }}>
-        {/* Bordures latérales extérieures */}
-        <img
-          src={ornementBordure}
-          alt=""
-          style={{
-            position: 'absolute',
-            left: '-22px',
-            top: 0,
-            height: '100%',
-            width: '22px',
-            objectFit: 'cover',
-            objectPosition: 'right',
-            mixBlendMode: 'multiply',
-            opacity: 0.55,
-            pointerEvents: 'none',
-            zIndex: 3,
-          }}
-        />
-        <img
-          src={ornementBordure}
-          alt=""
-          style={{
-            position: 'absolute',
-            right: '-22px',
-            top: 0,
-            height: '100%',
-            width: '22px',
-            objectFit: 'cover',
-            objectPosition: 'left',
-            mixBlendMode: 'multiply',
-            opacity: 0.55,
-            transform: 'scaleX(-1)',
-            pointerEvents: 'none',
-            zIndex: 3,
-          }}
-        />
+    <div className={styles.scene}>
 
-        {CORNERS.map(({ key, style, rotation }) => (
-          <img
-            key={key}
-            src={ornementCoin}
-            alt=""
-            style={{
-              position: 'absolute',
-              width: '48px',
-              transform: `rotate(${rotation})`,
-              mixBlendMode: 'multiply',
-              pointerEvents: 'none',
-              zIndex: 2,
-              ...style,
-            }}
+      <motion.div
+        className={styles.bookContainer}
+        initial={{ opacity: 0, scale: 0.97 }}
+        animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }}
+      >
+        {/* Spread asset — définit la hauteur du conteneur */}
+        <img src={bookMementoOpen} className={styles.bookSpread} alt="" />
+
+        {/* Pulse continu en état ENCODED */}
+        {bookState === 'ENCODED' && (
+          <motion.div
+            className={styles.runeGlowPulse}
+            animate={{ opacity: [0, 0.6, 0] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
-        ))}
+        )}
 
-        {/* Page gauche — liste des entrées */}
-        <div style={{
-          flex: 1,
-          padding: '3rem 2rem 3rem 3rem',
-          borderRight: '1px solid var(--color-ash)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.5rem',
-          overflow: 'hidden',
-        }}>
-          <h2 style={{
-            fontFamily: 'Cinzel, serif',
-            fontSize: '1.1rem',
-            letterSpacing: '0.15em',
-            color: 'var(--color-parchment)',
-            borderBottom: '1px solid var(--color-ash)',
-            paddingBottom: '0.75rem',
-          }}>
-            Journal de Développement
-          </h2>
-          {devlogData.map((entry) => {
-            const isSelected = entry.id === selectedId
-            return (
-              <div
-                key={entry.id}
-                onClick={() => handleEntryClick(entry.id)}
-                style={{
-                  fontSize: '0.8rem',
-                  fontFamily: 'Cinzel, serif',
-                  color: isSelected ? 'var(--color-white-ink)' : 'var(--color-fog)',
-                  cursor: 'pointer',
-                  paddingLeft: '0.75rem',
-                  borderLeft: isSelected
-                    ? '2px solid var(--color-parchment)'
-                    : '2px solid transparent',
-                  transition: 'color 0.2s, border-color 0.2s',
-                }}
-              >
-                <span style={{ color: isSelected ? 'var(--color-parchment)' : 'var(--color-fog)' }}>
-                  {entry.date}
-                </span>
-                <br />
-                {entry.title}
+        {/* Zone cliquable ENCODED — au-dessus de tout sauf overlays/nav */}
+        {bookState === 'ENCODED' && (
+          <div className={styles.bookEncoded} onClick={handleDecipher} />
+        )}
+
+        {/* Overlays texte — SUMMARY / READING */}
+        {(bookState === 'SUMMARY' || bookState === 'READING') && (
+          <AnimatePresence>
+            <motion.div
+              key="page-overlays"
+              className={styles.overlays}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.6 } }}
+              exit={{ opacity: 0, transition: { duration: 0.25 } }}
+            >
+              <div className={styles.pageLeft}>
+                <AnimatePresence mode="wait">
+                  {bookState === 'SUMMARY' && (
+                    <motion.div key="sl" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.35 } }} exit={{ opacity: 0 }} style={{ height: '100%' }}>
+                      <SummaryPage onSelect={handleSelect} />
+                    </motion.div>
+                  )}
+                  {bookState === 'READING' && activeEntry && (
+                    <motion.div key={`m${activeEntry.id}`} initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.35 } }} exit={{ opacity: 0 }} style={{ height: '100%' }}>
+                      <EntryMeta entry={activeEntry} onSelect={handleSelect} activeId={activeEntry.id} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            )
-          })}
-        </div>
 
-        {/* Reliure centrale */}
-        <div style={{ width: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src={ornementVignette} alt="" style={{ width: '100%', mixBlendMode: 'multiply' }} />
-        </div>
-
-        {/* Page droite — contenu scrollable */}
-        <div
-          onScroll={handleScroll}
-          style={{
-            flex: 1.2,
-            padding: '3rem 3rem 3rem 2rem',
-            overflowY: 'auto',
-            position: 'relative',
-          }}
-        >
-          <AnimatePresence mode="wait">
-            {selectedEntry && (
-              <motion.div
-                key={selectedEntry.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
-                exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
-                style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
-              >
-                <div style={{ borderBottom: '1px solid var(--color-ash)', paddingBottom: '0.75rem', marginBottom: '0.25rem' }}>
-                  <h3 style={{
-                    fontFamily: 'Cinzel, serif',
-                    fontSize: '1rem',
-                    color: 'var(--color-parchment)',
-                    marginBottom: '0.25rem',
-                  }}>
-                    {selectedEntry.title}
-                  </h3>
-                  <span style={{ fontFamily: 'Cinzel, serif', fontSize: '0.7rem', color: 'var(--color-fog)', letterSpacing: '0.1em' }}>
-                    {selectedEntry.date}
-                  </span>
-                </div>
-                <p style={{
-                  fontFamily: 'IM Fell English, serif',
-                  fontSize: '0.9rem',
-                  lineHeight: '1.8',
-                  color: 'var(--color-white-ink)',
-                }}>
-                  {selectedEntry.content}
-                </p>
-              </motion.div>
-            )}
+              <div className={styles.pageRight}>
+                <AnimatePresence mode="wait">
+                  {bookState === 'SUMMARY' && (
+                    <motion.div key="sr" initial={{ opacity: 0 }} animate={{ opacity: 1, transition: { duration: 0.4, delay: 0.15 } }} exit={{ opacity: 0 }} style={{ height: '100%' }}>
+                      <SummaryIllustration />
+                    </motion.div>
+                  )}
+                  {bookState === 'READING' && activeEntry && (
+                    <motion.div key={`c${activeEntry.id}`} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0, transition: { duration: 0.35 } }} exit={{ opacity: 0, y: -6 }} style={{ height: '100%' }}>
+                      <EntryContent entry={activeEntry} onScroll={handleScroll} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
           </AnimatePresence>
-        </div>
-      </div>
+        )}
+
+        {/* Navigation — hors overlays, z-index propre */}
+        {(bookState === 'SUMMARY' || bookState === 'READING') && (
+          <div className={styles.nav}>
+            {bookState === 'READING' && (
+              <button className={styles.navBtn} onClick={() => setBookState('SUMMARY')}>
+                ← Sommaire
+              </button>
+            )}
+            <button className={styles.navBtn} onClick={onClose}>
+              Fermer
+            </button>
+          </div>
+        )}
+
+      </motion.div>
 
       <AnimatePresence>
         {trophyVisible && (
@@ -234,6 +213,7 @@ export default function DevlogBook() {
           />
         )}
       </AnimatePresence>
-    </>
+
+    </div>
   )
 }

@@ -1,0 +1,67 @@
+.frameOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* COINS — un seul asset, 4 positions via transform */
+
+.cornerTL,
+.cornerTR,
+.cornerBL,
+.cornerBR {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.cornerTL {
+  top: 0;
+  left: 0;
+}
+
+.cornerTR {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.cornerBL {
+  bottom: 44px;
+  left: 0;
+  transform: scaleY(-1);
+}
+
+.cornerBR {
+  bottom: 44px;
+  right: 0;
+  transform: scale(-1, -1);
+}
+
+/* BORDURES LATÉRALES */
+
+.sideLeft,
+.sideRight {
+  position: absolute;
+  top: 180px;
+  bottom: 244px; /* 44px footer + 200px coin */
+  width: 80px;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.sideLeft {
+  left: 0;
+  object-position: left center;
+}
+
+.sideRight {
+  right: 0;
+  object-position: right center;
+  transform: scaleX(-1);
+}
+

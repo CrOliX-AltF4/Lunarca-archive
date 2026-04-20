@@ -10,7 +10,7 @@ export default function TrophyNotification({ title, description }) {
         position: 'fixed',
         bottom: '2rem',
         left: '2rem',
-        zIndex: 200,
+        zIndex: 300,
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',

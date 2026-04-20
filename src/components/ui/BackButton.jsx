@@ -10,8 +10,8 @@ export default function BackButton({ onClick }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         position: 'absolute',
-        top: '2rem',
-        left: '2rem',
+        top: '3rem',
+        left: '60px',
         zIndex: 10,
         background: hovered ? 'rgba(232,228,220,0.06)' : 'transparent',
         border: `1px solid ${hovered ? 'var(--color-parchment)' : 'var(--color-fog)'}`,

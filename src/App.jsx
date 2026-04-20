@@ -1,7 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
-import SealIntro from './components/ui/SealIntro.jsx'
+import SealIntro     from './components/ui/SealIntro.jsx'
+import FrameOverlay  from './components/ui/FrameOverlay.jsx'
+import Footer        from './components/ui/Footer.jsx'
 import { SCENES } from './constants/scenes.js'
 
 const LibraryScene = lazy(() => import('./components/scenes/LibraryScene.jsx'))
@@ -77,6 +79,8 @@ export default function App() {
             )}
           </AnimatePresence>
           <NatsumeWidget currentScene={currentScene} />
+          <FrameOverlay />
+          <Footer currentScene={currentScene} />
         </Suspense>
       )}
     </div>

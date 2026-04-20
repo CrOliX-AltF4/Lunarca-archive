@@ -1,0 +1,276 @@
+/* ─── SCÈNE ─────────────────────────────────────────────── */
+
+.scene {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── CONTENEUR LIVRE ────────────────────────────────────── */
+
+.bookContainer {
+  position: relative;
+  width: min(920px, 94vw);
+}
+
+/* L'image définit la hauteur naturellement */
+.bookSpread {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 16px 48px rgba(0,0,0,0.85));
+}
+
+/* ─── ZONE DE CLIC ENCODED ───────────────────────────────── */
+
+.bookEncoded {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2;
+  transition: box-shadow 0.3s ease;
+}
+
+.bookEncoded:hover {
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
+}
+
+/* ─── PULSE RUNIQUE ──────────────────────────────────────── */
+
+.runeGlowPulse {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── OVERLAYS PAGES ─────────────────────────────────────── */
+
+.overlays {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.pageLeft {
+  position: absolute;
+  top: 9%;
+  left: 5.5%;
+  width: 37%;
+  height: 76%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  pointer-events: all;
+}
+
+.pageRight {
+  position: absolute;
+  top: 9%;
+  right: 5.5%;
+  width: 37%;
+  height: 76%;
+  display: flex;
+  flex-direction: column;
+  pointer-events: all;
+}
+
+/* ─── NAVIGATION ─────────────────────────────────────────── */
+
+.nav {
+  position: absolute;
+  bottom: 5%;
+  right: 6%;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  z-index: 4;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(30, 20, 10, 0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: color 200ms ease;
+}
+
+.navBtn:hover { color: rgba(30, 20, 10, 0.85); }
+
+/* ─── SOMMAIRE ───────────────────────────────────────────── */
+
+.summaryTitle {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #1a1208;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.9rem;
+}
+
+.summaryDivider {
+  width: 100%;
+  height: 1px;
+  background: rgba(30, 20, 10, 0.15);
+  margin-bottom: 0.9rem;
+}
+
+.summaryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+.summaryList::-webkit-scrollbar { width: 2px; }
+.summaryList::-webkit-scrollbar-track { background: transparent; }
+.summaryList::-webkit-scrollbar-thumb { background: rgba(30, 20, 10, 0.15); }
+
+.summaryEntry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  cursor: pointer;
+  padding: 0.4rem 0.5rem;
+  border-left: 1px solid transparent;
+  transition: border-color 180ms ease, opacity 180ms ease;
+  opacity: 0.5;
+  border-bottom: 1px solid rgba(30, 20, 10, 0.06);
+}
+
+.summaryEntry:last-child { border-bottom: none; }
+
+.summaryEntry:hover {
+  border-left-color: rgba(100, 70, 30, 0.6);
+  opacity: 1;
+}
+
+.summaryEntryDate {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: #5a4025;
+  text-transform: uppercase;
+}
+
+.summaryEntryTitle {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.78rem;
+  color: #1a1208;
+  font-style: italic;
+}
+
+/* ─── ILLUSTRATION SOMMAIRE ──────────────────────────────── */
+
+.illustration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.illustrationQuote {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: #4a3820;
+  text-align: center;
+  line-height: 2;
+  max-width: 180px;
+  opacity: 0.7;
+}
+
+/* ─── ENTRÉE — PAGE GAUCHE ───────────────────────────────── */
+
+.entryMeta {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.entryMetaDate {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: #7a3010;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.entryMetaTitle {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #1a1208;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+
+.entryMetaDivider {
+  width: 2rem;
+  height: 1px;
+  background: rgba(120, 50, 15, 0.5);
+  margin-bottom: 1.4rem;
+}
+
+.entryMetaNav {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.entryNavItem {
+  background: none;
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  color: #5a4025;
+  transition: color 180ms ease;
+  opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entryNavItem:hover { color: #1a1208; opacity: 1; }
+.entryNavItem.active { color: #7a3010; opacity: 1; pointer-events: none; }
+
+/* ─── ENTRÉE — PAGE DROITE ───────────────────────────────── */
+
+.entryContentWrap {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.entryContentWrap::-webkit-scrollbar { width: 2px; }
+.entryContentWrap::-webkit-scrollbar-track { background: transparent; }
+.entryContentWrap::-webkit-scrollbar-thumb { background: rgba(30, 20, 10, 0.2); }
+
+.entryContent {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.82rem;
+  line-height: 2;
+  color: #2c1e0e;
+}
