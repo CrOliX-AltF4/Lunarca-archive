@@ -1,68 +1,25 @@
-/* ─── SCÈNE ─────────────────────────────────────────────── */
+/*
+  DevlogBook — overlay pur sur bg_book.
+  bg_book EST le livre. Pas de fond CSS, pas d'ombre.
+  Positions à ajuster selon bg_book (modifiées par l'utilisateur).
+*/
 
-.scene {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
+/* ─── OVERLAY RACINE ─────────────────────────────────────── */
 
-/* ─── CONTENEUR LIVRE ────────────────────────────────────── */
-
-.bookContainer {
-  position: relative;
-  width: min(920px, 94vw);
-}
-
-/* L'image définit la hauteur naturellement */
-.bookSpread {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 16px 48px rgba(0,0,0,0.85));
-}
-
-/* ─── ZONE DE CLIC ENCODED ───────────────────────────────── */
-
-.bookEncoded {
-  position: absolute;
-  inset: 0;
-  cursor: pointer;
-  user-select: none;
-  z-index: 2;
-  transition: box-shadow 0.3s ease;
-}
-
-.bookEncoded:hover {
-  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
-}
-
-/* ─── PULSE RUNIQUE ──────────────────────────────────────── */
-
-.runeGlowPulse {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ─── OVERLAYS PAGES ─────────────────────────────────────── */
-
-.overlays {
+.overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 3;
 }
+
+/* ─── PAGES SOMMAIRE (séparées) ──────────────────────────── */
 
 .pageLeft {
   position: absolute;
-  top: 9%;
-  left: 5.5%;
-  width: 37%;
-  height: 76%;
+  top: 11%;
+  left: 9%;
+  width: 36%;
+  height: 72%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -71,59 +28,111 @@
 
 .pageRight {
   position: absolute;
-  top: 9%;
-  right: 5.5%;
-  width: 37%;
-  height: 76%;
+  top: 11%;
+  right: 7%;
+  width: 36%;
+  height: 72%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   pointer-events: all;
 }
 
-/* ─── NAVIGATION ─────────────────────────────────────────── */
+/* ─── SPREAD LECTURE (2 colonnes) ────────────────────────── */
 
-.nav {
+/*
+  Enjambe les deux pages : left 7% → right 7%, soit 86% de largeur.
+  Gap = reliure entre les pages (14% du viewport / 86% du conteneur ≈ 16.3%).
+  Chaque colonne = 36% du viewport — aligne exactement sur .pageLeft/.pageRight.
+*/
+.entrySpread {
   position: absolute;
-  bottom: 5%;
-  right: 6%;
+  top: 12%;
+  left: 8.1%;
+  width: 86%;
+  height: 72%;
+  columns: 2;
+  column-gap: 16.3%;
+  overflow: hidden;
+  pointer-events: all;
+}
+
+/* ─── NAVIGATION BAS DE PAGE ─────────────────────────────── */
+
+.navLeft {
+  position: absolute;
+  bottom: 7%;
+  left: 25%;
   display: flex;
-  gap: 1.5rem;
+  gap: 1.8rem;
   align-items: center;
-  z-index: 4;
+  pointer-events: all;
+}
+
+.navRight {
+  position: absolute;
+  bottom: 7%;
+  right: 25%;
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
+  pointer-events: all;
 }
 
 .navBtn {
   background: none;
   border: none;
   font-family: 'Cinzel', serif;
-  font-size: 0.55rem;
+  font-size: clamp(0.55rem, 0.7vw, 0.7rem);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(30, 20, 10, 0.45);
+  color: rgba(30, 20, 10, 0.55);
   cursor: pointer;
   padding: 0;
-  transition: color 200ms ease;
+  transition: color 180ms ease;
 }
 
-.navBtn:hover { color: rgba(30, 20, 10, 0.85); }
+.navBtn:hover { color: rgba(30, 20, 10, 0.9); }
 
-/* ─── SOMMAIRE ───────────────────────────────────────────── */
+.navBtnClose {
+  background: none;
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.55rem, 0.7vw, 0.7rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(30, 20, 10, 0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: color 180ms ease;
+}
+
+.navBtnClose:hover { color: rgba(30, 20, 10, 0.65); }
+
+/* ─── SOMMAIRE — PAGE GAUCHE ─────────────────────────────── */
+
+.summaryLeft {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
 .summaryTitle {
   font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
   font-weight: 400;
   color: #1a1208;
   line-height: 1.5;
   letter-spacing: 0.06em;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.2rem;
 }
 
 .summaryDivider {
   width: 100%;
   height: 1px;
   background: rgba(30, 20, 10, 0.15);
-  margin-bottom: 0.9rem;
+  margin-bottom: 1.2rem;
+  flex-shrink: 0;
 }
 
 .summaryList {
@@ -132,8 +141,8 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
   overflow-y: auto;
+  flex: 1;
 }
 
 .summaryList::-webkit-scrollbar { width: 2px; }
@@ -141,136 +150,127 @@
 .summaryList::-webkit-scrollbar-thumb { background: rgba(30, 20, 10, 0.15); }
 
 .summaryEntry {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  grid-template-rows: auto auto;
+  gap: 0 0.6rem;
   cursor: pointer;
-  padding: 0.4rem 0.5rem;
-  border-left: 1px solid transparent;
+  padding: 0.6rem 0.5rem;
+  border-left: 2px solid transparent;
   transition: border-color 180ms ease, opacity 180ms ease;
-  opacity: 0.5;
-  border-bottom: 1px solid rgba(30, 20, 10, 0.06);
+  opacity: 0.55;
+  border-bottom: 1px solid rgba(30, 20, 10, 0.07);
 }
 
 .summaryEntry:last-child { border-bottom: none; }
 
 .summaryEntry:hover {
-  border-left-color: rgba(100, 70, 30, 0.6);
+  border-left-color: rgba(120, 50, 15, 0.6);
   opacity: 1;
 }
 
-.summaryEntryDate {
+.summaryEntryNum {
   font-family: 'Cinzel', serif;
-  font-size: 0.5rem;
-  letter-spacing: 0.2em;
-  color: #5a4025;
-  text-transform: uppercase;
+  font-size: clamp(0.6rem, 0.8vw, 0.75rem);
+  color: #7a3010;
+  letter-spacing: 0.08em;
+  grid-row: 1 / 3;
+  align-self: center;
+  opacity: 0.7;
 }
 
 .summaryEntryTitle {
   font-family: 'IM Fell English', serif;
-  font-size: 0.78rem;
+  font-size: clamp(0.82rem, 1.05vw, 1rem);
   color: #1a1208;
   font-style: italic;
+  grid-column: 2;
+  grid-row: 1;
 }
 
-/* ─── ILLUSTRATION SOMMAIRE ──────────────────────────────── */
+.summaryEntryDate {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.5rem, 0.65vw, 0.62rem);
+  letter-spacing: 0.18em;
+  color: #5a4025;
+  text-transform: uppercase;
+  grid-column: 2;
+  grid-row: 2;
+  opacity: 0.6;
+}
 
-.illustration {
+/* ─── SOMMAIRE — PAGE DROITE ─────────────────────────────── */
+
+.summaryRight {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
 
-.illustrationQuote {
+.summaryQuote {
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  font-size: 0.78rem;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   color: #4a3820;
   text-align: center;
-  line-height: 2;
-  max-width: 180px;
-  opacity: 0.7;
+  line-height: 2.2;
+  opacity: 0.65;
 }
 
-/* ─── ENTRÉE — PAGE GAUCHE ───────────────────────────────── */
+/* ─── EN-TÊTE SPREAD ─────────────────────────────────────── */
 
-.entryMeta {
+.entrySpreadHeader {
+  break-inside: avoid;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  margin-bottom: 1.2rem;
 }
 
-.entryMetaDate {
+.entryNum {
   font-family: 'Cinzel', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.2em;
+  font-size: clamp(0.55rem, 0.72vw, 0.68rem);
+  letter-spacing: 0.25em;
+  color: rgba(120, 50, 15, 0.65);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.entryDate {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.58rem, 0.75vw, 0.72rem);
+  letter-spacing: 0.22em;
   color: #7a3010;
   text-transform: uppercase;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.9rem;
 }
 
-.entryMetaTitle {
+.entryTitle {
   font-family: 'Cinzel', serif;
-  font-size: 0.95rem;
+  font-size: clamp(1.1rem, 1.7vw, 1.6rem);
   font-weight: 400;
   color: #1a1208;
-  line-height: 1.4;
+  line-height: 1.35;
   letter-spacing: 0.04em;
-  margin-bottom: 1rem;
-}
-
-.entryMetaDivider {
-  width: 2rem;
-  height: 1px;
-  background: rgba(120, 50, 15, 0.5);
   margin-bottom: 1.4rem;
 }
 
-.entryMetaNav {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+.entryDivider {
+  width: 2.5rem;
+  height: 1px;
+  background: rgba(120, 50, 15, 0.5);
 }
 
-.entryNavItem {
-  background: none;
-  border: none;
-  font-family: 'Cinzel', serif;
-  font-size: 0.52rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  padding: 0;
-  text-align: left;
-  color: #5a4025;
-  transition: color 180ms ease;
-  opacity: 0.6;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.entryNavItem:hover { color: #1a1208; opacity: 1; }
-.entryNavItem.active { color: #7a3010; opacity: 1; pointer-events: none; }
-
-/* ─── ENTRÉE — PAGE DROITE ───────────────────────────────── */
-
-.entryContentWrap {
-  height: 100%;
-  overflow-y: auto;
-}
-
-.entryContentWrap::-webkit-scrollbar { width: 2px; }
-.entryContentWrap::-webkit-scrollbar-track { background: transparent; }
-.entryContentWrap::-webkit-scrollbar-thumb { background: rgba(30, 20, 10, 0.2); }
+/* ─── CONTENU ─────────────────────────────────────────────── */
 
 .entryContent {
   font-family: 'IM Fell English', serif;
-  font-size: 0.82rem;
-  line-height: 2;
+  font-size: clamp(0.88rem, 1.1vw, 1.05rem);
+  line-height: 1.85;
   color: #2c1e0e;
+  margin-bottom: 1.2em;
+}
+
+.entryContent:last-child {
+  margin-bottom: 0;
 }

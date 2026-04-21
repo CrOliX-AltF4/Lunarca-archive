@@ -56,14 +56,16 @@ export default function BookItem({ book, onClick, onTripleClick }) {
       animate={{
         opacity: 1,
         y: [0, -8, 0],
+        filter: 'drop-shadow(0 0 0px rgba(245,243,239,0))',
         transition: {
           opacity: { duration: 0.8, delay: book.floatDelay * 0.3 },
           y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: book.floatDelay },
+          filter: { duration: 0.3 },
         },
       }}
       whileHover={{
         scale: 1.05,
-        filter: 'drop-shadow(0 0 8px rgba(245,243,239,0.4))',
+        filter: 'drop-shadow(0 0 14px rgba(245,243,239,0.5))',
         transition: { duration: 0.2 },
       }}
       whileTap={{ scale: 0.97 }}

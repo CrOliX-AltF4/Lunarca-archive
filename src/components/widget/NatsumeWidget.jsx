@@ -27,7 +27,7 @@ export default function NatsumeWidget({ currentScene }) {
   return (
     <div style={{
       position: 'fixed',
-      bottom: '50px',
+      bottom: '44px',
       right: '10px',
       zIndex: 80,
       display: 'flex',

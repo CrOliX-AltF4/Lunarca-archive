@@ -1,0 +1,83 @@
+/* ─── COMMUN ─────────────────────────────────────────────── */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42);
+  pointer-events: none;
+}
+
+/* ─── VUE BUREAU ─────────────────────────────────────────── */
+
+.deskScene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/*
+  Wrapper du livre posé sur la table.
+  CSS perspective + rotateX simule le livre à plat sur le bureau.
+  Framer-motion ne touche que l'opacity du <img> — pas de transform animé.
+*/
+.bookOnDesk {
+  position: absolute;
+  bottom: 39%;
+  left: 55%;
+  transform: translateX(-50%) perspective(1100px) rotateX(22deg);
+  transform-origin: bottom center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bookOnDeskImg {
+  width: clamp(480px, 62vw, 820px);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.92));
+  transition: filter 0.28s ease;
+}
+
+.bookOnDesk:hover .bookOnDeskImg {
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.92))
+    drop-shadow(0 0 22px rgba(245, 243, 239, 0.38));
+}
+
+/* Lueur radiale pulsante sous le livre */
+.deskPulse {
+  position: absolute;
+  inset: -24px -40px;
+  border-radius: 12px;
+  background: radial-gradient(ellipse at center, rgba(245, 243, 239, 0.09) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.bookHint {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  padding-left: 0.35em;
+  color: var(--color-parchment);
+  text-transform: uppercase;
+  margin-top: 1.2rem;
+  pointer-events: none;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 1);
+  /* Annulé par la perspective du parent — on reset */
+  transform: perspective(1100px) rotateX(-22deg);
+}
+
+/* ─── VUE LECTURE ────────────────────────────────────────── */
+
+.readingScene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}

@@ -42,6 +42,7 @@ export default function App() {
     const hash = window.location.hash.replace('#', '')
     return Object.values(SCENES).includes(hash) ? hash : SCENES.LIBRARY
   })
+  const [devlogReading, setDevlogReading] = useState(false)
 
   const navigate = (scene) => setCurrentScene(scene)
   const goBack = () => setCurrentScene(SCENES.LIBRARY)
@@ -72,14 +73,14 @@ export default function App() {
               <ProjetScene key="projet" onBack={goBack} />
             )}
             {currentScene === SCENES.DEVLOG && (
-              <DevlogScene key="devlog" onBack={goBack} />
+              <DevlogScene key="devlog" onBack={goBack} onViewChange={setDevlogReading} />
             )}
             {currentScene === SCENES.CONTACT && (
               <ContactScene key="contact" onBack={goBack} />
             )}
           </AnimatePresence>
           <NatsumeWidget currentScene={currentScene} />
-          <FrameOverlay />
+          {!devlogReading && <FrameOverlay />}
           <Footer currentScene={currentScene} />
         </Suspense>
       )}
