@@ -35,37 +35,6 @@ export default function ContactScene({ onBack }) {
         pointerEvents: 'none',
       }} />
 
-
-      {/* Symbole ornement — sommet de la stèle */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 1, delay: 0.4 } }}
-        style={{
-          position: 'absolute',
-          top: '14%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 2,
-          pointerEvents: 'none',
-          textAlign: 'center',
-        }}
-      >
-        <img
-          src={sealImg}
-          alt=""
-          style={{
-            width: '100px',
-            height: '100px',
-            objectFit: 'contain',
-            mixBlendMode: 'screen',
-            opacity: 0.82,
-            display: 'block',
-            margin: '0 auto',
-          }}
-          draggable={false}
-        />
-      </motion.div>
-
       {/* Runes interactives — centrées sur la face de la stèle */}
       <motion.div
         initial={{ opacity: 0 }}

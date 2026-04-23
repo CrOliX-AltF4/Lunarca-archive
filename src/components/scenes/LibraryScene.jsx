@@ -90,18 +90,18 @@ export default function LibraryScene({ onNavigate }) {
           fontWeight: 400,
           textShadow: '0 0 30px rgba(0,0,0,0.9)',
         }}>
-          w-AI-fu
+          Lun’Λrkhive
         </h1>
         <p style={{
           fontFamily: 'IM Fell English, serif',
           fontStyle: 'italic',
-          fontSize: '0.78rem',
+          fontSize: '0.9rem',
           color: 'var(--color-fog)',
           letterSpacing: '0.12em',
-          marginTop: '0.4rem',
+          marginTop: '0.6rem',
           textShadow: '0 1px 6px rgba(0,0,0,1), 0 0 3px rgba(0,0,0,1)',
         }}>
-          Archive de Natsume Tsurugi
+          Explorez des recits oubliés, scellés dans les pages du temps
         </p>
       </motion.div>
 
@@ -122,11 +122,11 @@ export default function LibraryScene({ onNavigate }) {
         }}
         style={{
           position: 'absolute',
-          bottom: '6%',
+          bottom: '10%',
           left: '50%',
           transform: 'translateX(-50%)',
           fontFamily: 'Cinzel, serif',
-          fontSize: '0.72rem',
+          fontSize: '0.75rem',
           letterSpacing: '0.3em',
           paddingLeft: '0.3em',
           color: 'var(--color-parchment)',
