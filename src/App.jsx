@@ -1,7 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
+import LandingPage from './components/landing/LandingPage.jsx'
+import LandingContact from './components/landing/LandingContact.jsx'
 import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
-import SealIntro     from './components/ui/SealIntro.jsx'
 import FrameOverlay  from './components/ui/FrameOverlay.jsx'
 import Footer        from './components/ui/Footer.jsx'
 import { SCENES } from './constants/scenes.js'
@@ -37,7 +38,8 @@ function SceneFallback() {
 }
 
 export default function App() {
-  const [introComplete, setIntroComplete] = useState(false)
+  const [landingOpen, setLandingOpen] = useState(true)
+  const [landingContactOpen, setLandingContactOpen] = useState(false)
   const [currentScene, setCurrentScene] = useState(() => {
     const hash = window.location.hash.replace('#', '')
     return Object.values(SCENES).includes(hash) ? hash : SCENES.LIBRARY
@@ -46,21 +48,34 @@ export default function App() {
 
   const navigate = (scene) => setCurrentScene(scene)
   const goBack = () => setCurrentScene(SCENES.LIBRARY)
-  const handleIntroComplete = useCallback(() => setIntroComplete(true), [])
+  const handleEnterArchive = useCallback(() => {
+    setLandingOpen(false)
+    setLandingContactOpen(false)
+  }, [])
+  const handleNavigateHome = useCallback(() => {
+    setLandingOpen(true)
+    setLandingContactOpen(false)
+  }, [])
+  const handleNavigateContact = useCallback(() => {
+    setLandingOpen(false)
+    setLandingContactOpen(true)
+  }, [])
 
   useEffect(() => {
     window.location.hash = currentScene
   }, [currentScene])
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
-      <AnimatePresence mode="wait">
-        {!introComplete && (
-          <SealIntro key="seal" onComplete={handleIntroComplete} />
-        )}
-      </AnimatePresence>
+    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflowY: (landingOpen || landingContactOpen) ? 'auto' : 'hidden', overflowX: 'hidden' }}>
+      {landingOpen && (
+        <LandingPage onEnterArchive={handleEnterArchive} onNavigateHome={handleNavigateHome} onNavigateContact={handleNavigateContact} />
+      )}
 
-      {introComplete && (
+      {landingContactOpen && (
+        <LandingContact onBack={handleNavigateHome} />
+      )}
+
+      {!landingOpen && !landingContactOpen && (
         <Suspense fallback={<SceneFallback />}>
           <AnimatePresence mode="wait">
             {currentScene === SCENES.LIBRARY && (
