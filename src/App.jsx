@@ -1,11 +1,15 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import LandingPage from './components/landing/LandingPage.jsx'
-import LandingContact from './components/landing/LandingContact.jsx'
+import SealIntro     from './components/ui/SealIntro.jsx'
 import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
 import FrameOverlay  from './components/ui/FrameOverlay.jsx'
 import Footer        from './components/ui/Footer.jsx'
-import { SCENES } from './constants/scenes.js'
+import SystemMenu    from './components/ui/SystemMenu.jsx'
+import CustomCursor        from './components/ui/CustomCursor.jsx'
+import TrophyNotification  from './components/ui/TrophyNotification.jsx'
+import AchievementsPanel   from './components/ui/AchievementsPanel.jsx'
+import useAchievements     from './hooks/useAchievements.js'
+import { SCENES }          from './constants/scenes.js'
 
 const LibraryScene = lazy(() => import('./components/scenes/LibraryScene.jsx'))
 const NatsumeScene = lazy(() => import('./components/scenes/NatsumeScene.jsx'))
@@ -18,64 +22,73 @@ export { SCENES }
 function SceneFallback() {
   return (
     <div style={{
-      position: 'absolute',
-      inset: 0,
+      position: 'absolute', inset: 0,
       background: 'var(--color-void)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <span style={{
-        fontFamily: 'Cinzel, serif',
-        fontSize: '0.7rem',
-        letterSpacing: '0.3em',
-        color: 'var(--color-fog)',
-      }}>
-        ···
-      </span>
+        fontFamily: 'Cinzel, serif', fontSize: '0.7rem',
+        letterSpacing: '0.3em', color: 'var(--color-fog)',
+      }}>···</span>
     </div>
   )
 }
 
-export default function App() {
-  const [landingOpen, setLandingOpen] = useState(true)
-  const [landingContactOpen, setLandingContactOpen] = useState(false)
-  const [currentScene, setCurrentScene] = useState(() => {
-    const hash = window.location.hash.replace('#', '')
-    return Object.values(SCENES).includes(hash) ? hash : SCENES.LIBRARY
-  })
-  const [devlogReading, setDevlogReading] = useState(false)
+// Résout le hash d'entrée — null si invalide ou absent
+function resolveHashScene() {
+  const h = window.location.hash.replace('#', '')
+  return Object.values(SCENES).includes(h) ? h : null
+}
 
-  const navigate = (scene) => setCurrentScene(scene)
-  const goBack = () => setCurrentScene(SCENES.LIBRARY)
-  const handleEnterArchive = useCallback(() => {
-    setLandingOpen(false)
-    setLandingContactOpen(false)
-  }, [])
-  const handleNavigateHome = useCallback(() => {
-    setLandingOpen(true)
-    setLandingContactOpen(false)
-  }, [])
-  const handleNavigateContact = useCallback(() => {
-    setLandingOpen(false)
-    setLandingContactOpen(true)
-  }, [])
+function resolveInitialScene(hashScene) {
+  if (hashScene) return hashScene
+  const returning = parseInt(localStorage.getItem('lunarca_seal') || '0') > 0
+  if (returning) {
+    const last = localStorage.getItem('lunarca_last_scene')
+    if (last && Object.values(SCENES).includes(last)) return last
+  }
+  return SCENES.LIBRARY
+}
+
+export default function App() {
+  const hashScene = resolveHashScene()
+
+  // Direct URL (A2) → bypass SealIntro, atterrissage direct
+  const [archiveOpen, setArchiveOpen] = useState(!!hashScene)
+  const [currentScene, setCurrentScene] = useState(() => resolveInitialScene(hashScene))
+  const [devlogReading, setDevlogReading] = useState(false)
+  const [systemMenuOpen, setSystemMenuOpen] = useState(false)
+  const [achievementsOpen, setAchievementsOpen] = useState(false)
+  const achievement = useAchievements()
+
+  const sealInitialClicks = 0
+
+  const handleSealComplete = useCallback(() => setArchiveOpen(true), [])
+  const navigate = useCallback((scene) => setCurrentScene(scene), [])
+  const goBack   = useCallback(() => setCurrentScene(SCENES.LIBRARY), [])
 
   useEffect(() => {
+    if (!archiveOpen) return
     window.location.hash = currentScene
-  }, [currentScene])
+    localStorage.setItem('lunarca_last_scene', currentScene)
+  }, [currentScene, archiveOpen])
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflowY: (landingOpen || landingContactOpen) ? 'auto' : 'hidden', overflowX: 'hidden' }}>
-      {landingOpen && (
-        <LandingPage onEnterArchive={handleEnterArchive} onNavigateHome={handleNavigateHome} onNavigateContact={handleNavigateContact} />
-      )}
+    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
 
-      {landingContactOpen && (
-        <LandingContact onBack={handleNavigateHome} />
-      )}
+      <CustomCursor />
 
-      {!landingOpen && !landingContactOpen && (
+      <AnimatePresence>
+        {!archiveOpen && (
+          <SealIntro
+            key="seal"
+            initialClicks={sealInitialClicks}
+            onComplete={handleSealComplete}
+          />
+        )}
+      </AnimatePresence>
+
+      {archiveOpen && (
         <Suspense fallback={<SceneFallback />}>
           <AnimatePresence mode="wait">
             {currentScene === SCENES.LIBRARY && (
@@ -96,9 +109,29 @@ export default function App() {
           </AnimatePresence>
           <NatsumeWidget currentScene={currentScene} />
           {!devlogReading && <FrameOverlay />}
-          <Footer currentScene={currentScene} />
+          <Footer currentScene={currentScene} onSystemMenuOpen={() => setSystemMenuOpen(true)} />
+          <SystemMenu
+            open={systemMenuOpen}
+            onClose={() => setSystemMenuOpen(false)}
+            onResetSeal={() => setArchiveOpen(false)}
+            onOpenAchievements={() => setAchievementsOpen(true)}
+          />
+          <AchievementsPanel
+            open={achievementsOpen}
+            onClose={() => setAchievementsOpen(false)}
+          />
+          <AnimatePresence>
+            {achievement && (
+              <TrophyNotification
+                key={achievement.key}
+                title={achievement.title}
+                description={achievement.description}
+              />
+            )}
+          </AnimatePresence>
         </Suspense>
       )}
+
     </div>
   )
 }

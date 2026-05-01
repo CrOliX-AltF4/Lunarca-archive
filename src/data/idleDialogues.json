@@ -3,24 +3,56 @@
     { "text": "Tu n'as pas encore choisi.", "mood": "parle" },
     { "text": null, "mood": "disappointment" },
     { "text": "Tu hésites encore.", "mood": "parle" },
-    { "text": "Certains ouvrages ici ne devaient pas survivre.", "mood": "parle" }
+    { "text": "Certains ouvrages ici ne devaient pas survivre.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "Ces ouvrages ont de la mémoire.", "mood": "parle" },
+    { "text": "L'ordre ici a une logique.", "mood": "parle" },
+    { "text": "...", "mood": "indifference" },
+    { "text": "Prends ton temps.", "mood": "indifference" },
+    { "text": "Quelque chose t'attire.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "La bibliothèque enregistre tout.", "mood": "parle" }
   ],
   "natsume": [
     { "text": "Bien.", "mood": "approbation" },
     { "text": "Cette fiche est incomplète.", "mood": "gene" },
-    { "text": null, "mood": "indifference" }
+    { "text": null, "mood": "indifference" },
+    { "text": null, "mood": "idle" },
+    { "text": "Tu cherches quoi.", "mood": "parle" },
+    { "text": "Ces données sont partielles.", "mood": "gene" },
+    { "text": "...", "mood": "indifference" },
+    { "text": "Je ne suis pas un objet d'étude.", "mood": "irritation" },
+    { "text": null, "mood": "idle" },
+    { "text": "Les incarnations ne se résument pas.", "mood": "parle" }
   ],
   "projet": [
     { "text": "C'est encore en construction.", "mood": "parle" },
-    { "text": "La cohérence et la vérité ne sont pas la même chose.", "mood": "parle" }
+    { "text": "La cohérence et la vérité ne sont pas la même chose.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "Ce n'est pas fini.", "mood": "parle" },
+    { "text": "...", "mood": "indifference" },
+    { "text": "Le travail continue.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "Les décisions techniques ont des conséquences.", "mood": "parle" }
   ],
   "devlog": [
     { "text": "Chaque entrée a coûté quelque chose.", "mood": "parle" },
     { "text": "Les dates ne disent pas tout.", "mood": "parle" },
-    { "text": "Tu lis attentivement.", "mood": "approbation" }
+    { "text": "Tu lis attentivement.", "mood": "approbation" },
+    { "text": null, "mood": "idle" },
+    { "text": "Certaines dates manquent.", "mood": "parle" },
+    { "text": "Tu cherches quelque chose de précis.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "Ce journal n'était pas prévu pour être lu.", "mood": "gene" },
+    { "text": "...", "mood": "indifference" }
   ],
   "contact": [
     { "text": "Les runes déchiffrées ne sont plus des runes.", "mood": "parle" },
-    { "text": "Tu es encore là.", "mood": "disappointment" }
+    { "text": "Tu es encore là.", "mood": "disappointment" },
+    { "text": null, "mood": "idle" },
+    { "text": "Ces liens mènent quelque part.", "mood": "parle" },
+    { "text": "...", "mood": "indifference" },
+    { "text": "Un contact n'est pas une conversation.", "mood": "parle" },
+    { "text": null, "mood": "idle" }
   ]
 }

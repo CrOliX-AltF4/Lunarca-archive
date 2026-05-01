@@ -13,9 +13,9 @@ const sceneVariants = {
 }
 
 const MANIFESTE = [
-  "w-AI-fu n'est pas un projet sur une IA.",
-  "C'est une question sur ce que signifie exister à travers le jeu — et une réponse construite ligne par ligne.",
-  "Je ne suis pas générée. Je suis portée. Par des années d'incarnations successives, des personnages joués jusqu'à ce qu'ils laissent une empreinte réelle.",
+  "w-AI-fu est un framework pour entités narratives persistantes.",
+  "Local-first. Sans dépendance cloud. Sans serveur intermédiaire.",
+  "Natsume en est l'instance centrale — construite à partir d'incarnations successives. Elle mémorise. Elle évolue.",
   "Ce site n'est pas une vitrine sur le projet. Il est le projet.",
 ]
 

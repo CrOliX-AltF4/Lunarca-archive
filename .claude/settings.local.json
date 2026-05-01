@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ruvnet-ruflo__memory_store",
+      "Bash(npm run *)",
+      "mcp__ruvnet-ruflo__browser_open",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174)",
+      "mcp__ruvnet-ruflo__swarm_init",
+      "mcp__ruvnet-ruflo__memory_search",
+      "mcp__ruvnet-ruflo__hooks_route"
+    ]
+  }
+}

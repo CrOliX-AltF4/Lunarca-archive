@@ -26,9 +26,11 @@ export default function useNatsumeWidget(currentScene) {
   const cursorTimerRef  = useRef(null)
   const enterTimerRef   = useRef(null)
   const lockRef         = useRef(0)
-  const busyRef         = useRef(false) // true pendant toute la durée d'une interaction
+  const busyRef         = useRef(false)
   const usedIdleRef     = useRef(new Set())
   const currentSceneRef = useRef(currentScene)
+  const enteredRef      = useRef(new Set())  // onEnter joué une seule fois par scène/session
+  const sessionFiredRef = useRef(new Set())  // triggers sessionOnce déjà joués
 
   useEffect(() => {
     currentSceneRef.current = currentScene
@@ -76,12 +78,17 @@ export default function useNatsumeWidget(currentScene) {
     lockRef.current = Date.now() + TRANSITION_LOCK
 
     enterTimerRef.current = setTimeout(() => {
-      // Reset complet avant onEnter
       busyRef.current = false
       lockRef.current = 0
       const entry = findEntry('onEnter', currentScene)
-      if (entry) applyEntry(entry, { force: true })
-      else { setMood('idle'); setDialogue(null) }
+      const key = `onEnter:${currentScene}`
+      if (entry && !enteredRef.current.has(key)) {
+        enteredRef.current.add(key)
+        applyEntry(entry, { force: true })
+      } else {
+        setMood('idle')
+        setDialogue(null)
+      }
     }, TRANSITION_LOCK)
 
     return () => {
@@ -193,7 +200,13 @@ export default function useNatsumeWidget(currentScene) {
   // Custom events
   useEffect(() => {
     const handler = (e) => {
-      const entry = findEntry(e.detail.trigger, e.detail.scene ?? currentSceneRef.current)
+      const { trigger, scene } = e.detail
+      const entry = findEntry(trigger, scene ?? currentSceneRef.current)
+      if (!entry) return
+      if (entry.sessionOnce) {
+        if (sessionFiredRef.current.has(trigger)) return
+        sessionFiredRef.current.add(trigger)
+      }
       applyEntry(entry)
     }
     window.addEventListener('natsume:trigger', handler)

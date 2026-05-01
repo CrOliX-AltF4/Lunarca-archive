@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import styles from './DevlogBook.module.css'
 import devlogData from '../../data/devlog.json'
-import TrophyNotification from '../ui/TrophyNotification.jsx'
 
 function dispatchDevlog(trigger) {
   window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'devlog' } }))
@@ -50,10 +49,7 @@ export default function DevlogBook({ onClose }) {
   const [activeEntry, setActiveEntry] = useState(null)
   const [activeIdx, setActiveIdx]     = useState(-1)
   const [direction, setDirection]     = useState(1)
-  const [trophyVisible, setTrophyVisible] = useState(false)
-
-  const trophyShownRef  = useRef(false)
-  const readRef         = useRef(new Set())
+  const readRef = useRef(new Set())
   const allReadFiredRef = useRef(false)
 
   const openEntry = (entry, idx, dir = 1) => {
@@ -143,15 +139,6 @@ export default function DevlogBook({ onClose }) {
         {hasNext && <button className={styles.navBtn} onClick={goNext}>Suivant →</button>}
         <button className={styles.navBtnClose} onClick={onClose}>Fermer</button>
       </div>
-
-      <AnimatePresence>
-        {trophyVisible && (
-          <TrophyNotification
-            title="Lecteur du Scriptorium"
-            description="Tu as lu jusqu'au bout. Natsume a remarqué."
-          />
-        )}
-      </AnimatePresence>
 
     </div>
   )

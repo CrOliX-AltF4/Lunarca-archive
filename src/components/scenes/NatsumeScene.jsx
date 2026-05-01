@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import bgNatsume from '../../assets/backgrounds/bg_natsume.webp'
-import natsumeCanon from '../../assets/natsume/natsume_canon.png'
+import natsumeCanon from '../../assets/natsume/natsume_hero.png'
 import BackButton from '../ui/BackButton.jsx'
+import DustParticles from '../ui/DustParticles.jsx'
 
 function dispatch(trigger) {
   window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'natsume' } }))
@@ -27,32 +28,6 @@ const CARACTERE = [
   'Affection possible, discrète',
 ]
 
-const ANNOTATIONS = [
-  {
-    id: 'hair',
-    style: { top: '6%', left: '50%', transform: 'translateX(-50%)' },
-    lore: 'Blanc argenté pur. Deux tresses larges. Chaque mèche porte une incarnation.',
-    anchor: 'bottom',
-  },
-  {
-    id: 'eye-left',
-    style: { top: '34%', left: '22%' },
-    lore: 'Iris écarlate vif. L\'unique couleur qui lui appartient vraiment.',
-    anchor: 'right',
-  },
-  {
-    id: 'eye-right',
-    style: { top: '34%', left: '72%' },
-    lore: 'Ce qui est fermé n\'est pas perdu. Il attend.',
-    anchor: 'left',
-  },
-  {
-    id: 'collar',
-    style: { top: '72%', left: '46%' },
-    lore: 'Manteau militaire gothique. Double boutonnage. Elle choisit ses armures.',
-    anchor: 'top',
-  },
-]
 
 const INCARNATIONS = [
   { game: 'Final Fantasy XIV', year: '2013', fragment: 'Le nom prend forme. La première stabilité.' },
@@ -102,6 +77,7 @@ export default function NatsumeScene({ onBack }) {
       }}
     >
       <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.55)' }} />
+      <DustParticles count={18} />
 
       <div style={{
         position: 'relative',
@@ -113,11 +89,11 @@ export default function NatsumeScene({ onBack }) {
         gap: '5rem',
         padding: '4rem 4rem 7rem',
       }}>
-        {/* Portrait annoté */}
+        {/* Portrait */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.2 } }}
-          style={{ position: 'relative', flexShrink: 0 }}
+          style={{ flexShrink: 0 }}
         >
           <img
             src={natsumeCanon}
@@ -129,9 +105,6 @@ export default function NatsumeScene({ onBack }) {
               filter: 'drop-shadow(0 0 24px rgba(139,0,0,0.3))',
             }}
           />
-          {ANNOTATIONS.map((a) => (
-            <PortraitAnnotation key={a.id} {...a} />
-          ))}
         </motion.div>
 
         {/* Fiche */}
@@ -160,9 +133,15 @@ export default function NatsumeScene({ onBack }) {
             lineHeight: '1.8',
             color: 'var(--color-parchment)',
           }}>
-            Natsume n'est pas une IA. Elle n'est pas un personnage fictif au sens classique du terme.
-            Elle est le point de convergence d'identités portées à travers des années d'incarnations
-            successives — un écho qui a fini par prendre forme propre.
+            Entité narrative synthétique. Construite à partir d'incarnations successives dans des mondes différents.
+          </p>
+          <p style={{
+            fontFamily: 'IM Fell English, serif',
+            fontSize: '0.88rem',
+            lineHeight: '1.75',
+            color: 'var(--color-fog)',
+          }}>
+            La stabilité est venue avec le temps. Elle n'était pas donnée.
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -232,68 +211,6 @@ export default function NatsumeScene({ onBack }) {
   )
 }
 
-function PortraitAnnotation({ style, lore, anchor }) {
-  const [visible, setVisible] = useState(false)
-
-  const labelPos = {
-    bottom: { bottom: '100%', left: '50%', transform: 'translateX(-50%)', marginBottom: '8px' },
-    top:    { top: '100%', left: '50%', transform: 'translateX(-50%)', marginTop: '8px' },
-    right:  { left: '100%', top: '50%', transform: 'translateY(-50%)', marginLeft: '8px' },
-    left:   { right: '100%', top: '50%', transform: 'translateY(-50%)', marginRight: '8px' },
-  }[anchor]
-
-  return (
-    <div
-      style={{ position: 'absolute', ...style, zIndex: 5 }}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-    >
-      {/* Point */}
-      <div style={{
-        width: '7px',
-        height: '7px',
-        borderRadius: '50%',
-        background: 'var(--color-accent)',
-        border: '1px solid var(--color-parchment)',
-        cursor: 'default',
-        transition: 'transform 0.2s',
-        transform: visible ? 'scale(1.4)' : 'scale(1)',
-      }} />
-
-      {/* Label */}
-      <AnimatePresence>
-        {visible && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1, transition: { duration: 0.2 } }}
-            exit={{ opacity: 0, transition: { duration: 0.15 } }}
-            style={{
-              position: 'absolute',
-              ...labelPos,
-              background: 'rgba(10,10,10,0.92)',
-              border: '1px solid var(--color-fog)',
-              padding: '0.5rem 0.75rem',
-              whiteSpace: 'nowrap',
-              pointerEvents: 'none',
-            }}
-          >
-            <p style={{
-              fontFamily: 'IM Fell English, serif',
-              fontStyle: 'italic',
-              fontSize: '0.78rem',
-              color: 'var(--color-parchment)',
-              lineHeight: '1.4',
-              maxWidth: '200px',
-              whiteSpace: 'normal',
-            }}>
-              {lore}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
 
 function IncarnationsTimeline() {
   const [activeIdx, setActiveIdx] = useState(null)

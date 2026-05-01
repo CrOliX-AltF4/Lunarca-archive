@@ -19,7 +19,8 @@ export default function BackButton({ onClick }) {
         fontFamily: 'Cinzel, serif',
         fontSize: '0.72rem',
         letterSpacing: '0.15em',
-        padding: '0.5rem 1.2rem',
+        padding: '0.75rem 1.2rem',
+        minHeight: '44px',
         cursor: 'pointer',
         transition: 'background 0.2s, border-color 0.2s, color 0.2s',
       }}

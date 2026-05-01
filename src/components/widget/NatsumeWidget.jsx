@@ -1,6 +1,13 @@
+import { useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useNatsumeWidget from '../../hooks/useNatsumeWidget.js'
 import DialogueBubble from './DialogueBubble.jsx'
+
+const GAZE_DELAY = 5000
+
+function dispatch(trigger) {
+  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'global' } }))
+}
 
 import natsumeIdle           from '../../assets/natsume/natsume_idle.png'
 import natsumeParle          from '../../assets/natsume/natsume_parle.png'
@@ -23,6 +30,12 @@ const PORTRAITS = {
 
 export default function NatsumeWidget({ currentScene }) {
   const { mood, dialogue } = useNatsumeWidget(currentScene)
+  const gazeTimer = useRef(null)
+
+  const handleGazeStart = () => {
+    gazeTimer.current = setTimeout(() => dispatch('onGazeHeld'), GAZE_DELAY)
+  }
+  const handleGazeEnd = () => clearTimeout(gazeTimer.current)
 
   return (
     <div style={{
@@ -47,7 +60,9 @@ export default function NatsumeWidget({ currentScene }) {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0, transition: { duration: 0.35 } }}
           exit={{ opacity: 0, x: 20, transition: { duration: 0.25 } }}
-          style={{ width: '220px', height: 'auto', display: 'block' }}
+          onMouseEnter={handleGazeStart}
+          onMouseLeave={handleGazeEnd}
+          style={{ width: '220px', height: 'auto', display: 'block', pointerEvents: 'auto' }}
         />
       </AnimatePresence>
     </div>

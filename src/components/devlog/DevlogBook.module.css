@@ -53,6 +53,7 @@
   height: 72%;
   columns: 2;
   column-gap: 16.3%;
+  column-fill: auto;
   overflow: hidden;
   pointer-events: all;
 }

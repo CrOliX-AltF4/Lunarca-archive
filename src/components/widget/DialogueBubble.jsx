@@ -1,6 +1,21 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 export default function DialogueBubble({ text }) {
+  const [displayed, setDisplayed] = useState('')
+
+  useEffect(() => {
+    if (!text) return
+    setDisplayed('')
+    let i = 0
+    const id = setInterval(() => {
+      i++
+      setDisplayed(text.slice(0, i))
+      if (i >= text.length) clearInterval(id)
+    }, 28)
+    return () => clearInterval(id)
+  }, [text])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -20,7 +35,7 @@ export default function DialogueBubble({ text }) {
         position: 'relative',
       }}
     >
-      {text}
+      {displayed}
 
       {/* Queue — triangle bordure (couche extérieure) */}
       <div style={{
