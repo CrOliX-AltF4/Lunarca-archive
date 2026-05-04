@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import BooksContainer from '../books/BooksContainer.jsx'
 import DustParticles from '../ui/DustParticles.jsx'
 import bgLibrary from '../../assets/backgrounds/bg_library.webp'
+import styles from './LibraryScene.module.css'
 
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight']
 
@@ -50,63 +51,26 @@ export default function LibraryScene({ onNavigate }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${bgLibrary})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className={styles.scene}
+      style={{ backgroundImage: `url(${bgLibrary})` }}
     >
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)',
-      }} />
+      <div className={styles.vignette} />
 
       <DustParticles />
 
-      {/* Titre hub */}
       <motion.div
+        className={styles.titleBlock}
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0, transition: { duration: 1, delay: 0.3 } }}
-        style={{
-          position: 'absolute',
-          top: '8%',
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          pointerEvents: 'none',
-          zIndex: 2,
-        }}
       >
-        <h1 style={{
-          fontFamily: 'Cinzel, serif',
-          fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
-          letterSpacing: '0.4em',
-          color: 'var(--color-white-ink)',
-          fontWeight: 400,
-          textShadow: '0 0 30px rgba(0,0,0,0.9)',
-        }}>
-          w-AI-fu
-        </h1>
-        <p style={{
-          fontFamily: 'IM Fell English, serif',
-          fontStyle: 'italic',
-          fontSize: '0.78rem',
-          color: 'var(--color-fog)',
-          letterSpacing: '0.12em',
-          marginTop: '0.4rem',
-          textShadow: '0 1px 6px rgba(0,0,0,1), 0 0 3px rgba(0,0,0,1)',
-        }}>
-          Archive de Natsume Tsurugi
+        <h1 className={styles.hubTitle}>Lun'Λrkhive</h1>
+        <p className={styles.hubSub}>
+          Explorez des récits oubliés, scellés dans les pages du temps
         </p>
       </motion.div>
 
-      {/* Instruction discrète */}
       <motion.p
+        className={styles.hint}
         initial={{ opacity: 0 }}
         animate={{
           opacity: [null, 0.55, 0.95, 0.55],
@@ -120,23 +84,6 @@ export default function LibraryScene({ onNavigate }) {
             },
           },
         }}
-        style={{
-          position: 'absolute',
-          bottom: '6%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontFamily: 'Cinzel, serif',
-          fontSize: '0.72rem',
-          letterSpacing: '0.3em',
-          paddingLeft: '0.3em',
-          color: 'var(--color-parchment)',
-          textAlign: 'center',
-          pointerEvents: 'none',
-          zIndex: 2,
-          textTransform: 'uppercase',
-          textShadow: '0 0 12px rgba(0,0,0,1), 0 1px 8px rgba(0,0,0,1), 1px 0 6px rgba(0,0,0,1), -1px 0 6px rgba(0,0,0,1)',
-          whiteSpace: 'nowrap',
-        }}
       >
         Choisissez un ouvrage
       </motion.p>
@@ -146,31 +93,13 @@ export default function LibraryScene({ onNavigate }) {
       <AnimatePresence>
         {loreVisible && (
           <motion.div
+            className={styles.loreOverlay}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
-            style={{
-              position: 'absolute',
-              bottom: '14%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              textAlign: 'center',
-              pointerEvents: 'none',
-              zIndex: 10,
-            }}
           >
             {LORE_TEXT.map((line, i) => (
-              <p key={i} style={{
-                fontFamily: 'IM Fell English, serif',
-                fontStyle: 'italic',
-                fontSize: '1rem',
-                color: 'var(--color-parchment)',
-                letterSpacing: '0.05em',
-                lineHeight: '2',
-                textShadow: '0 0 20px rgba(0,0,0,1)',
-              }}>
-                {line}
-              </p>
+              <p key={i} className={styles.loreLine}>{line}</p>
             ))}
           </motion.div>
         )}

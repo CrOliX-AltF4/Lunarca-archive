@@ -1,10 +1,15 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
 import SealIntro     from './components/ui/SealIntro.jsx'
+import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
 import FrameOverlay  from './components/ui/FrameOverlay.jsx'
 import Footer        from './components/ui/Footer.jsx'
-import { SCENES } from './constants/scenes.js'
+import SystemMenu    from './components/ui/SystemMenu.jsx'
+import CustomCursor        from './components/ui/CustomCursor.jsx'
+import TrophyNotification  from './components/ui/TrophyNotification.jsx'
+import AchievementsPanel   from './components/ui/AchievementsPanel.jsx'
+import useAchievements     from './hooks/useAchievements.js'
+import { SCENES }          from './constants/scenes.js'
 
 const LibraryScene = lazy(() => import('./components/scenes/LibraryScene.jsx'))
 const NatsumeScene = lazy(() => import('./components/scenes/NatsumeScene.jsx'))
@@ -17,49 +22,87 @@ export { SCENES }
 function SceneFallback() {
   return (
     <div style={{
-      position: 'absolute',
-      inset: 0,
+      position: 'absolute', inset: 0,
       background: 'var(--color-void)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <span style={{
-        fontFamily: 'Cinzel, serif',
-        fontSize: '0.7rem',
-        letterSpacing: '0.3em',
-        color: 'var(--color-fog)',
-      }}>
-        ···
-      </span>
+        fontFamily: 'Cinzel, serif', fontSize: '0.7rem',
+        letterSpacing: '0.3em', color: 'var(--color-fog)',
+      }}>···</span>
     </div>
   )
 }
 
-export default function App() {
-  const [introComplete, setIntroComplete] = useState(false)
-  const [currentScene, setCurrentScene] = useState(() => {
-    const hash = window.location.hash.replace('#', '')
-    return Object.values(SCENES).includes(hash) ? hash : SCENES.LIBRARY
-  })
+// Résout le hash d'entrée — null si invalide ou absent
+function resolveHashScene() {
+  const h = window.location.hash.replace('#', '')
+  return Object.values(SCENES).includes(h) ? h : null
+}
 
-  const navigate = (scene) => setCurrentScene(scene)
-  const goBack = () => setCurrentScene(SCENES.LIBRARY)
-  const handleIntroComplete = useCallback(() => setIntroComplete(true), [])
+function resolveInitialScene(hashScene) {
+  if (hashScene) return hashScene
+  const returning = parseInt(localStorage.getItem('lunarca_seal') || '0') > 0
+  if (returning) {
+    const last = localStorage.getItem('lunarca_last_scene')
+    if (last && Object.values(SCENES).includes(last)) return last
+  }
+  return SCENES.LIBRARY
+}
+
+export default function App() {
+  const hashScene = resolveHashScene()
+
+  // Direct URL (A2) → bypass SealIntro, atterrissage direct
+  const [archiveOpen, setArchiveOpen] = useState(!!hashScene)
+  const [currentScene, setCurrentScene] = useState(() => resolveInitialScene(hashScene))
+  const [devlogReading, setDevlogReading] = useState(false)
+  const [systemMenuOpen, setSystemMenuOpen] = useState(false)
+  const [achievementsOpen, setAchievementsOpen] = useState(false)
+  const achievement = useAchievements()
+
+  const sealInitialClicks = 0
+  const visitedScenesRef  = useRef(new Set())
+  const cartographerFired = useRef(false)
+
+  const handleSealComplete = useCallback(() => setArchiveOpen(true), [])
+  const navigate = useCallback((scene) => setCurrentScene(scene), [])
+  const goBack   = useCallback(() => setCurrentScene(SCENES.LIBRARY), [])
 
   useEffect(() => {
+    if (!archiveOpen) return
     window.location.hash = currentScene
-  }, [currentScene])
+    localStorage.setItem('lunarca_last_scene', currentScene)
+  }, [currentScene, archiveOpen])
+
+  useEffect(() => {
+    if (!archiveOpen || cartographerFired.current) return
+    const sections = [SCENES.NATSUME, SCENES.PROJET, SCENES.DEVLOG, SCENES.CONTACT]
+    visitedScenesRef.current.add(currentScene)
+    if (sections.every(s => visitedScenesRef.current.has(s))) {
+      cartographerFired.current = true
+      window.dispatchEvent(new CustomEvent('natsume:trigger', {
+        detail: { trigger: 'onCartographer', scene: 'global' },
+      }))
+    }
+  }, [currentScene, archiveOpen])
 
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
-      <AnimatePresence mode="wait">
-        {!introComplete && (
-          <SealIntro key="seal" onComplete={handleIntroComplete} />
+
+      <CustomCursor />
+
+      <AnimatePresence>
+        {!archiveOpen && (
+          <SealIntro
+            key="seal"
+            initialClicks={sealInitialClicks}
+            onComplete={handleSealComplete}
+          />
         )}
       </AnimatePresence>
 
-      {introComplete && (
+      {archiveOpen && (
         <Suspense fallback={<SceneFallback />}>
           <AnimatePresence mode="wait">
             {currentScene === SCENES.LIBRARY && (
@@ -72,17 +115,37 @@ export default function App() {
               <ProjetScene key="projet" onBack={goBack} />
             )}
             {currentScene === SCENES.DEVLOG && (
-              <DevlogScene key="devlog" onBack={goBack} />
+              <DevlogScene key="devlog" onBack={goBack} onViewChange={setDevlogReading} />
             )}
             {currentScene === SCENES.CONTACT && (
               <ContactScene key="contact" onBack={goBack} />
             )}
           </AnimatePresence>
-          <NatsumeWidget currentScene={currentScene} />
-          <FrameOverlay />
-          <Footer currentScene={currentScene} />
+          {currentScene !== SCENES.NATSUME && <NatsumeWidget currentScene={currentScene} />}
+          {!devlogReading && <FrameOverlay />}
+          <Footer currentScene={currentScene} onSystemMenuOpen={() => setSystemMenuOpen(true)} />
+          <SystemMenu
+            open={systemMenuOpen}
+            onClose={() => setSystemMenuOpen(false)}
+            onResetSeal={() => setArchiveOpen(false)}
+            onOpenAchievements={() => setAchievementsOpen(true)}
+          />
+          <AchievementsPanel
+            open={achievementsOpen}
+            onClose={() => setAchievementsOpen(false)}
+          />
+          <AnimatePresence>
+            {achievement && (
+              <TrophyNotification
+                key={achievement.key}
+                title={achievement.title}
+                description={achievement.description}
+              />
+            )}
+          </AnimatePresence>
         </Suspense>
       )}
+
     </div>
   )
 }

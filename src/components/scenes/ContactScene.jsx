@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import bgContact from '../../assets/backgrounds/bg_contact.webp'
-import sealImg from '../../assets/ornements/seal.png'
 import BackButton from '../ui/BackButton.jsx'
 import RuneStele from '../contact/RuneStele.jsx'
+import styles from './ContactScene.module.css'
 
 const sceneVariants = {
   initial: { opacity: 0, scale: 0.97 },
@@ -17,68 +17,15 @@ export default function ContactScene({ onBack }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${bgContact})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className={styles.scene}
+      style={{ backgroundImage: `url(${bgContact})` }}
     >
-      {/* Vignette globale légère */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(0,0,0,0.5) 100%)',
-        pointerEvents: 'none',
-      }} />
+      <div className={styles.vignette} />
 
-
-      {/* Symbole ornement — sommet de la stèle */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 1, delay: 0.4 } }}
-        style={{
-          position: 'absolute',
-          top: '14%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 2,
-          pointerEvents: 'none',
-          textAlign: 'center',
-        }}
-      >
-        <img
-          src={sealImg}
-          alt=""
-          style={{
-            width: '100px',
-            height: '100px',
-            objectFit: 'contain',
-            mixBlendMode: 'screen',
-            opacity: 0.82,
-            display: 'block',
-            margin: '0 auto',
-          }}
-          draggable={false}
-        />
-      </motion.div>
-
-      {/* Runes interactives — centrées sur la face de la stèle */}
-      <motion.div
+        className={styles.steleWrapper}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 0.8, delay: 0.6 } }}
-        style={{
-          position: 'absolute',
-          top: '35%',
-          left: 0,
-          right: 0,
-          display: 'flex',
-          justifyContent: 'center',
-          zIndex: 3,
-        }}
       >
         <RuneStele />
       </motion.div>

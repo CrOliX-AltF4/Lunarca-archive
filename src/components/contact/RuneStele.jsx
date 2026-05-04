@@ -7,7 +7,7 @@ const RUNE_LINKS = [
     runes: 'ᚷᛁᛏᚺᚢᛒ',
     label: 'GitHub',
     category: 'Archives',
-    description: 'Archives du code source. Chaque commit, une pierre gravée dans le temps.',
+    description: 'Archives du code source. Historique complet des versions.',
     href: 'https://github.com/CrOliX-AltF4/',
   },
   {
@@ -15,7 +15,7 @@ const RUNE_LINKS = [
     runes: 'ᛏᚹᛁᛏᛏᛖᚱ',
     label: 'Twitter / X',
     category: 'Transmissions',
-    description: 'Transmissions brèves. Pensées qui traversent le voile.',
+    description: 'Transmissions courtes. Mises à jour du projet et fragments divers.',
     href: 'https://x.com/NatsumeTsurugi',
   },
   {
@@ -23,7 +23,7 @@ const RUNE_LINKS = [
     runes: 'ᛏᚹᛁᛏᚳᚺ',
     label: 'Twitch',
     category: 'Flux en direct',
-    description: 'Là où le projet prend vie. Séances de création, en temps réel.',
+    description: 'Séances de développement en direct. Irrégulières.',
     href: 'https://twitch.tv/natsumetsurugi',
   },
   {
@@ -31,7 +31,7 @@ const RUNE_LINKS = [
     runes: 'ᛞᛁᛋᚳᚩᚱᛞ',
     label: 'CrOliχ',
     category: 'Contact direct',
-    description: 'Présence fragmentée dans le vide numérique. Une voix accessible derrière le sceau.',
+    description: 'Contact direct. Réponse non garantie.',
     discord: { tag: '4nne_0nyme', pseudo: 'CrOliχ' },
   },
 ]
@@ -121,7 +121,6 @@ function RuneLine({ link, isActive, onToggle, onHover }) {
       style={{
         background: 'transparent',
         border: 'none',
-        cursor: 'pointer',
         fontFamily: 'Cinzel, serif',
         fontSize: '2rem',
         letterSpacing: '0.9em',
@@ -262,7 +261,6 @@ function CornerButton({ label, href, onClick, onNavigate, muted }) {
     padding: '0.65rem 2rem',
     background: 'transparent',
     border: 'none',
-    cursor: 'pointer',
     transition: 'color 0.3s',
   }
 

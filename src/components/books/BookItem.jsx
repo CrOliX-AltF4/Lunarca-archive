@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 function dispatch(trigger, scene) {
@@ -6,8 +6,9 @@ function dispatch(trigger, scene) {
 }
 
 export default function BookItem({ book, onClick, onTripleClick }) {
-  const clickDataRef     = useRef({ count: 0, timer: null })
-  const hoverLongRef     = useRef(null)
+  const clickDataRef = useRef({ count: 0, timer: null })
+  const hoverLongRef = useRef(null)
+  const [flipping, setFlipping] = useState(false)
 
   const handleClick = () => {
     const data = clickDataRef.current
@@ -23,7 +24,8 @@ export default function BookItem({ book, onClick, onTripleClick }) {
     data.timer = setTimeout(() => {
       if (data.count === 1) {
         dispatch('onBookClick', book.id)
-        onClick()
+        setFlipping(true)
+        setTimeout(() => onClick(), 150)
       }
       data.count = 0
     }, 300)
@@ -49,21 +51,29 @@ export default function BookItem({ book, onClick, onTripleClick }) {
         position: 'absolute',
         left: book.position.left,
         top: book.position.top,
-        cursor: 'pointer',
         transformOrigin: 'bottom center',
+        perspective: '500px',
       }}
       initial={{ opacity: 0, y: 20 }}
-      animate={{
+      animate={flipping ? {
+        rotateY: -28,
+        scaleX: 0.82,
+        opacity: 0.6,
+        y: 0,
+        transition: { duration: 0.14, ease: 'easeIn' },
+      } : {
         opacity: 1,
         y: [0, -8, 0],
+        filter: 'drop-shadow(0 0 0px rgba(245,243,239,0))',
         transition: {
           opacity: { duration: 0.8, delay: book.floatDelay * 0.3 },
           y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: book.floatDelay },
+          filter: { duration: 0.3 },
         },
       }}
-      whileHover={{
+      whileHover={flipping ? {} : {
         scale: 1.05,
-        filter: 'drop-shadow(0 0 8px rgba(245,243,239,0.4))',
+        filter: 'drop-shadow(0 0 14px rgba(245,243,239,0.5))',
         transition: { duration: 0.2 },
       }}
       whileTap={{ scale: 0.97 }}

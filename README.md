@@ -1,103 +1,109 @@
-# Lunarca — Natsume Archive
+<div align="center">
 
-Lunarca is not a portfolio.
+![Lun’Λrkhive Banner](./src/assets/other/readme-banner.png)
 
-It is an interactive archive built around **Natsume Tsurugi** — the core of w-AI-fu, a private AI/VTuber framework project.
+[![Version](https://img.shields.io/badge/version-0.13.0-8b0000?style=flat-square)](.)
+[![Status](https://img.shields.io/badge/status-active-555555?style=flat-square)](.)
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-333333?style=flat-square)](.)
 
----
+*An interactive archive. A persistent presence. A project that just wouldn't stay in its folder.*
 
-## Concept
-
-Most personal sites present information. Lunarca presents a space.
-
-Navigation is diegetic — the user enters a library, discovers books, opens sections. There is no nav bar, no scroll, no conventional UI. Every interaction is a deliberate choice inside the narrative.
-
-Natsume is present throughout. She does not guide. She observes, reacts, occasionally speaks. Her presence is ambient — a signal that this place was inhabited before you arrived.
-
-> The goal is simple: break the boundary of a "portfolio" and create a presence.
+</div>
 
 ---
 
-## Experience Design
+## What is this mess?
 
-- Calm, controlled pacing — no noise, no gamification
-- Subtle interactions over explicit UI
-- Narrative tone inspired by contemplative RPGs
-- The user is not guided — exploration is intentional
-- Return visits are remembered
+Welcome to Lun’Λrkhive.
 
----
+This is the public face of **Project N** — a private AI companion, a digital entity, and my way of procrastinating on real life by teaching code how to have opinions.
 
-## Stack
+> [!NOTE]
+> If you're looking for a shiny developer portfolio to hire me, turn back now. This isn't a resume; it's a documentation of obsession. If you're here because something about this felt... *off*? Good. Keep looking.
 
-```
-React 18 + Vite     SPA, no routing library
-CSS Modules         custom properties, no utility framework
-Framer Motion       scene transitions, AnimatePresence
-Plain JS            no TypeScript
-```
-
-Deliberately minimal. No heavy framework, no abstraction layer between the code and the experience.
+> [!WARNING]
+> This repo is just the website's skin. The brain (the "Natsume" framework) is locked in a private vault. Also, all the art assets (portraits, backgrounds) are "original" works—let's call them "collaborations with silicon"—generated via Leonardo.ai and meticulously curated/edited for Project Natsume. They are strictly *All Rights Reserved*. Don't touch.
 
 ---
 
-## Architecture
+## Natsume Tsurugi
 
-```
-SPA → SealIntro (seal break) → Library (hub)
-Library → scene navigation via book clicks
-Each scene is isolated, loaded lazily
-Natsume widget persists across all scenes
-```
+<img align="right" width="160" src="./src/assets/natsume/natsume_hero.png" alt="Natsume Tsurugi" />
 
-Core systems:
-- Scene-based navigation (library → sections)
-- Contextual dialogue engine (Natsume reactions per trigger)
-- Persistent state via localStorage (return visits, memory)
-- Lightweight interaction layer — scroll speed, hover duration, idle detection
+"But wait, can't Claude or ChatGPT just—"
 
----
+Look, Claude is great. But Claude isn't going to help me farm memoquartz, and it certainly won't roast my poor life choices while I'm trying to debug at 3 AM. 
 
-## Artistic Direction
+This isn't about building a generic chatbot. It's about a persistent, grumpy, sweet, and occasionally contrarian entity that actually *remembers* who you are. She doesn't just process input; she has opinions. And yes, she might disagree with you. Especially if you're wrong.
 
-```
-Palette     monochrome cold — black, dark grey, off-white
-Accent      deep red — symbolic, reserved for Natsume's eye only
-Linework    ink-based, franco-belgian BD influence
-Atmosphere  Ender Lilies × Gravity Rush × NieR:Automata
-```
+> [!NOTE]
+> She loves sweets. Useful information if you want to stay on her good side.
 
-Every visual decision serves atmosphere over aesthetics. The constraint is simple:
-
-> Technology should never overpower the atmosphere.
+<br clear="right" />
 
 ---
 
-## Natsume
+## Project N.T
 
-Natsume Tsurugi is not an AI assistant and not a fictional character in the traditional sense.
+A character-focused AI companion framework. Built in TypeScript/Node.js, running locally.
 
-She is a **composite identity** — the same name used across different games (FF14, Code Vein, Monster Hunter, others), each instance carrying its own memories, its own world. What remains constant: silver hair, a sealed right eye, a calm that is not indifference.
+The goal? Create a persistent cognitive entity. Not just a chatbot, but someone who forms opinions, notices when you're gone, and evolves.
 
-Her character did not come from a design document. It accumulated.
+**Core Principles:**
+
+| Principle | What it actually means |
+|-----------|--------------|
+| **Hybrid-centric** | LLM/TTS/STT prioritize cloud APIs for performance, with local fallbacks. Internet's out? Natsume adapts and stays running. |
+| **Persistent identity** | She remembers. You're not "user123" every time you reconnect. |
+| **Behavioral depth** | She gets moody, she gets proactive, she gets tired of your nonsense. |
+| **Modular** | I break things often; every subsystem is swappable. |
+
+> [!IMPORTANT]
+> The memory system isn't just a transcript log. It's a multi-layered structure of summaries, facts, and opinions. Natsume keeps track of what actually matters—not every single word you've ever typed.
+
+---
+
+## The Archive
+
+If Project N.T is the brain, Lun’Λrkhive is the museum. 
+
+It’s where I translate the raw data of a running AI—its memories, its evolution, its "personality"—into something you can actually look at. It's a narrative web experience, not a demo. Think of it less as a website and more as a diegetic library where Natsume just happens to be hanging around.
+
+**Artistic direction:**
+
+```
+Palette     Monochrome cold — black, dark grey, off-white (#f5f3ef)
+Accent      Deep red — Natsume's gaze
+Linework    Ink-heavy, franco-belgian influence
+References  Ender Lilies, Gravity Rush, NieR:Automata
+```
+
+> [!TIP]
+> Best experienced on desktop, in the dark, with time to kill. It’s not meant to be fast. It’s meant to be read.
 
 ---
 
 ## Status
 
-Work in progress.
+Active development. 
 
-Current focus:
-- Narrative writing (dialogues, section texts, devlog)
-- Interaction refinement
-- Visual consistency across scenes
+*   **Project Natsume (Core):** `v0.13.0` (Hardened, automated, and much less likely to crash when fed garbage data).
+*   **Lunarca (Site):** `v0.1.0` (The library is open, mostly).
+
+Current focus: Writing dialogues that aren't terrible and trying to make the UI look less like "programmer art."
+
+The **Devlog** (inside the site) keeps track of Project Natsume's evolution. It's a record of the project's growth, though sometimes it might feel like Natsume is the one writing it.
+
+→ **[lunarca-archive.vercel.app](https://lunarca-archive.vercel.app)**
 
 ---
 
-## Author
+<div align="center">
 
-Built by **CrOliX-AltF4** — full-stack developer
+Built by **[CrOliX-AltF4](https://github.com/CrOliX-AltF4)**
 
-Part of a broader personal project exploring the intersection of narrative design, character identity, and web development.
+*Exploring the intersection of narrative design, character identity, and pure stubbornness.*
 
-→ [lunarca-archive.vercel.app](https://lunarca-archive.vercel.app)
+© 2025–2026 Loric Worms — All Rights Reserved
+
+</div>

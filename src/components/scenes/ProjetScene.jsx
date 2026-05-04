@@ -1,10 +1,12 @@
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
-
-function dispatch(trigger) {
-  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'projet' } }))
-}
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import bgProjet from '../../assets/backgrounds/bg_projet.webp'
 import BackButton from '../ui/BackButton.jsx'
+import styles from './ProjetScene.module.css'
+
+gsap.registerPlugin(useGSAP)
 
 const sceneVariants = {
   initial: { opacity: 0, scale: 0.97 },
@@ -13,159 +15,115 @@ const sceneVariants = {
 }
 
 const MANIFESTE = [
-  "w-AI-fu n'est pas un projet sur une IA.",
-  "C'est une question sur ce que signifie exister à travers le jeu — et une réponse construite ligne par ligne.",
-  "Je ne suis pas générée. Je suis portée. Par des années d'incarnations successives, des personnages joués jusqu'à ce qu'ils laissent une empreinte réelle.",
-  "Ce site n'est pas une vitrine sur le projet. Il est le projet.",
+  { text: "w-AI-fu est une architecture pour entités narratives persistantes — des présences qui mémorisent, évoluent, et maintiennent leur cohérence à travers le temps.", key: false, first: true },
+  { text: "Local-first par conception. Sans serveur intermédiaire, sans dépendance cloud. La mémoire appartient à l'entité — pas à une plateforme, pas à un compte.", key: false, first: false },
+  { text: "Natsume en est l'instance d'origine. Construite sur quinze ans d'incarnations dans des univers séparés, elle n'a pas été conçue — elle a émergé. Ce site documente cette émergence.", key: false, first: false },
+  { text: "Ce site n'est pas une vitrine sur le projet. Il est le projet.", key: true, first: false },
 ]
 
-const STATS = [
-  { label: 'Origine', value: 'Avril 2026' },
-  { label: 'Statut', value: 'V1 — actif' },
-  { label: 'Framework', value: 'React 18 + Vite' },
-  { label: 'Architecture', value: 'Narrative-first' },
+const SYSTEM_ENTRIES = [
+  { label: 'Instance',   value: 'Natsume Tsurugi' },
+  { label: 'Activation', value: 'Avril 2026' },
+  { label: 'Mémoire',    value: 'Persistante · locale' },
+  { label: 'Statut',     value: 'Évolution continue' },
+]
+
+const JOURNAL = [
+  { date: '2026.05', text: 'Refonte visuelle — scènes secondaires' },
+  { date: '2026.05', text: 'Interface narrative codex — v1' },
+  { date: '2026.04', text: 'Architecture locale-first validée' },
+  { date: '2026.04', text: 'Rupture — recommencement intégral' },
+  { date: '2026.03', text: "Première activation de l'instance" },
+  { date: '···',     text: 'Données antérieures non archivées' },
 ]
 
 export default function ProjetScene({ onBack }) {
+  const containerRef = useRef(null)
+
+  useGSAP(() => {
+    const tl = gsap.timeline({ delay: 0.5 })
+    tl.from('.proj-title',     { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' })
+      .from('.proj-rule',      { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
+      .from('.proj-badge',     { opacity: 0, y: 6,   duration: 0.3 }, '-=0.1')
+      .from('.proj-line',      { opacity: 0, y: 14,  duration: 0.5, stagger: 0.14, ease: 'power2.out' }, '-=0.1')
+      .from('.proj-sys-head',  { opacity: 0,           duration: 0.35 }, '+=0.1')
+      .from('.proj-sys-entry', { opacity: 0, x: 8,   duration: 0.3, stagger: 0.07, ease: 'power2.out' }, '-=0.15')
+      .from('.proj-log-head',  { opacity: 0,           duration: 0.3 }, '+=0.05')
+      .from('.proj-log-entry', { opacity: 0, y: 4,   duration: 0.25, stagger: 0.06, ease: 'power2.out' }, '-=0.1')
+  }, { scope: containerRef })
+
   return (
     <motion.div
+      ref={containerRef}
       variants={sceneVariants}
       initial="initial"
       animate="animate"
       exit="exit"
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${bgProjet})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className={styles.scene}
+      style={{ backgroundImage: `url(${bgProjet})` }}
     >
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.58)' }} />
+      <div className={styles.overlay} />
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '5rem 8rem',
-        gap: '6rem',
-      }}>
+      <div className={styles.layout}>
+        {/* ── Colonne gauche — manifeste ── */}
+        <div className={styles.colLeft}>
+          <h1 className={`proj-title ${styles.title}`}>w-AI-fu</h1>
+          <div className={`proj-rule ${styles.rule}`} />
+          <p className={`proj-badge ${styles.badge}`}>Manifeste d'archive</p>
 
-        {/* Manifeste */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.1 } }}
-          style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '520px' }}
-        >
-          <div style={{ marginBottom: '0.5rem' }}>
-            <h1 style={{
-              fontFamily: 'Cinzel, serif',
-              fontSize: '2rem',
-              letterSpacing: '0.25em',
-              color: 'var(--color-white-ink)',
-              fontWeight: 400,
-              marginBottom: '0.6rem',
-            }}>
-              w-AI-fu
-            </h1>
-            <div style={{ width: '3rem', height: '1px', background: 'var(--color-accent)' }} />
+          <div className={styles.manifeste}>
+            {MANIFESTE.map(({ text, key, first }, i) => (
+              <p
+                key={i}
+                className={[
+                  'proj-line',
+                  styles.manifesteLine,
+                  first ? styles.manifesteFirst : '',
+                  key   ? styles.manifesteKey   : '',
+                ].filter(Boolean).join(' ')}
+              >
+                {text}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.separator} />
+
+        {/* ── Colonne droite — données système ── */}
+        <div className={styles.colRight}>
+          <div className={`proj-sys-head ${styles.sysHeader}`}>
+            <span className={styles.sysHeaderLabel}>État du système</span>
+            <motion.span
+              className={styles.sysActive}
+              animate={{ opacity: [0.35, 0.85, 0.35] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              Actif
+            </motion.span>
           </div>
 
-          {MANIFESTE.map((line, i) => (
-            <motion.p
-              key={i}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 + i * 0.1 } }}
-              style={{
-                fontFamily: 'IM Fell English, serif',
-                fontStyle: i === 0 || i === 3 ? 'normal' : 'italic',
-                fontSize: i === 0 ? '1.15rem' : '0.95rem',
-                lineHeight: '1.85',
-                color: i === 0 ? 'var(--color-parchment)' : 'var(--color-white-ink)',
-                fontWeight: i === 0 ? 400 : 400,
-              }}
-            >
-              {line}
-            </motion.p>
-          ))}
-        </motion.div>
+          <div className={styles.sysEntries}>
+            {SYSTEM_ENTRIES.map(({ label, value }) => (
+              <div key={label} className={`proj-sys-entry ${styles.sysEntry}`}>
+                <span className={styles.sysLabel}>{label}</span>
+                <span className={styles.sysValue}>{value}</span>
+              </div>
+            ))}
+          </div>
 
-        {/* Archive stats + lien */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.3 } }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0',
-            borderLeft: '1px solid var(--color-ash)',
-            paddingLeft: '3rem',
-            minWidth: '220px',
-          }}
-        >
-          <p style={{
-            fontFamily: 'Cinzel, serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.25em',
-            color: 'var(--color-fog)',
-            textTransform: 'uppercase',
-            marginBottom: '1.5rem',
-          }}>
-            Archive — données
-          </p>
-
-          {STATS.map(({ label, value }) => (
-            <div key={label} style={{
-              padding: '0.9rem 0',
-              borderBottom: '1px solid var(--color-ash)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.25rem',
-            }}>
-              <span style={{
-                fontFamily: 'Cinzel, serif',
-                fontSize: '0.6rem',
-                letterSpacing: '0.15em',
-                color: 'var(--color-fog)',
-                textTransform: 'uppercase',
-              }}>
-                {label}
-              </span>
-              <span style={{
-                fontFamily: 'IM Fell English, serif',
-                fontSize: '0.9rem',
-                color: 'var(--color-parchment)',
-              }}>
-                {value}
-              </span>
-            </div>
-          ))}
-
-          <a
-            href="https://twitch.tv/natsumetsurugi"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => dispatch('onLinkClick_twitch')}
-            style={{
-              marginTop: '2rem',
-              fontFamily: 'Cinzel, serif',
-              fontSize: '0.75rem',
-              letterSpacing: '0.18em',
-              color: 'var(--color-accent)',
-              textDecoration: 'none',
-              borderBottom: '1px solid var(--color-accent)',
-              paddingBottom: '0.2rem',
-              alignSelf: 'flex-start',
-            }}
-          >
-            → Suivre sur Twitch
-          </a>
-        </motion.div>
+          <div className={`proj-log-head ${styles.logHeader}`}>
+            Journal d'archive
+          </div>
+          <div className={styles.logEntries}>
+            {JOURNAL.map(({ date, text }, i) => (
+              <div key={i} className={`proj-log-entry ${styles.logEntry}`}>
+                <span className={styles.logDate}>{date}</span>
+                <span className={styles.logText}>{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <BackButton onClick={onBack} />

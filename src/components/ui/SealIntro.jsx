@@ -12,9 +12,9 @@ const SEAL_LEFT = `calc(50% - ${SEAL_SIZE / 2}px)`
 const SEAL_TOP  = `calc(54.5% - ${SEAL_SIZE / 2}px)`
 
 const STATES = [
-  { img: sealImg,       opacity: 1,    rotate: 0  },
-  { img: sealCrack1Img, opacity: 1,    rotate: 0  },
-  { img: sealCrack2Img, opacity: 0.85, rotate: 0  },
+  { img: sealImg,       opacity: 1,    filter: 'none' },
+  { img: sealCrack1Img, opacity: 1, filter: 'none' },
+  { img: sealCrack2Img, opacity: 1, filter: 'none' },
 ]
 
 const HINTS = [
@@ -34,11 +34,11 @@ const FRAGMENTS = [
   { angle: 50,  dist: 170, size: 2 },
 ]
 
-export default function SealIntro({ onComplete }) {
-  const [clicks, setClicks] = useState(0)
+export default function SealIntro({ onComplete, initialClicks = 0 }) {
+  const [clicks, setClicks] = useState(initialClicks)
   const [shaking, setShaking] = useState(false)
   const [doorOpen, setDoorOpen] = useState(false)
-  const broken = clicks === 3
+  const broken = clicks >= 3
 
   const handleClick = () => {
     if (shaking || broken) return
@@ -46,7 +46,8 @@ export default function SealIntro({ onComplete }) {
     setTimeout(() => setShaking(false), 340)
     const next = clicks + 1
     setClicks(next)
-    if (next === 3) {
+    if (next >= 3) {
+      localStorage.setItem('lunarca_seal', '3')
       setTimeout(() => setDoorOpen(true), 500)
       setTimeout(onComplete, 1800)
     }
@@ -66,7 +67,6 @@ export default function SealIntro({ onComplete }) {
         backgroundImage: `url(${bgIntro})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        cursor: broken ? 'default' : 'pointer',
         overflow: 'hidden',
       }}
     >
@@ -154,6 +154,7 @@ export default function SealIntro({ onComplete }) {
                 height: '100%',
                 objectFit: 'contain',
                 mixBlendMode: 'screen',
+                filter: sealState.filter,
                 userSelect: 'none',
                 pointerEvents: 'none',
               }}
