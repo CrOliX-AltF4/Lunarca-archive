@@ -1,10 +1,12 @@
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
-
-function dispatch(trigger) {
-  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'projet' } }))
-}
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import bgProjet from '../../assets/backgrounds/bg_projet.webp'
 import BackButton from '../ui/BackButton.jsx'
+import styles from './ProjetScene.module.css'
+
+gsap.registerPlugin(useGSAP)
 
 const sceneVariants = {
   initial: { opacity: 0, scale: 0.97 },
@@ -13,159 +15,72 @@ const sceneVariants = {
 }
 
 const MANIFESTE = [
-  "w-AI-fu est un framework pour entités narratives persistantes.",
-  "Local-first. Sans dépendance cloud. Sans serveur intermédiaire.",
-  "Natsume en est l'instance centrale — construite à partir d'incarnations successives. Elle mémorise. Elle évolue.",
-  "Ce site n'est pas une vitrine sur le projet. Il est le projet.",
+  { text: "w-AI-fu est un framework pour entités narratives persistantes.", key: false, first: true },
+  { text: "Local-first. Sans dépendance cloud. Sans serveur intermédiaire.", key: false, first: false },
+  { text: "Natsume en est l'instance centrale — construite à partir d'incarnations successives. Elle mémorise. Elle évolue.", key: false, first: false },
+  { text: "Ce site n'est pas une vitrine sur le projet. Il est le projet.", key: true, first: false },
 ]
 
 const STATS = [
-  { label: 'Origine', value: 'Avril 2026' },
-  { label: 'Statut', value: 'V1 — actif' },
-  { label: 'Framework', value: 'React 18 + Vite' },
+  { label: 'Origine',      value: 'Avril 2026' },
+  { label: 'Statut',       value: 'V1 — actif' },
+  { label: 'Framework',    value: 'React 18 + Vite' },
   { label: 'Architecture', value: 'Narrative-first' },
 ]
 
 export default function ProjetScene({ onBack }) {
+  const containerRef = useRef(null)
+
+  useGSAP(() => {
+    const tl = gsap.timeline({ delay: 0.5 })
+    tl.from('.proj-title', { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' })
+      .from('.proj-rule',  { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
+      .from('.proj-line',  { opacity: 0, y: 16,   duration: 0.5, stagger: 0.15, ease: 'power2.out' }, '-=0.1')
+      .from('.proj-stat',  { opacity: 0, y: 8,    duration: 0.4, stagger: 0.1,  ease: 'power2.out' }, '+=0.15')
+  }, { scope: containerRef })
+
   return (
     <motion.div
+      ref={containerRef}
       variants={sceneVariants}
       initial="initial"
       animate="animate"
       exit="exit"
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${bgProjet})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className={styles.scene}
+      style={{ backgroundImage: `url(${bgProjet})` }}
     >
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.58)' }} />
+      <div className={styles.overlay} />
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '5rem 8rem',
-        gap: '6rem',
-      }}>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <h1 className={`proj-title ${styles.title}`}>w-AI-fu</h1>
+          <div className={`proj-rule ${styles.rule}`} />
+        </div>
 
-        {/* Manifeste */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.1 } }}
-          style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '520px' }}
-        >
-          <div style={{ marginBottom: '0.5rem' }}>
-            <h1 style={{
-              fontFamily: 'Cinzel, serif',
-              fontSize: '2rem',
-              letterSpacing: '0.25em',
-              color: 'var(--color-white-ink)',
-              fontWeight: 400,
-              marginBottom: '0.6rem',
-            }}>
-              w-AI-fu
-            </h1>
-            <div style={{ width: '3rem', height: '1px', background: 'var(--color-accent)' }} />
-          </div>
-
-          {MANIFESTE.map((line, i) => (
-            <motion.p
+        <div className={styles.manifeste}>
+          {MANIFESTE.map(({ text, key, first }, i) => (
+            <p
               key={i}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 + i * 0.1 } }}
-              style={{
-                fontFamily: 'IM Fell English, serif',
-                fontStyle: i === 0 || i === 3 ? 'normal' : 'italic',
-                fontSize: i === 0 ? '1.15rem' : '0.95rem',
-                lineHeight: '1.85',
-                color: i === 0 ? 'var(--color-parchment)' : 'var(--color-white-ink)',
-                fontWeight: i === 0 ? 400 : 400,
-              }}
+              className={[
+                'proj-line',
+                styles.manifesteLine,
+                first ? styles.manifesteFirst : '',
+                key   ? styles.manifesteKey   : '',
+              ].filter(Boolean).join(' ')}
             >
-              {line}
-            </motion.p>
+              {text}
+            </p>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Archive stats + lien */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.3 } }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0',
-            borderLeft: '1px solid var(--color-ash)',
-            paddingLeft: '3rem',
-            minWidth: '220px',
-          }}
-        >
-          <p style={{
-            fontFamily: 'Cinzel, serif',
-            fontSize: '0.6rem',
-            letterSpacing: '0.25em',
-            color: 'var(--color-fog)',
-            textTransform: 'uppercase',
-            marginBottom: '1.5rem',
-          }}>
-            Archive — données
-          </p>
-
+        <div className={styles.statsRow}>
           {STATS.map(({ label, value }) => (
-            <div key={label} style={{
-              padding: '0.9rem 0',
-              borderBottom: '1px solid var(--color-ash)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.25rem',
-            }}>
-              <span style={{
-                fontFamily: 'Cinzel, serif',
-                fontSize: '0.6rem',
-                letterSpacing: '0.15em',
-                color: 'var(--color-fog)',
-                textTransform: 'uppercase',
-              }}>
-                {label}
-              </span>
-              <span style={{
-                fontFamily: 'IM Fell English, serif',
-                fontSize: '0.9rem',
-                color: 'var(--color-parchment)',
-              }}>
-                {value}
-              </span>
+            <div key={label} className={`proj-stat ${styles.stat}`}>
+              <span className={styles.statValue}>{value}</span>
+              <span className={styles.statLabel}>{label}</span>
             </div>
           ))}
-
-          <a
-            href="https://twitch.tv/natsumetsurugi"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => dispatch('onLinkClick_twitch')}
-            style={{
-              marginTop: '2rem',
-              fontFamily: 'Cinzel, serif',
-              fontSize: '0.75rem',
-              letterSpacing: '0.18em',
-              color: 'var(--color-accent)',
-              textDecoration: 'none',
-              borderBottom: '1px solid var(--color-accent)',
-              paddingBottom: '0.2rem',
-              alignSelf: 'flex-start',
-            }}
-          >
-            → Suivre sur Twitch
-          </a>
-        </motion.div>
+        </div>
       </div>
 
       <BackButton onClick={onBack} />
