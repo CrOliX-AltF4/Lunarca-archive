@@ -29,7 +29,6 @@
   left: 55%;
   transform: translateX(-50%) perspective(1100px) rotateX(22deg);
   transform-origin: bottom center;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;

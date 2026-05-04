@@ -15,17 +15,26 @@ const sceneVariants = {
 }
 
 const MANIFESTE = [
-  { text: "w-AI-fu est un framework pour entités narratives persistantes.", key: false, first: true },
-  { text: "Local-first. Sans dépendance cloud. Sans serveur intermédiaire.", key: false, first: false },
-  { text: "Natsume en est l'instance centrale — construite à partir d'incarnations successives. Elle mémorise. Elle évolue.", key: false, first: false },
+  { text: "w-AI-fu est une architecture pour entités narratives persistantes — des présences qui mémorisent, évoluent, et maintiennent leur cohérence à travers le temps.", key: false, first: true },
+  { text: "Local-first par conception. Sans serveur intermédiaire, sans dépendance cloud. La mémoire appartient à l'entité — pas à une plateforme, pas à un compte.", key: false, first: false },
+  { text: "Natsume en est l'instance d'origine. Construite sur quinze ans d'incarnations dans des univers séparés, elle n'a pas été conçue — elle a émergé. Ce site documente cette émergence.", key: false, first: false },
   { text: "Ce site n'est pas une vitrine sur le projet. Il est le projet.", key: true, first: false },
 ]
 
-const STATS = [
-  { label: 'Origine',      value: 'Avril 2026' },
-  { label: 'Statut',       value: 'V1 — actif' },
-  { label: 'Framework',    value: 'React 18 + Vite' },
-  { label: 'Architecture', value: 'Narrative-first' },
+const SYSTEM_ENTRIES = [
+  { label: 'Instance',   value: 'Natsume Tsurugi' },
+  { label: 'Activation', value: 'Avril 2026' },
+  { label: 'Mémoire',    value: 'Persistante · locale' },
+  { label: 'Statut',     value: 'Évolution continue' },
+]
+
+const JOURNAL = [
+  { date: '2026.05', text: 'Refonte visuelle — scènes secondaires' },
+  { date: '2026.05', text: 'Interface narrative codex — v1' },
+  { date: '2026.04', text: 'Architecture locale-first validée' },
+  { date: '2026.04', text: 'Rupture — recommencement intégral' },
+  { date: '2026.03', text: "Première activation de l'instance" },
+  { date: '···',     text: 'Données antérieures non archivées' },
 ]
 
 export default function ProjetScene({ onBack }) {
@@ -33,10 +42,14 @@ export default function ProjetScene({ onBack }) {
 
   useGSAP(() => {
     const tl = gsap.timeline({ delay: 0.5 })
-    tl.from('.proj-title', { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' })
-      .from('.proj-rule',  { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
-      .from('.proj-line',  { opacity: 0, y: 16,   duration: 0.5, stagger: 0.15, ease: 'power2.out' }, '-=0.1')
-      .from('.proj-stat',  { opacity: 0, y: 8,    duration: 0.4, stagger: 0.1,  ease: 'power2.out' }, '+=0.15')
+    tl.from('.proj-title',     { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' })
+      .from('.proj-rule',      { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
+      .from('.proj-badge',     { opacity: 0, y: 6,   duration: 0.3 }, '-=0.1')
+      .from('.proj-line',      { opacity: 0, y: 14,  duration: 0.5, stagger: 0.14, ease: 'power2.out' }, '-=0.1')
+      .from('.proj-sys-head',  { opacity: 0,           duration: 0.35 }, '+=0.1')
+      .from('.proj-sys-entry', { opacity: 0, x: 8,   duration: 0.3, stagger: 0.07, ease: 'power2.out' }, '-=0.15')
+      .from('.proj-log-head',  { opacity: 0,           duration: 0.3 }, '+=0.05')
+      .from('.proj-log-entry', { opacity: 0, y: 4,   duration: 0.25, stagger: 0.06, ease: 'power2.out' }, '-=0.1')
   }, { scope: containerRef })
 
   return (
@@ -51,35 +64,65 @@ export default function ProjetScene({ onBack }) {
     >
       <div className={styles.overlay} />
 
-      <div className={styles.content}>
-        <div className={styles.header}>
+      <div className={styles.layout}>
+        {/* ── Colonne gauche — manifeste ── */}
+        <div className={styles.colLeft}>
           <h1 className={`proj-title ${styles.title}`}>w-AI-fu</h1>
           <div className={`proj-rule ${styles.rule}`} />
+          <p className={`proj-badge ${styles.badge}`}>Manifeste d'archive</p>
+
+          <div className={styles.manifeste}>
+            {MANIFESTE.map(({ text, key, first }, i) => (
+              <p
+                key={i}
+                className={[
+                  'proj-line',
+                  styles.manifesteLine,
+                  first ? styles.manifesteFirst : '',
+                  key   ? styles.manifesteKey   : '',
+                ].filter(Boolean).join(' ')}
+              >
+                {text}
+              </p>
+            ))}
+          </div>
         </div>
 
-        <div className={styles.manifeste}>
-          {MANIFESTE.map(({ text, key, first }, i) => (
-            <p
-              key={i}
-              className={[
-                'proj-line',
-                styles.manifesteLine,
-                first ? styles.manifesteFirst : '',
-                key   ? styles.manifesteKey   : '',
-              ].filter(Boolean).join(' ')}
+        <div className={styles.separator} />
+
+        {/* ── Colonne droite — données système ── */}
+        <div className={styles.colRight}>
+          <div className={`proj-sys-head ${styles.sysHeader}`}>
+            <span className={styles.sysHeaderLabel}>État du système</span>
+            <motion.span
+              className={styles.sysActive}
+              animate={{ opacity: [0.35, 0.85, 0.35] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {text}
-            </p>
-          ))}
-        </div>
+              Actif
+            </motion.span>
+          </div>
 
-        <div className={styles.statsRow}>
-          {STATS.map(({ label, value }) => (
-            <div key={label} className={`proj-stat ${styles.stat}`}>
-              <span className={styles.statValue}>{value}</span>
-              <span className={styles.statLabel}>{label}</span>
-            </div>
-          ))}
+          <div className={styles.sysEntries}>
+            {SYSTEM_ENTRIES.map(({ label, value }) => (
+              <div key={label} className={`proj-sys-entry ${styles.sysEntry}`}>
+                <span className={styles.sysLabel}>{label}</span>
+                <span className={styles.sysValue}>{value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className={`proj-log-head ${styles.logHeader}`}>
+            Journal d'archive
+          </div>
+          <div className={styles.logEntries}>
+            {JOURNAL.map(({ date, text }, i) => (
+              <div key={i} className={`proj-log-entry ${styles.logEntry}`}>
+                <span className={styles.logDate}>{date}</span>
+                <span className={styles.logText}>{text}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

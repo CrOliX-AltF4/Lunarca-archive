@@ -67,7 +67,6 @@ export default function SealIntro({ onComplete, initialClicks = 0 }) {
         backgroundImage: `url(${bgIntro})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        cursor: broken ? 'default' : 'pointer',
         overflow: 'hidden',
       }}
     >

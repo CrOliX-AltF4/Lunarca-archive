@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import SealIntro     from './components/ui/SealIntro.jsx'
 import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
@@ -62,6 +62,8 @@ export default function App() {
   const achievement = useAchievements()
 
   const sealInitialClicks = 0
+  const visitedScenesRef  = useRef(new Set())
+  const cartographerFired = useRef(false)
 
   const handleSealComplete = useCallback(() => setArchiveOpen(true), [])
   const navigate = useCallback((scene) => setCurrentScene(scene), [])
@@ -71,6 +73,18 @@ export default function App() {
     if (!archiveOpen) return
     window.location.hash = currentScene
     localStorage.setItem('lunarca_last_scene', currentScene)
+  }, [currentScene, archiveOpen])
+
+  useEffect(() => {
+    if (!archiveOpen || cartographerFired.current) return
+    const sections = [SCENES.NATSUME, SCENES.PROJET, SCENES.DEVLOG, SCENES.CONTACT]
+    visitedScenesRef.current.add(currentScene)
+    if (sections.every(s => visitedScenesRef.current.has(s))) {
+      cartographerFired.current = true
+      window.dispatchEvent(new CustomEvent('natsume:trigger', {
+        detail: { trigger: 'onCartographer', scene: 'global' },
+      }))
+    }
   }, [currentScene, archiveOpen])
 
   return (
@@ -107,7 +121,7 @@ export default function App() {
               <ContactScene key="contact" onBack={goBack} />
             )}
           </AnimatePresence>
-          <NatsumeWidget currentScene={currentScene} />
+          {currentScene !== SCENES.NATSUME && <NatsumeWidget currentScene={currentScene} />}
           {!devlogReading && <FrameOverlay />}
           <Footer currentScene={currentScene} onSystemMenuOpen={() => setSystemMenuOpen(true)} />
           <SystemMenu

@@ -51,7 +51,6 @@ export default function BookItem({ book, onClick, onTripleClick }) {
         position: 'absolute',
         left: book.position.left,
         top: book.position.top,
-        cursor: 'pointer',
         transformOrigin: 'bottom center',
         perspective: '500px',
       }}

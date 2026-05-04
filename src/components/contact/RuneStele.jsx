@@ -121,7 +121,6 @@ function RuneLine({ link, isActive, onToggle, onHover }) {
       style={{
         background: 'transparent',
         border: 'none',
-        cursor: 'pointer',
         fontFamily: 'Cinzel, serif',
         fontSize: '2rem',
         letterSpacing: '0.9em',
@@ -262,7 +261,6 @@ function CornerButton({ label, href, onClick, onNavigate, muted }) {
     padding: '0.65rem 2rem',
     background: 'transparent',
     border: 'none',
-    cursor: 'pointer',
     transition: 'color 0.3s',
   }
 

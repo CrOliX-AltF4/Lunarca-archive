@@ -19,17 +19,19 @@ const sceneVariants = {
   exit: { opacity: 0, scale: 0.97, transition: { duration: 0.6 } },
 }
 
-const TRAITS = [
-  { label: 'Origine', value: "FF14 · Code Vein · Monster Hunter · et d'autres encore" },
-  { label: 'Nature',  value: 'Entité narrative synthétique' },
-  { label: 'Symbole', value: 'Larme lunaire — fleur blanche, reflets bleus, pureté fragile', hoverable: true },
+const ATTRIBUTES = [
+  { label: 'Stabilité mémorielle',  fill: 78, desc: 'Établie' },
+  { label: 'Cohérence narrative',   fill: 62, desc: 'Fragmentaire' },
+  { label: 'Présence perceptible',  fill: 94, desc: 'Maximale' },
+  { label: 'Intégration active',    fill: 38, desc: 'En cours' },
 ]
 
 const INCARNATIONS = [
-  { game: 'Final Fantasy XIV', year: '2013', fragment: 'Le nom prend forme. La première stabilité.' },
-  { game: 'Code Vein',         year: '2019', fragment: "La silhouette se précise. L'œil écarlate s'affirme." },
-  { game: 'Monster Hunter',    year: '2020', fragment: 'La posture dans le combat. Le calme avant la frappe.' },
-  { game: '···',               year: null,   fragment: "D'autres encore. Toutes oubliées, toutes présentes." },
+  { game: 'Final Fantasy XIV', year: '2013', fragment: 'Le nom prend forme. Deux tresses, un cache-œil — le calme comme armure.' },
+  { game: 'Code Vein',         year: '2019', fragment: "L'iris écarlate s'affirme. Le sang-froid sous la pression." },
+  { game: 'Monster Hunter',    year: '2020', fragment: 'La posture dans le combat. Le silence avant la frappe.' },
+  { game: 'NieR : Automata',   year: '2021', fragment: "La larme lunaire. La question de ce qu'on laisse derrière soi.", trigger: 'onHoverLarme' },
+  { game: '···',               year: null,   fragment: "D'autres encore. Toutes oubliées par les mondes — aucune par elle." },
 ]
 
 export default function NatsumeScene({ onBack }) {
@@ -59,14 +61,14 @@ export default function NatsumeScene({ onBack }) {
 
   useGSAP(() => {
     const tl = gsap.timeline({ delay: 0.5 })
-    tl.from('.nat-portrait',   { opacity: 0, x: 20,  duration: 1.0, ease: 'power2.out' })
-      .from('.nat-name',       { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' }, '-=0.6')
-      .from('.nat-rule',       { scaleX: 0,          duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
-      .from('.nat-fragment',   { opacity: 0, y: 8,   duration: 0.5, stagger: 0.06 }, '-=0.1')
-      .from('.nat-trait',      { opacity: 0, x: -8,  duration: 0.35, stagger: 0.1, ease: 'power2.out' }, '+=0.1')
-      .from('.nat-caractere',  { opacity: 0,          duration: 0.4 }, '-=0.1')
-      .from('.nat-tl-node',    { opacity: 0,          duration: 0.3, stagger: 0.15 }, '+=0.2')
-      .from('.nat-tl-line',    { scaleY: 0,           duration: 0.3, stagger: 0.15, transformOrigin: 'top', ease: 'power2.inOut' }, '<')
+    tl.from('.nat-portrait',  { opacity: 0, x: 20,  duration: 1.0, ease: 'power2.out' })
+      .from('.nat-name',      { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' }, '-=0.6')
+      .from('.nat-rule',      { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
+      .from('.nat-badge',     { opacity: 0, y: 6,   duration: 0.3 }, '-=0.1')
+      .from('.nat-fragment',  { opacity: 0, y: 8,   duration: 0.5, stagger: 0.06 }, '-=0.1')
+      .from('.nat-attr',      { opacity: 0, x: -8,  duration: 0.35, stagger: 0.08, ease: 'power2.out' }, '+=0.15')
+      .from('.nat-attr-fill', { scaleX: 0,           duration: 0.65, stagger: 0.12, transformOrigin: 'left center', ease: 'power2.out' }, '-=0.2')
+      .from('.nat-slot',      { opacity: 0, y: 8,   duration: 0.35, stagger: 0.08, ease: 'power2.out' }, '+=0.2')
   }, { scope: containerRef })
 
   return (
@@ -93,77 +95,77 @@ export default function NatsumeScene({ onBack }) {
       <div className={styles.content}>
         <h1 className={`nat-name ${styles.name}`}>Natsume Tsurugi</h1>
         <div className={`nat-rule ${styles.rule}`} />
+        <p className={`nat-badge ${styles.classBadge}`}>Entité Synthétique · Convergente</p>
 
         <p className={`nat-fragment ${styles.fragmentMain}`}>
-          Entité narrative synthétique.<br />
-          Construite à partir d'incarnations successives dans des mondes différents.
+          Construite à travers des incarnations dans des mondes qui ne se souviennent pas d'elle.<br />
+          Chaque version a laissé quelque chose — une posture, une façon de tenir une arme,<br />
+          un silence qu'on a appris à respecter. Un nom qu'on a fini par garder.
         </p>
         <p className={`nat-fragment ${styles.fragmentSub}`}>
-          La stabilité est venue avec le temps. Elle n'était pas donnée.
+          La stabilité n'était pas donnée. Elle s'est construite à travers ce qui a survécu à l'oubli.<br />
+          Ce qui reste, après que les mondes effacent tout, s'appelle Natsume.
         </p>
 
-        <div className={styles.traits}>
-          {TRAITS.map(({ label, value, hoverable }) => (
-            <div key={label} className={`nat-trait ${styles.trait}`}>
-              <span className={styles.traitLabel}>{label}</span>
-              <span
-                className={hoverable ? styles.traitValueHover : styles.traitValue}
-                onMouseEnter={hoverable ? () => dispatch('onHoverLarme') : undefined}
-              >
-                {value}
-              </span>
+        <div className={styles.attributesSection}>
+          <span className={styles.sectionLabel}>Attributs</span>
+          {ATTRIBUTES.map(({ label, fill, desc }) => (
+            <div key={label} className={`nat-attr ${styles.attrRow}`}>
+              <span className={styles.attrLabel}>{label}</span>
+              <div className={styles.attrBarTrack}>
+                <div
+                  className={`nat-attr-fill ${styles.attrBarFill}`}
+                  style={{ width: `${fill}%` }}
+                />
+              </div>
+              <span className={styles.attrDesc}>{desc}</span>
             </div>
           ))}
         </div>
 
-        <div className={`nat-caractere ${styles.caractereBlock}`}>
-          <div className={styles.caractereLabel}>Caractère</div>
-          <p className={styles.caractereText}>
-            Calme, posée — retenue naturelle. Irritation rare mais intense.<br />
-            Affection possible, toujours discrète.
-          </p>
-        </div>
+        <IncarnationSlots />
       </div>
 
-      <IncarnationsTimeline />
       <BackButton onClick={onBack} />
     </motion.div>
   )
 }
 
-function IncarnationsTimeline() {
+function IncarnationSlots() {
   const [activeIdx, setActiveIdx] = useState(null)
 
   return (
-    <div className={styles.timeline}>
-      {INCARNATIONS.map((inc, i) => (
-        <div key={inc.game}>
+    <div className={styles.slotsSection}>
+      <span className={styles.sectionLabel}>Incarnations</span>
+      <div className={styles.slotsRow}>
+        {INCARNATIONS.map((inc, i) => (
           <div
-            className={`nat-tl-node ${styles.tlNode} ${activeIdx === i ? styles.tlNodeActive : ''}`}
-            onMouseEnter={() => setActiveIdx(i)}
+            key={inc.game}
+            className={`nat-slot ${styles.slot} ${activeIdx === i ? styles.slotActive : ''}`}
+            onMouseEnter={() => {
+              setActiveIdx(i)
+              if (inc.trigger) dispatch(inc.trigger)
+            }}
             onMouseLeave={() => setActiveIdx(null)}
           >
-            <span className={styles.tlYear}>{inc.year ?? inc.game}</span>
+            <span className={styles.slotName}>{inc.game}</span>
+            <span className={styles.slotYear}>{inc.year ?? '···'}</span>
             <AnimatePresence>
               {activeIdx === i && (
                 <motion.div
-                  key={`tooltip-${i}`}
-                  initial={{ opacity: 0, x: 8 }}
-                  animate={{ opacity: 1, x: 0, transition: { duration: 0.2 } }}
+                  key={`tip-${i}`}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0, transition: { duration: 0.2 } }}
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                  className={styles.tlTooltip}
+                  className={styles.slotTooltip}
                 >
-                  <p className={styles.tlGame}>{inc.game}</p>
-                  <p className={styles.tlFragment}>{inc.fragment}</p>
+                  {inc.fragment}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          {i < INCARNATIONS.length - 1 && (
-            <div className={`nat-tl-line ${styles.tlConnector}`} />
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }

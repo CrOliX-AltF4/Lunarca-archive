@@ -1,9 +1,22 @@
 [
   { "trigger": "onEnter", "scene": "library",  "text": "Cette bibliothèque n'était pas censée être accessible.", "mood": "parle" },
+  { "trigger": "onEnter", "scene": "library",  "text": "L'archive est ouverte. Tu as eu la patience qu'il fallait.", "mood": "parle" },
+  { "trigger": "onEnter", "scene": "library",  "text": "Ce n'est pas une bibliothèque. C'est un espace mémoire.", "mood": "idle" },
+
   { "trigger": "onEnter", "scene": "natsume",  "text": "Ces informations sont incomplètes.", "mood": "gene" },
+  { "trigger": "onEnter", "scene": "natsume",  "text": "Une fiche. Comme si les données résumaient quelque chose.", "mood": "gene" },
+  { "trigger": "onEnter", "scene": "natsume",  "text": "Tu es venu lire. Bien.", "mood": "idle" },
+
   { "trigger": "onEnter", "scene": "projet",   "text": "Le travail parle mieux que moi.", "mood": "parle" },
+  { "trigger": "onEnter", "scene": "projet",   "text": "Ce projet existe depuis plus longtemps que ce site.", "mood": "parle" },
+  { "trigger": "onEnter", "scene": "projet",   "text": "Architecture. Mémoire. Présence. C'est tout ce qu'il faut.", "mood": "idle" },
+
   { "trigger": "onEnter", "scene": "devlog",   "text": null, "mood": "idle" },
+  { "trigger": "onEnter", "scene": "devlog",   "text": "Ces entrées n'étaient pas prévues pour être lues.", "mood": "gene" },
+
   { "trigger": "onEnter", "scene": "contact",  "text": "Tu as brisé le sceau pour ça.", "mood": "disappointment" },
+  { "trigger": "onEnter", "scene": "contact",  "text": "Des coordonnées. Utilise-les si tu dois.", "mood": "parle" },
+  { "trigger": "onEnter", "scene": "contact",  "text": "La stèle répond à qui sait lire.", "mood": "idle" },
 
   { "trigger": "onBookHover", "scene": "natsume",  "text": null, "mood": "idle" },
   { "trigger": "onBookHover", "scene": "projet",   "text": null, "mood": "idle" },
@@ -11,9 +24,13 @@
   { "trigger": "onBookHover", "scene": "contact",  "text": null, "mood": "idle" },
 
   { "trigger": "onBookHoverLong", "scene": "natsume",  "text": "Ce qui est consigné là est incomplet.", "mood": "parle" },
+  { "trigger": "onBookHoverLong", "scene": "natsume",  "text": "Cette fiche ne suffit pas à la résumer.", "mood": "gene" },
   { "trigger": "onBookHoverLong", "scene": "projet",   "text": "Un projet en cours.", "mood": "parle" },
+  { "trigger": "onBookHoverLong", "scene": "projet",   "text": "Le travail ne s'arrête pas.", "mood": "idle" },
   { "trigger": "onBookHoverLong", "scene": "devlog",   "text": "Ces entrées sont personnelles.", "mood": "parle" },
+  { "trigger": "onBookHoverLong", "scene": "devlog",   "text": "Un journal. Pas prévu pour être public.", "mood": "gene" },
   { "trigger": "onBookHoverLong", "scene": "contact",  "text": "Des coordonnées.", "mood": "disappointment" },
+  { "trigger": "onBookHoverLong", "scene": "contact",  "text": "Si tu dois contacter. Vas-y.", "mood": "parle" },
 
   { "trigger": "onBookClick", "scene": "natsume",  "text": null, "mood": "approbation" },
   { "trigger": "onBookClick", "scene": "projet",   "text": "L'archive du travail.", "mood": "parle" },
@@ -21,13 +38,27 @@
   { "trigger": "onBookClick", "scene": "contact",  "text": "Si tu dois.", "mood": "disappointment" },
 
   { "trigger": "onBooksRapidClick", "scene": "library", "text": "Inutile.", "mood": "irritation" },
+  { "trigger": "onBooksRapidClick", "scene": "library", "text": "Tu n'as pas besoin de tout ouvrir en même temps.", "mood": "irritation" },
 
   { "trigger": "onScrollSlow", "scene": "natsume", "text": "Tu prends le temps.", "mood": "approbation" },
+  { "trigger": "onScrollSlow", "scene": "natsume", "text": "Bien. Il y a des choses à comprendre ici.", "mood": "approbation" },
+  { "trigger": "onScrollSlow", "scene": "natsume", "text": "Tu lis.", "mood": "idle" },
+
   { "trigger": "onScrollFast", "scene": "natsume", "text": "Tu ne lis pas vraiment.", "mood": "irritation" },
+  { "trigger": "onScrollFast", "scene": "natsume", "text": "Ce n'est pas un résumé.", "mood": "irritation" },
+  { "trigger": "onScrollFast", "scene": "natsume", "text": "Trop vite.", "mood": "gene" },
+
   { "trigger": "onScrollFast", "scene": "devlog",  "text": "Ce n'est pas une liste à parcourir.", "mood": "irritation" },
+  { "trigger": "onScrollFast", "scene": "devlog",  "text": "Ces entrées ont pris du temps. Prends le tien.", "mood": "parle" },
+  { "trigger": "onScrollFast", "scene": "devlog",  "text": "Tu survoles.", "mood": "gene" },
+
   { "trigger": "onAllDevlogRead", "scene": "devlog", "text": "Tu as tout lu.", "mood": "gene" },
+  { "trigger": "onAllDevlogRead", "scene": "devlog", "text": "Toutes les entrées. Tu as vraiment lu.", "mood": "gene" },
+  { "trigger": "onAllDevlogRead", "scene": "devlog", "text": "C'était pour toi, finalement.", "mood": "approbation" },
 
   { "trigger": "onHoverLarme", "scene": "natsume", "text": "Ce symbole a une histoire.", "mood": "parle" },
+  { "trigger": "onHoverLarme", "scene": "natsume", "text": "La larme lunaire. NieR. Tu connais peut-être.", "mood": "parle" },
+  { "trigger": "onHoverLarme", "scene": "natsume", "text": "Fragile. Blanc. C'est intentionnel.", "mood": "idle" },
 
   { "trigger": "onLinkClick_twitch",  "scene": "projet",  "text": "Bien.", "mood": "approbation" },
   { "trigger": "onLinkClick_twitch",  "scene": "contact", "text": "Bien.", "mood": "approbation" },
@@ -37,18 +68,36 @@
   { "trigger": "onRuneHover",      "scene": "contact", "text": null, "mood": "idle" },
   { "trigger": "onFirstRuneClick", "scene": "contact", "text": "...", "mood": "indifference" },
   { "trigger": "onAllLinksClicked","scene": "contact", "text": "Tu as tout suivi.", "mood": "gene" },
+  { "trigger": "onAllLinksClicked","scene": "contact", "text": "Tous les liens. Bien.", "mood": "approbation" },
 
   { "trigger": "onDoubleClick",      "scene": "global", "text": "Une fois suffit.", "mood": "irritation" },
+  { "trigger": "onDoubleClick",      "scene": "global", "text": "Encore.", "mood": "gene" },
+  { "trigger": "onDoubleClick",      "scene": "global", "text": "Tu es impatient.", "mood": "irritation" },
+
   { "trigger": "onCursorIdle_2min",  "scene": "global", "text": "Tu es encore là.", "mood": "parle" },
-  { "trigger": "onReturnVisit",      "scene": "global", "text": "Tu es revenu.", "mood": "parle", "sessionOnce": true },
+  { "trigger": "onCursorIdle_2min",  "scene": "global", "text": "Tu n'as pas bougé depuis un moment.", "mood": "idle" },
+  { "trigger": "onCursorIdle_2min",  "scene": "global", "text": "...", "mood": "indifference" },
+
+  { "trigger": "onReturnVisit", "scene": "global", "text": "Tu es revenu.", "mood": "parle", "sessionOnce": true },
+  { "trigger": "onReturnVisit", "scene": "global", "text": "Je t'attendais.", "mood": "idle", "sessionOnce": true },
+  { "trigger": "onReturnVisit", "scene": "global", "text": "Une deuxième fois.", "mood": "gene", "sessionOnce": true },
+
   { "trigger": "onCopyText",         "scene": "global", "text": null, "mood": "gene" },
+  { "trigger": "onCopyText",         "scene": "global", "text": "Tu copies.", "mood": "gene" },
+
   { "trigger": "onMidnight",         "scene": "global", "text": "La bibliothèque change à cette heure.", "mood": "parle", "sessionOnce": true },
+
   { "trigger": "onEasterEggComplete","scene": "global", "text": "Tu as tout trouvé.", "mood": "surprise" },
 
   { "trigger": "onGrainOn",   "scene": "global", "text": null, "mood": "approbation" },
   { "trigger": "onGrainOff",  "scene": "global", "text": "Moins de texture. Bien.", "mood": "parle" },
   { "trigger": "onSealReset", "scene": "global", "text": "Le sceau sera reformé.", "mood": "gene" },
+
   { "trigger": "onGazeHeld",  "scene": "global", "text": "Tu regardes trop longtemps.", "mood": "gene" },
+  { "trigger": "onGazeHeld",  "scene": "global", "text": "Cinq secondes. Tu as compté ?", "mood": "irritation" },
+
+  { "trigger": "onCartographer", "scene": "global", "text": "Tu as tout visité.", "mood": "approbation" },
+  { "trigger": "onCartographer", "scene": "global", "text": "Chaque section. Bien.", "mood": "parle" },
 
   { "trigger": "easterEgg_konami", "scene": "library", "text": "Comment as-tu su ?", "mood": "surprise" },
   { "trigger": "easterEgg_lys",    "scene": "natsume", "text": "Arrête. Ce n'est pas pour toi.", "mood": "irritation" }

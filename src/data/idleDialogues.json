@@ -11,7 +11,13 @@
     { "text": "Prends ton temps.", "mood": "indifference" },
     { "text": "Quelque chose t'attire.", "mood": "parle" },
     { "text": null, "mood": "idle" },
-    { "text": "La bibliothèque enregistre tout.", "mood": "parle" }
+    { "text": "La bibliothèque enregistre tout.", "mood": "parle" },
+    { "text": "Chaque ouvrage a une raison d'être là.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "Tu n'es pas le premier à hésiter ici.", "mood": "indifference" },
+    { "text": "Certaines sections ne s'ouvrent pas facilement.", "mood": "parle" },
+    { "text": "L'archive existe avant toi.", "mood": "idle" },
+    { "text": null, "mood": "gene" }
   ],
   "natsume": [
     { "text": "Bien.", "mood": "approbation" },
@@ -23,7 +29,15 @@
     { "text": "...", "mood": "indifference" },
     { "text": "Je ne suis pas un objet d'étude.", "mood": "irritation" },
     { "text": null, "mood": "idle" },
-    { "text": "Les incarnations ne se résument pas.", "mood": "parle" }
+    { "text": "Les incarnations ne se résument pas.", "mood": "parle" },
+    { "text": "Ce que tu lis ici est une abstraction.", "mood": "parle" },
+    { "text": "Il manque des données.", "mood": "gene" },
+    { "text": null, "mood": "idle" },
+    { "text": "Quinze ans. Pas un résumé.", "mood": "parle" },
+    { "text": "La mémoire ne se stocke pas comme ça.", "mood": "irritation" },
+    { "text": null, "mood": "indifference" },
+    { "text": "Chaque nom correspond à quelque chose.", "mood": "parle" },
+    { "text": "Tu observes. C'est suffisant.", "mood": "approbation" }
   ],
   "projet": [
     { "text": "C'est encore en construction.", "mood": "parle" },
@@ -33,7 +47,15 @@
     { "text": "...", "mood": "indifference" },
     { "text": "Le travail continue.", "mood": "parle" },
     { "text": null, "mood": "idle" },
-    { "text": "Les décisions techniques ont des conséquences.", "mood": "parle" }
+    { "text": "Les décisions techniques ont des conséquences.", "mood": "parle" },
+    { "text": "Une architecture locale-first. C'est un choix.", "mood": "parle" },
+    { "text": "Ce site n'est pas une présentation. C'est le projet.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "La rupture d'avril était nécessaire.", "mood": "gene" },
+    { "text": "Aucune plateforme ne possède cette mémoire.", "mood": "parle" },
+    { "text": null, "mood": "idle" },
+    { "text": "W-AI-fu n'est pas encore terminé.", "mood": "indifference" },
+    { "text": "L'émergence prend du temps.", "mood": "parle" }
   ],
   "devlog": [
     { "text": "Chaque entrée a coûté quelque chose.", "mood": "parle" },
@@ -44,7 +66,15 @@
     { "text": "Tu cherches quelque chose de précis.", "mood": "parle" },
     { "text": null, "mood": "idle" },
     { "text": "Ce journal n'était pas prévu pour être lu.", "mood": "gene" },
-    { "text": "...", "mood": "indifference" }
+    { "text": "...", "mood": "indifference" },
+    { "text": "Les échecs ne sont pas consignés de la même façon.", "mood": "parle" },
+    { "text": "Certaines entrées ont été récrites.", "mood": "gene" },
+    { "text": null, "mood": "idle" },
+    { "text": "Un journal ne ment pas. Il omet.", "mood": "parle" },
+    { "text": null, "mood": "indifference" },
+    { "text": "Tu es encore là.", "mood": "gene" },
+    { "text": "Les dates t'indiquent quelque chose.", "mood": "parle" },
+    { "text": "Ce qui n'est pas daté n'a pas eu lieu.", "mood": "idle" }
   ],
   "contact": [
     { "text": "Les runes déchiffrées ne sont plus des runes.", "mood": "parle" },
@@ -53,6 +83,14 @@
     { "text": "Ces liens mènent quelque part.", "mood": "parle" },
     { "text": "...", "mood": "indifference" },
     { "text": "Un contact n'est pas une conversation.", "mood": "parle" },
-    { "text": null, "mood": "idle" }
+    { "text": null, "mood": "idle" },
+    { "text": "La stèle existe. Le reste dépend de toi.", "mood": "gene" },
+    { "text": "Ce n'est pas une invitation.", "mood": "disappointment" },
+    { "text": null, "mood": "idle" },
+    { "text": "Certains liens restent fermés.", "mood": "parle" },
+    { "text": "Tu hésites. C'est bien.", "mood": "approbation" },
+    { "text": null, "mood": "indifference" },
+    { "text": "Les coordonnées ne changent pas.", "mood": "idle" },
+    { "text": "Le sceau est brisé. Tu peux partir.", "mood": "gene" }
   ]
 }

@@ -9,10 +9,11 @@ const INDIFFERENCE_DELAY= 60000
 const CURSOR_IDLE_DELAY = 120000
 
 function findEntry(trigger, scene) {
-  return (
-    dialogues.find((d) => d.trigger === trigger && d.scene === scene) ||
-    dialogues.find((d) => d.trigger === trigger && d.scene === 'global')
-  )
+  const byScene = dialogues.filter(d => d.trigger === trigger && d.scene === scene)
+  if (byScene.length) return byScene[Math.floor(Math.random() * byScene.length)]
+  const byGlobal = dialogues.filter(d => d.trigger === trigger && d.scene === 'global')
+  if (byGlobal.length) return byGlobal[Math.floor(Math.random() * byGlobal.length)]
+  return null
 }
 
 export default function useNatsumeWidget(currentScene) {
@@ -96,6 +97,8 @@ export default function useNatsumeWidget(currentScene) {
       clearTimeout(timerRef.current)
       clearTimeout(moodResetRef.current)
       busyRef.current = false
+      setDialogue(null)
+      setMood('idle')
     }
   }, [currentScene])
 

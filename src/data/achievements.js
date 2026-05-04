@@ -4,6 +4,7 @@ export const ACHIEVEMENTS = {
   onAllDevlogRead:   { title: 'Lecteur du Scriptorium', description: 'Tu as lu jusqu\'au bout.' },
   easterEgg_lys:     { title: 'Ce n\'est pas pour toi', description: 'Elle t\'a prévenu.' },
   onGazeHeld:        { title: 'Regard fixe',            description: 'Cinq secondes de trop.' },
+  onCartographer:    { title: 'Cartographe',            description: 'Chaque section visitée.' },
 }
 
 const KEY = 'lunarca_achievements'

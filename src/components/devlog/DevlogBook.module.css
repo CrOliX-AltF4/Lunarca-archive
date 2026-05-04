@@ -88,7 +88,6 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(30, 20, 10, 0.55);
-  cursor: pointer;
   padding: 0;
   transition: color 180ms ease;
 }
@@ -103,7 +102,6 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(30, 20, 10, 0.3);
-  cursor: pointer;
   padding: 0;
   transition: color 180ms ease;
 }
@@ -155,7 +153,6 @@
   grid-template-columns: 2rem 1fr;
   grid-template-rows: auto auto;
   gap: 0 0.6rem;
-  cursor: pointer;
   padding: 0.6rem 0.5rem;
   border-left: 2px solid transparent;
   transition: border-color 180ms ease, opacity 180ms ease;

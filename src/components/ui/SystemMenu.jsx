@@ -99,7 +99,6 @@ export default function SystemMenu({ open, onClose, onResetSeal, onOpenAchieveme
                 fontSize: '0.62rem',
                 letterSpacing: '0.2em',
                 color: 'var(--color-fog)',
-                cursor: 'pointer',
                 padding: 0,
                 opacity: 0.6,
               }}
@@ -127,7 +126,6 @@ function MenuRow({ label, value, onClick, danger }) {
         alignItems: 'baseline',
         padding: '0.75rem 0',
         borderBottom: '1px solid var(--color-ash)',
-        cursor: 'pointer',
         gap: '2rem',
       }}
     >

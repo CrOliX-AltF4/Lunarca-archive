@@ -99,7 +99,6 @@ export default function AchievementsPanel({ open, onClose }) {
                 fontSize: '0.62rem',
                 letterSpacing: '0.2em',
                 color: 'var(--color-fog)',
-                cursor: 'none',
                 padding: 0,
                 opacity: 0.6,
               }}

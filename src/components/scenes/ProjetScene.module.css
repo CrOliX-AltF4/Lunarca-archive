@@ -10,27 +10,31 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.48);
 }
 
-.content {
+.layout {
   position: relative;
   z-index: 1;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 5rem 10rem 7rem 8rem;
-  max-width: 860px;
+  align-items: center;
+  padding: 0 6% 4% 8%;
 }
 
-.header {
-  margin-bottom: 1.6rem;
+/* ── Colonne gauche ───────────────────────────────────── */
+
+.colLeft {
+  flex: 0 0 54%;
+  padding-right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .title {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
   letter-spacing: 0.25em;
   color: var(--color-white-ink);
   font-weight: 400;
@@ -41,13 +45,23 @@
   width: 3rem;
   height: 1px;
   background: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
 }
 
 .manifeste {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  margin-bottom: 2.5rem;
+  max-width: 560px;
 }
 
 .manifesteLine {
@@ -56,7 +70,6 @@
   font-size: 0.95rem;
   line-height: 1.85;
   color: var(--color-white-ink);
-  max-width: 580px;
 }
 
 .manifesteFirst {
@@ -68,41 +81,119 @@
 .manifesteKey {
   font-style: normal;
   color: var(--color-parchment);
-  margin-top: 1.2rem;
-  margin-bottom: 1.2rem;
+  margin-top: 0.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--color-ash);
 }
 
-.statsRow {
-  display: flex;
-  gap: 0;
-  align-items: flex-start;
+/* ── Séparateur vertical ──────────────────────────────── */
+
+.separator {
+  flex-shrink: 0;
+  width: 1px;
+  height: 62%;
+  background: var(--color-ash);
+  align-self: center;
 }
 
-.stat {
+/* ── Colonne droite ───────────────────────────────────── */
+
+.colRight {
+  flex: 1;
+  padding-left: 5%;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  padding-right: 2rem;
-  margin-right: 2rem;
-  border-right: 1px solid var(--color-ash);
+  justify-content: center;
 }
 
-.stat:last-child {
-  border-right: none;
-  padding-right: 0;
-  margin-right: 0;
+.sysHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-ash);
+  margin-bottom: 0.9rem;
 }
 
-.statValue {
+.sysHeaderLabel {
+  font-family: 'Cinzel', serif;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+}
+
+.sysActive {
+  font-family: 'Cinzel', serif;
+  font-size: 0.42rem;
+  letter-spacing: 0.18em;
+  color: var(--color-parchment);
+  text-transform: uppercase;
+}
+
+.sysEntries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.8rem;
+}
+
+.sysEntry {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 0.8rem;
+  align-items: baseline;
+}
+
+.sysLabel {
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem;
+  letter-spacing: 0.12em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+}
+
+.sysValue {
   font-family: 'IM Fell English', serif;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--color-parchment);
 }
 
-.statLabel {
+.logHeader {
   font-family: 'Cinzel', serif;
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
   color: var(--color-fog);
   text-transform: uppercase;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-ash);
+  margin-bottom: 0.75rem;
+}
+
+.logEntries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.48rem;
+}
+
+.logEntry {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 0.8rem;
+  align-items: baseline;
+}
+
+.logDate {
+  font-family: 'Cinzel', serif;
+  font-size: 0.42rem;
+  letter-spacing: 0.06em;
+  color: var(--color-fog);
+  opacity: 0.6;
+}
+
+.logText {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.78rem;
+  color: rgba(245, 243, 239, 0.45);
+  line-height: 1.4;
 }
