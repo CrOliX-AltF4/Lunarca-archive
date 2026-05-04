@@ -1,0 +1,232 @@
+.scene {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.portrait {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 88vh;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.25));
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.gradientOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.97) 0%,
+    rgba(0, 0, 0, 0.88) 35%,
+    rgba(0, 0, 0, 0.5) 55%,
+    rgba(0, 0, 0, 0.15) 75%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  z-index: 2;
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 54%;
+  padding: 0 5% 7% 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+}
+
+.name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  letter-spacing: 0.12em;
+  color: var(--color-white-ink);
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+  line-height: 1;
+}
+
+.rule {
+  width: 3rem;
+  height: 1px;
+  background: var(--color-accent);
+  margin-bottom: 1.4rem;
+}
+
+.fragmentMain {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--color-parchment);
+  max-width: 380px;
+  margin-bottom: 0.6rem;
+}
+
+.fragmentSub {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--color-fog);
+  margin-bottom: 1.6rem;
+}
+
+.traits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 1.4rem;
+}
+
+.trait {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+}
+
+.traitLabel {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+.traitValue {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.88rem;
+  color: var(--color-white-ink);
+  line-height: 1.4;
+}
+
+.traitValueHover {
+  composes: traitValue;
+  border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+  cursor: default;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.traitValueHover:hover {
+  color: var(--color-parchment);
+  border-bottom-color: var(--color-accent);
+}
+
+.caractereBlock {
+  border-top: 1px solid var(--color-ash);
+  padding-top: 1rem;
+}
+
+.caractereLabel {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.caractereText {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.84rem;
+  color: rgba(245, 243, 239, 0.65);
+  line-height: 1.7;
+  max-width: 360px;
+}
+
+/* Timeline verticale */
+.timeline {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 15;
+}
+
+.tlNode {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-fog);
+  border: 1px solid var(--color-ash);
+  cursor: default;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.tlNodeActive {
+  background: var(--color-parchment);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.4);
+}
+
+.tlYear {
+  position: absolute;
+  right: 14px;
+  top: -2px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  color: var(--color-fog);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+
+.tlConnector {
+  width: 1px;
+  height: 24px;
+  background: var(--color-ash);
+}
+
+.tlTooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10, 10, 10, 0.95);
+  border: 1px solid var(--color-ash);
+  padding: 0.5rem 0.75rem;
+  pointer-events: none;
+  z-index: 20;
+  min-width: 140px;
+}
+
+.tlGame {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.tlFragment {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--color-parchment);
+  line-height: 1.5;
+  text-align: right;
+}
