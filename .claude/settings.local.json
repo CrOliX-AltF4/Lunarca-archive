@@ -1,13 +1,56 @@
 {
+  "env": {
+    "LUNARCA_PROJECT": "true",
+    "LUNARCA_STACK": "react18-vite-framer",
+    "LUNARCA_RULES": "no-ts,no-tailwind,spa-only,opacity-transform-only"
+  },
   "permissions": {
     "allow": [
       "mcp__ruvnet-ruflo__memory_store",
-      "Bash(npm run *)",
-      "mcp__ruvnet-ruflo__browser_open",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174)",
-      "mcp__ruvnet-ruflo__swarm_init",
       "mcp__ruvnet-ruflo__memory_search",
-      "mcp__ruvnet-ruflo__hooks_route"
+      "mcp__ruvnet-ruflo__memory_search_unified",
+      "mcp__ruvnet-ruflo__swarm_init",
+      "mcp__ruvnet-ruflo__agent_spawn",
+      "mcp__ruvnet-ruflo__hooks_route",
+      "mcp__ruvnet-ruflo__browser_open",
+      "Bash(npm run *)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(C:/Users/Loric/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh *)",
+      "Bash(npm install *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Write(.env*)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -Command \"$date = Get-Date -Format 'yyyy-MM-dd HH:mm'; $log = \"Session end: $date\"; Add-Content -Path '.claude/session.log' -Value $log -Encoding UTF8\"",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -Command \"if (Test-Path 'CONTEXT.md') { Write-Output 'CONTEXT: CONTEXT.md présent — lire avant toute implémentation (règles, architecture, plan sessions).' } else { Write-Output 'WARN: CONTEXT.md manquant.' }\"",
+            "timeout": 2000
+          }
+        ]
+      }
     ]
   }
 }
