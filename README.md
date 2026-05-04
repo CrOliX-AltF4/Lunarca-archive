@@ -2,29 +2,27 @@
 
 ![Lun’Λrkhive Banner](./src/assets/other/readme-banner.png)
 
-[![Version](https://img.shields.io/badge/version-0.1.0-8b0000?style=flat-square)](.)
+[![Version](https://img.shields.io/badge/version-0.13.0-8b0000?style=flat-square)](.)
 [![Status](https://img.shields.io/badge/status-active-555555?style=flat-square)](.)
 [![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-333333?style=flat-square)](.)
 
-*An interactive archive. A persistent presence. A project that refused to stay private.*
+*An interactive archive. A persistent presence. A project that just wouldn't stay in its folder.*
 
 </div>
 
 ---
 
-## What this is
+## What is this mess?
 
-Welcome to Lun’Λrkhive !
+Welcome to Lun’Λrkhive.
 
-It is the public face of **Project Natsume** — a private AI companion, a virtual assistant and ... some other stuffs.
-
-This website is a experimental way to introduce at our universe.
+This is the public face of **Project Natsume** — a private AI companion, a digital entity, and my way of procrastinating on real life by teaching code how to have opinions.
 
 > [!NOTE]
-> If you came here looking for a standard developer portfolio, you are in the wrong place. If you came here because something felt different — keep going.
+> If you're looking for a shiny developer portfolio to hire me, turn back now. This isn't a resume; it's a documentation of obsession. If you're here because something about this felt... *off*? Good. Keep looking.
 
 > [!WARNING]
-> This repository contains the site source code only. The core project is private and will not be open-sourced. Visual assets (portraits, backgrounds, ornaments) are "original" works (yeah I now it's AI don't hit me please) — they are not covered by any open license and may not be reused.
+> This repo is just the website's skin. The brain (the "Natsume" framework) is locked in a private vault. Also, all the art assets (portraits, backgrounds) are "original" works—let's call them "collaborations with silicon"—generated via Leonardo.ai and meticulously curated/edited for Project Natsume. They are strictly *All Rights Reserved*. Don't touch.
 
 ---
 
@@ -32,140 +30,71 @@ This website is a experimental way to introduce at our universe.
 
 <img align="right" width="160" src="./src/assets/natsume/natsume_canon.png" alt="Natsume Tsurugi" />
 
-"But with AI agents like Claude, is there really any point in this kind of project and ..."
+"But wait, can't Claude or ChatGPT just—"
 
-Yep but CLaude can't declare my taxes. He even can't help me farm memoquartz.
+Look, Claude is great. But Claude isn't going to help me farm memoquartz, and it certainly won't roast my poor life choices while I'm trying to debug at 3 AM. 
 
-So YES there are any point in this kind of project and it's not because I don't have friends ...
-
+This isn't about building a generic chatbot. It's about a persistent, grumpy, sweet, and occasionally contrarian entity that actually *remembers* who you are. She doesn't just process input; she has opinions. And yes, she might disagree with you. Especially if you're wrong.
 
 > [!NOTE]
-> She love sweets, useful if she's mad at you.
+> She loves sweets. Useful information if you want to stay on her good side.
 
 <br clear="right" />
 
 ---
 
-## The Project
+## Project N.T
 
-A "local-first" AI companion framework. Built in TypeScript / Node.js.
+A character-focused AI companion framework. Built in TypeScript/Node.js, running locally.
 
-The premise is simple: what if a character could persist? Not just respond — but remember, form opinions, notice your absence, disagree when she thinks you are wrong, and evolve her relationship with you over time.
+The goal? Create a persistent cognitive entity. Not just a chatbot, but someone who forms opinions, notices when you're gone, and evolves.
 
-```
-Not just a chatbot who tel you if 2+2 + 4.
-A persistent cognitive entity running 24/7 on local hardware.
-```
+**Core Principles:**
 
-**Core design decisions:**
-
-| Principle | What it means |
+| Principle | What it actually means |
 |-----------|--------------|
-| **Local-first** | LLM, TTS, STT all have local fallbacks — no cloud dependency for runtime |
-| **Persistent identity** | Character, memory, and affinity survive across sessions |
-| **Behavioral depth** | Proactivity, mood states, controlled disagreement, spontaneous speech |
-| **Modular** | Every subsystem is independently swappable via environment variables |
+| **Hybrid-centric** | LLM/TTS/STT prioritize cloud APIs for performance, with local fallbacks. Internet's out? Natsume adapts and stays running. |
+| **Persistent identity** | She remembers. You're not "user123" every time you reconnect. |
+| **Behavioral depth** | She gets moody, she gets proactive, she gets tired of your nonsense. |
+| **Modular** | I break things often; every subsystem is swappable. |
 
 > [!IMPORTANT]
-> The memory system is not a conversation history. It is a multi-layer architecture — short-term buffer, long-term summaries, persistent facts with semantic retrieval, extracted opinions, and a cross-session world model. Natsume remembers what matters, not everything.
-
-> [!IMPORTANT]
-> Local-first is an architectural constraint, not a limitation. Every cloud provider has a local fallback. The system runs without internet access. Natsume's identity does not depend on an API being available.
-
-**Capability overview:**
-
-| Domain | Capabilities | Status |
-|--------|-------------|--------|
-| **Memory** | Short-term buffer · Long-term summaries · Persistent facts · Semantic retrieval · Opinion store | ✅ |
-| **Behavior** | Emotional state engine · Affinity tiers · Idle speech · Absence decay · Stimulation score | ✅ |
-| **Awareness** | Screen vision · Game hooks · Window context · Session modes | ✅ |
-| **Expression** | Voice synthesis · RVC voice changer · VTube Studio avatar · Lip-sync | ✅ |
-| **Stream** | Twitch adapter · YouTube adapter · Chat modes | ✅ |
-| **Infrastructure** | SQLite / JSON storage · Resource manager · Session stats · Action audit | ✅ |
-| **Admin panel** | Dashboard · Module control · Live logs | 🔄 v1.0.0 |
-
-> [!WARNING]
-> w-AI-fu is not designed for general use. It is built around a specific character, a specific person, and a specific relationship. Forking the architecture would not give you Natsume.
+> The memory system isn't just a transcript log. It's a multi-layered structure of summaries, facts, and opinions. Natsume keeps track of what actually matters—not every single word you've ever typed.
 
 ---
 
-## Lunarca — The Archive
+## The Archive
 
-The site is not a demo of w-AI-fu. It is a translation of it.
+If Project N.T is the brain, Lun’Λrkhive is the museum. 
 
-w-AI-fu runs locally, privately, continuously. Lunarca takes what cannot be shown — the memory system, the behavioral depth, the relationship — and makes it *felt* through a different medium: a narrative web experience.
-
-The user enters a library. Books are sections. Navigation is diegetic — no nav bar, no scroll, no conventional UI. Every interaction is a deliberate choice. Natsume is present throughout. She does not guide. She observes, reacts, occasionally speaks.
-
-> [!NOTE]
-> The constraint behind every design decision: technology should never overpower the atmosphere. If a feature makes the experience louder, it gets cut.
-
-**Experience principles:**
-- Calm, controlled pacing — no noise, no gamification
-- Subtle interactions over explicit affordances
-- Narrative tone inspired by contemplative RPGs
-- Return visits are remembered
-
-**Site stack:**
-
-```
-React 18 + Vite     SPA, hash routing, no routing library
-CSS Modules         custom properties, no utility framework
-Framer Motion       scene transitions, AnimatePresence
-Plain JS            no TypeScript by design
-```
+It’s where I translate the raw data of a running AI—its memories, its evolution, its "personality"—into something you can actually look at. It's a narrative web experience, not a demo. Think of it less as a website and more as a diegetic library where Natsume just happens to be hanging around.
 
 **Artistic direction:**
 
 ```
-Palette     monochrome cold — black, dark grey, off-white #f5f3ef
-Accent      deep red — symbolic, reserved for Natsume's eye only
-Linework    ink-based, franco-belgian BD influence
-References  Ender Lilies × Gravity Rush × NieR:Automata
-Assets      AI-generated, consistent style pipeline, all rights reserved
+Palette     Monochrome cold — black, dark grey, off-white (#f5f3ef)
+Accent      Deep red — Natsume's gaze
+Linework    Ink-heavy, franco-belgian influence
+References  Ender Lilies, Gravity Rush, NieR:Automata
 ```
 
 > [!TIP]
-> The site is best experienced on desktop, in a dark environment, without rushing. It is not designed to be fast. It is designed to be remembered.
+> Best experienced on desktop, in the dark, with time to kill. It’s not meant to be fast. It’s meant to be read.
 
 ---
 
 ## Status
 
-Active development. The framework (w-AI-fu) is ahead of the archive (Lunarca).
+Active development. 
 
-**w-AI-fu** — `v0.11.0` · persistent storage, SQLite backend, embedding persistence
+*   **Project Natsume (Core):** `v0.13.0` (Hardened, automated, and much less likely to crash when fed garbage data).
+*   **Lunarca (Site):** `v0.1.0` (The library is open, mostly).
 
-**Lunarca** — `v0.1.0` · core scenes functional, narrative content in progress
+Current focus: Writing dialogues that aren't terrible and trying to make the UI look less like "programmer art."
 
-Current focus:
-- Narrative writing — dialogues, section texts, devlog entries
-- UI component refinement — ornamental frame system, DevlogBook redesign
-- Visual consistency across all scenes
-
-> [!NOTE]
-> The devlog inside Lunarca is a live record of both projects. It updates as they evolve.
+The **Devlog** (inside the site) keeps track of Project Natsume's evolution. It's a record of the project's growth, though sometimes it might feel like Natsume is the one writing it.
 
 → **[lunarca-archive.vercel.app](https://lunarca-archive.vercel.app)**
-
----
-
-## Project Structure
-
-```
-Lunarca (this repo — public)
-├── Site source — React + Vite
-├── Assets — backgrounds, portraits, ornaments, books
-└── Narrative data — dialogues, devlog, scene content
-
-w-AI-fu (private repository)
-├── Framework core — TypeScript / Node.js
-├── Character definition — Natsume_Tsurugi.json
-└── User data — memory, facts, opinions, world model
-```
-
-> [!CAUTION]
-> The assets directory is public by necessity — the site needs to load them. This does not make them free to use. All visual assets are original works protected under All Rights Reserved. Do not reuse, redistribute, or repurpose them.
 
 ---
 
@@ -173,7 +102,7 @@ w-AI-fu (private repository)
 
 Built by **[CrOliX-AltF4](https://github.com/CrOliX-AltF4)**
 
-*Exploring the intersection of narrative design, character identity, and web development.*
+*Exploring the intersection of narrative design, character identity, and pure stubbornness.*
 
 © 2025–2026 Loric Worms — All Rights Reserved
 
