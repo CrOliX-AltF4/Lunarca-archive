@@ -16,7 +16,7 @@
 
 Welcome to Lun’Λrkhive.
 
-This is the public face of **Project Natsume** — a private AI companion, a digital entity, and my way of procrastinating on real life by teaching code how to have opinions.
+This is the public face of **Project N** — a private AI companion, a digital entity, and my way of procrastinating on real life by teaching code how to have opinions.
 
 > [!NOTE]
 > If you're looking for a shiny developer portfolio to hire me, turn back now. This isn't a resume; it's a documentation of obsession. If you're here because something about this felt... *off*? Good. Keep looking.
@@ -28,7 +28,7 @@ This is the public face of **Project Natsume** — a private AI companion, a dig
 
 ## Natsume Tsurugi
 
-<img align="right" width="160" src="./src/assets/natsume/natsume_canon.png" alt="Natsume Tsurugi" />
+<img align="right" width="160" src="./src/assets/natsume/natsume_hero.png" alt="Natsume Tsurugi" />
 
 "But wait, can't Claude or ChatGPT just—"
 
