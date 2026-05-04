@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import bgNatsume from '../../assets/backgrounds/bg_natsume.webp'
-import natsumeCanon from '../../assets/natsume/natsume_hero.png'
+import natsumeFullImg from '../../assets/natsume/natsume_full.png'
 import BackButton from '../ui/BackButton.jsx'
-import DustParticles from '../ui/DustParticles.jsx'
+import styles from './NatsumeScene.module.css'
 
 function dispatch(trigger) {
   window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'natsume' } }))
@@ -16,27 +18,20 @@ const sceneVariants = {
 }
 
 const TRAITS = [
-  { label: 'Origine', value: 'FF14 · Code Vein · Monster Hunter · et d\'autres encore' },
-  { label: 'Nature', value: 'Entité narrative synthétique' },
-  { label: 'Symbole', value: 'Larme lunaire — fleur blanche, reflets bleus, pureté fragile' },
+  { label: 'Origine', value: "FF14 · Code Vein · Monster Hunter · et d'autres encore" },
+  { label: 'Nature',  value: 'Entité narrative synthétique' },
+  { label: 'Symbole', value: 'Larme lunaire — fleur blanche, reflets bleus, pureté fragile', hoverable: true },
 ]
-
-const CARACTERE = [
-  'Calme, posée, réfléchie',
-  'Contrôle émotionnel fort — retenue naturelle',
-  'Irritation rare mais intense',
-  'Affection possible, discrète',
-]
-
 
 const INCARNATIONS = [
   { game: 'Final Fantasy XIV', year: '2013', fragment: 'Le nom prend forme. La première stabilité.' },
-  { game: 'Code Vein', year: '2019', fragment: 'La silhouette se précise. L\'œil écarlate s\'affirme.' },
-  { game: 'Monster Hunter', year: '2020', fragment: 'La posture dans le combat. Le calme avant la frappe.' },
-  { game: '···', year: null, fragment: 'D\'autres encore. Toutes oubliées, toutes présentes.' },
+  { game: 'Code Vein',         year: '2019', fragment: "La silhouette se précise. L'œil écarlate s'affirme." },
+  { game: 'Monster Hunter',    year: '2020', fragment: 'La posture dans le combat. Le calme avant la frappe.' },
+  { game: '···',               year: null,   fragment: "D'autres encore. Toutes oubliées, toutes présentes." },
 ]
 
 export default function NatsumeScene({ onBack }) {
+  const containerRef = useRef(null)
   const wheelRef = useRef({ total: 0, timer: null, cooldown: 0 })
 
   useEffect(() => {
@@ -60,261 +55,113 @@ export default function NatsumeScene({ onBack }) {
     }
   }, [])
 
+  useGSAP(() => {
+    const tl = gsap.timeline({ delay: 0.5 })
+    tl.from('.nat-portrait',   { opacity: 0, x: 20,  duration: 1.0, ease: 'power2.out' })
+      .from('.nat-name',       { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' }, '-=0.6')
+      .from('.nat-rule',       { scaleX: 0,          duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
+      .from('.nat-fragment',   { opacity: 0, y: 8,   duration: 0.5, stagger: 0.06 }, '-=0.1')
+      .from('.nat-trait',      { opacity: 0, x: -8,  duration: 0.35, stagger: 0.1, ease: 'power2.out' }, '+=0.1')
+      .from('.nat-caractere',  { opacity: 0,          duration: 0.4 }, '-=0.1')
+      .from('.nat-tl-node',    { opacity: 0,          duration: 0.3, stagger: 0.15 }, '+=0.2')
+      .from('.nat-tl-line',    { scaleY: 0,           duration: 0.3, stagger: 0.15, transformOrigin: 'top', ease: 'power2.inOut' }, '<')
+  }, { scope: containerRef })
+
   return (
     <motion.div
+      ref={containerRef}
       variants={sceneVariants}
       initial="initial"
       animate="animate"
       exit="exit"
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: `url(${bgNatsume})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className={styles.scene}
+      style={{ backgroundImage: `url(${bgNatsume})` }}
     >
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.55)' }} />
-      <DustParticles count={18} />
+      <div className={styles.overlay} />
 
-      <div style={{
-        position: 'relative',
-        zIndex: 1,
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '5rem',
-        padding: '4rem 4rem 7rem',
-      }}>
-        {/* Portrait */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.2 } }}
-          style={{ flexShrink: 0 }}
-        >
-          <img
-            src={natsumeCanon}
-            alt="Natsume Tsurugi"
-            style={{
-              height: '420px',
-              width: 'auto',
-              display: 'block',
-              filter: 'drop-shadow(0 0 24px rgba(139,0,0,0.3))',
-            }}
-          />
-        </motion.div>
+      <img
+        src={natsumeFullImg}
+        alt="Natsume Tsurugi"
+        className={`nat-portrait ${styles.portrait}`}
+        draggable={false}
+      />
 
-        {/* Fiche */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.3 } }}
-          style={{ maxWidth: '480px', display: 'flex', flexDirection: 'column', gap: '2rem' }}
-        >
-          <div>
-            <h1 style={{
-              fontFamily: 'Cinzel, serif',
-              fontSize: '2.2rem',
-              letterSpacing: '0.15em',
-              color: 'var(--color-white-ink)',
-              marginBottom: '0.4rem',
-            }}>
-              Natsume Tsurugi
-            </h1>
-            <div style={{ width: '4rem', height: '1px', background: 'var(--color-accent)' }} />
-          </div>
+      <div className={styles.gradientOverlay} />
 
-          <p style={{
-            fontFamily: 'IM Fell English, serif',
-            fontStyle: 'italic',
-            fontSize: '0.95rem',
-            lineHeight: '1.8',
-            color: 'var(--color-parchment)',
-          }}>
-            Entité narrative synthétique. Construite à partir d'incarnations successives dans des mondes différents.
+      <div className={styles.content}>
+        <h1 className={`nat-name ${styles.name}`}>Natsume Tsurugi</h1>
+        <div className={`nat-rule ${styles.rule}`} />
+
+        <p className={`nat-fragment ${styles.fragmentMain}`}>
+          Entité narrative synthétique.<br />
+          Construite à partir d'incarnations successives dans des mondes différents.
+        </p>
+        <p className={`nat-fragment ${styles.fragmentSub}`}>
+          La stabilité est venue avec le temps. Elle n'était pas donnée.
+        </p>
+
+        <div className={styles.traits}>
+          {TRAITS.map(({ label, value, hoverable }) => (
+            <div key={label} className={`nat-trait ${styles.trait}`}>
+              <span className={styles.traitLabel}>{label}</span>
+              <span
+                className={hoverable ? styles.traitValueHover : styles.traitValue}
+                onMouseEnter={hoverable ? () => dispatch('onHoverLarme') : undefined}
+              >
+                {value}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className={`nat-caractere ${styles.caractereBlock}`}>
+          <div className={styles.caractereLabel}>Caractère</div>
+          <p className={styles.caractereText}>
+            Calme, posée — retenue naturelle. Irritation rare mais intense.<br />
+            Affection possible, toujours discrète.
           </p>
-          <p style={{
-            fontFamily: 'IM Fell English, serif',
-            fontSize: '0.88rem',
-            lineHeight: '1.75',
-            color: 'var(--color-fog)',
-          }}>
-            La stabilité est venue avec le temps. Elle n'était pas donnée.
-          </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {TRAITS.map(({ label, value }) => (
-              <div key={label} style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}>
-                <span style={{
-                  fontFamily: 'Cinzel, serif',
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.15em',
-                  color: 'var(--color-fog)',
-                  minWidth: '80px',
-                  textTransform: 'uppercase',
-                }}>
-                  {label}
-                </span>
-                <span
-                  onMouseEnter={label === 'Symbole' ? () => dispatch('onHoverLarme') : undefined}
-                  style={{
-                    fontFamily: 'IM Fell English, serif',
-                    fontSize: '0.9rem',
-                    color: 'var(--color-white-ink)',
-                    cursor: label === 'Symbole' ? 'default' : undefined,
-                  }}
-                >
-                  {value}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div style={{
-            borderTop: '1px solid var(--color-ash)',
-            paddingTop: '1.5rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.5rem',
-          }}>
-            <span style={{
-              fontFamily: 'Cinzel, serif',
-              fontSize: '0.7rem',
-              letterSpacing: '0.15em',
-              color: 'var(--color-fog)',
-              textTransform: 'uppercase',
-            }}>
-              Caractère
-            </span>
-            {CARACTERE.map((trait) => (
-              <p key={trait} style={{
-                fontFamily: 'IM Fell English, serif',
-                fontSize: '0.88rem',
-                color: 'var(--color-white-ink)',
-                paddingLeft: '1rem',
-                borderLeft: '1px solid var(--color-ash)',
-              }}>
-                {trait}
-              </p>
-            ))}
-          </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Timeline incarnations */}
       <IncarnationsTimeline />
-
       <BackButton onClick={onBack} />
     </motion.div>
   )
 }
 
-
 function IncarnationsTimeline() {
   const [activeIdx, setActiveIdx] = useState(null)
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.6 } }}
-      style={{
-        position: 'absolute',
-        bottom: '3%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0',
-        pointerEvents: 'auto',
-      }}
-    >
+    <div className={styles.timeline}>
       {INCARNATIONS.map((inc, i) => (
-        <div key={inc.game} style={{ display: 'flex', alignItems: 'center' }}>
-          {/* Ligne de connexion */}
-          {i > 0 && (
-            <div style={{ width: '4rem', height: '1px', background: 'var(--color-ash)' }} />
-          )}
-
-          {/* Nœud */}
+        <div key={inc.game}>
           <div
-            style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'default' }}
+            className={`nat-tl-node ${styles.tlNode} ${activeIdx === i ? styles.tlNodeActive : ''}`}
             onMouseEnter={() => setActiveIdx(i)}
             onMouseLeave={() => setActiveIdx(null)}
           >
-            <div style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: activeIdx === i ? 'var(--color-parchment)' : 'var(--color-fog)',
-              border: activeIdx === i ? '1px solid var(--color-accent)' : '1px solid var(--color-ash)',
-              transition: 'background 0.2s, border-color 0.2s',
-              marginBottom: '0.4rem',
-            }} />
-
-            <span style={{
-              fontFamily: 'Cinzel, serif',
-              fontSize: '0.62rem',
-              letterSpacing: '0.08em',
-              color: activeIdx === i ? 'var(--color-parchment)' : 'var(--color-fog)',
-              whiteSpace: 'nowrap',
-              transition: 'color 0.2s',
-              textShadow: '0 1px 4px rgba(0,0,0,0.95)',
-            }}>
-              {inc.game}
-            </span>
-
-            {inc.year && (
-              <span style={{
-                fontFamily: 'Cinzel, serif',
-                fontSize: '0.55rem',
-                color: 'var(--color-fog)',
-                letterSpacing: '0.05em',
-                textShadow: '0 1px 4px rgba(0,0,0,0.95)',
-              }}>
-                {inc.year}
-              </span>
-            )}
-
-            {/* Fragment au hover */}
+            <span className={styles.tlYear}>{inc.year ?? inc.game}</span>
             <AnimatePresence>
               {activeIdx === i && (
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0, transition: { duration: 0.2 } }}
+                  key={`tooltip-${i}`}
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0, transition: { duration: 0.2 } }}
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                  style={{
-                    position: 'absolute',
-                    bottom: '100%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    marginBottom: '0.75rem',
-                    background: 'rgba(10,10,10,0.92)',
-                    border: '1px solid var(--color-ash)',
-                    padding: '0.5rem 0.75rem',
-                    whiteSpace: 'nowrap',
-                    pointerEvents: 'none',
-                  }}
+                  className={styles.tlTooltip}
                 >
-                  <p style={{
-                    fontFamily: 'IM Fell English, serif',
-                    fontStyle: 'italic',
-                    fontSize: '0.78rem',
-                    color: 'var(--color-parchment)',
-                    whiteSpace: 'normal',
-                    maxWidth: '180px',
-                    textAlign: 'center',
-                  }}>
-                    {inc.fragment}
-                  </p>
+                  <p className={styles.tlGame}>{inc.game}</p>
+                  <p className={styles.tlFragment}>{inc.fragment}</p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+          {i < INCARNATIONS.length - 1 && (
+            <div className={`nat-tl-line ${styles.tlConnector}`} />
+          )}
         </div>
       ))}
-    </motion.div>
+    </div>
   )
 }
