@@ -1,0 +1,108 @@
+.scene {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 10rem 7rem 8rem;
+  max-width: 860px;
+}
+
+.header {
+  margin-bottom: 1.6rem;
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.25em;
+  color: var(--color-white-ink);
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+}
+
+.rule {
+  width: 3rem;
+  height: 1px;
+  background: var(--color-accent);
+}
+
+.manifeste {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-bottom: 2.5rem;
+}
+
+.manifesteLine {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--color-white-ink);
+  max-width: 580px;
+}
+
+.manifesteFirst {
+  font-style: normal;
+  font-size: 1.05rem;
+  color: var(--color-parchment);
+}
+
+.manifesteKey {
+  font-style: normal;
+  color: var(--color-parchment);
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.statsRow {
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-right: 2rem;
+  margin-right: 2rem;
+  border-right: 1px solid var(--color-ash);
+}
+
+.stat:last-child {
+  border-right: none;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+.statValue {
+  font-family: 'IM Fell English', serif;
+  font-size: 0.95rem;
+  color: var(--color-parchment);
+}
+
+.statLabel {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--color-fog);
+  text-transform: uppercase;
+}
