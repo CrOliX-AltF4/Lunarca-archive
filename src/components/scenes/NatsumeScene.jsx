@@ -7,6 +7,8 @@ import natsumeFullImg from '../../assets/natsume/natsume_full.png'
 import BackButton from '../ui/BackButton.jsx'
 import styles from './NatsumeScene.module.css'
 
+gsap.registerPlugin(useGSAP)
+
 function dispatch(trigger) {
   window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'natsume' } }))
 }

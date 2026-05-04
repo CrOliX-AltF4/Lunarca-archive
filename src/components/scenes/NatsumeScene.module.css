@@ -177,6 +177,12 @@
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
+.tlNode::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+}
+
 .tlNodeActive {
   background: var(--color-parchment);
   border-color: var(--color-accent);
