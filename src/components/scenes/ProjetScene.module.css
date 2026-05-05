@@ -50,7 +50,7 @@
 
 .badge {
   font-family: 'Cinzel', serif;
-  font-size: 0.48rem;
+  font-size: 0.65rem;
   letter-spacing: 0.22em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -117,7 +117,7 @@
 
 .sysHeaderLabel {
   font-family: 'Cinzel', serif;
-  font-size: 0.48rem;
+  font-size: 0.65rem;
   letter-spacing: 0.22em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -125,7 +125,7 @@
 
 .sysActive {
   font-family: 'Cinzel', serif;
-  font-size: 0.42rem;
+  font-size: 0.65rem;
   letter-spacing: 0.18em;
   color: var(--color-parchment);
   text-transform: uppercase;
@@ -147,7 +147,7 @@
 
 .sysLabel {
   font-family: 'Cinzel', serif;
-  font-size: 0.46rem;
+  font-size: 0.65rem;
   letter-spacing: 0.12em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -161,7 +161,7 @@
 
 .logHeader {
   font-family: 'Cinzel', serif;
-  font-size: 0.48rem;
+  font-size: 0.65rem;
   letter-spacing: 0.22em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -185,7 +185,7 @@
 
 .logDate {
   font-family: 'Cinzel', serif;
-  font-size: 0.42rem;
+  font-size: 0.65rem;
   letter-spacing: 0.06em;
   color: var(--color-fog);
   opacity: 0.6;
@@ -196,4 +196,43 @@
   font-size: 0.78rem;
   color: rgba(245, 243, 239, 0.45);
   line-height: 1.4;
+}
+
+/* ── Mobile (≤ 767px) ─────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .layout {
+    flex-direction: column;
+    padding: 6% 5% 80px;
+    align-items: stretch;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+
+  .colLeft {
+    flex: none;
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .manifeste {
+    max-width: 100%;
+  }
+
+  .separator {
+    width: 100%;
+    height: 1px;
+    align-self: stretch;
+  }
+
+  .colRight {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .sysEntry {
+    grid-template-columns: 80px 1fr;
+  }
 }

@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 
 export default function DustParticles({ count = 35 }) {
+  const isTouchDevice = useMemo(() => window.matchMedia('(hover: none)').matches, [])
+
   const particles = useMemo(() =>
     Array.from({ length: count }, (_, i) => ({
       id: i,
@@ -12,6 +14,8 @@ export default function DustParticles({ count = 35 }) {
       opacity: Math.random() * 0.22 + 0.04,
     }))
   , [count])
+
+  if (isTouchDevice) return null
 
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1, overflow: 'hidden' }}>

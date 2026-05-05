@@ -18,6 +18,9 @@ export default function DialogueBubble({ text }) {
 
   return (
     <motion.div
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1, transition: { duration: 0.3 } }}
       exit={{ opacity: 0, y: -6, transition: { duration: 0.2 } }}

@@ -1,14 +1,13 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-
-function dispatch(trigger, scene) {
-  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene } }))
-}
+import { dispatch } from '../../utils/dispatch.js'
 
 export default function BookItem({ book, onClick, onTripleClick }) {
   const clickDataRef = useRef({ count: 0, timer: null })
   const hoverLongRef = useRef(null)
   const [flipping, setFlipping] = useState(false)
+  const isMobile = useMemo(() => window.matchMedia('(max-width: 767px)').matches, [])
+  const imgWidth = isMobile ? '90px' : '120px'
 
   const handleClick = () => {
     const data = clickDataRef.current
@@ -81,7 +80,7 @@ export default function BookItem({ book, onClick, onTripleClick }) {
       <img
         src={book.asset}
         alt={book.label}
-        style={{ width: '120px', height: 'auto', display: 'block' }}
+        style={{ width: imgWidth, height: 'auto', display: 'block' }}
       />
       <p style={{
         textAlign: 'center',

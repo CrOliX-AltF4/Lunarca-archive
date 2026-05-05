@@ -61,7 +61,7 @@ export default function App() {
   const [achievementsOpen, setAchievementsOpen] = useState(false)
   const achievement = useAchievements()
 
-  const sealInitialClicks = 0
+  const sealInitialClicks = parseInt(localStorage.getItem('lunarca_seal') || '0') >= 3 ? 2 : 0
   const visitedScenesRef  = useRef(new Set())
   const cartographerFired = useRef(false)
 
@@ -88,7 +88,7 @@ export default function App() {
   }, [currentScene, archiveOpen])
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '100vw', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
 
       <CustomCursor />
 

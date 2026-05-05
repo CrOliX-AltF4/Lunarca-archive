@@ -74,7 +74,7 @@
 
 .classBadge {
   font-family: 'Cinzel', serif;
-  font-size: 0.5rem;
+  font-size: 0.65rem;
   letter-spacing: 0.22em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -103,7 +103,7 @@
 .sectionLabel {
   display: block;
   font-family: 'Cinzel', serif;
-  font-size: 0.48rem;
+  font-size: 0.65rem;
   letter-spacing: 0.22em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -129,7 +129,7 @@
 
 .attrLabel {
   font-family: 'Cinzel', serif;
-  font-size: 0.48rem;
+  font-size: 0.65rem;
   letter-spacing: 0.12em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -187,7 +187,7 @@
 .slotName {
   display: block;
   font-family: 'Cinzel', serif;
-  font-size: 0.43rem;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   color: var(--color-fog);
   text-transform: uppercase;
@@ -220,4 +220,60 @@
   font-size: 0.73rem;
   color: var(--color-parchment);
   line-height: 1.55;
+}
+
+/* ── Mobile (≤ 767px) ─────────────────────────────────── */
+
+@media (max-width: 767px) {
+  /* Portrait : fond atmosphérique atténué */
+  .portrait {
+    height: 50vh;
+    opacity: 0.15;
+    filter: none;
+  }
+
+  /* Overlay gradient : renforcé pour lisibilité */
+  .gradientOverlay {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  /* Contenu : pleine largeur + scroll interne */
+  .content {
+    width: 100%;
+    padding: 8% 5% 80px;
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Attributs : colonnes réduites */
+  .attrRow {
+    grid-template-columns: 120px 1fr 70px;
+    gap: 0.5rem;
+  }
+
+  /* Slots : scroll horizontal */
+  .slotsRow {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .slot {
+    min-width: 70px;
+    flex-shrink: 0;
+    padding: 0.6rem 0.4rem;
+  }
+
+  /* Tooltip slot : au-dessus sur mobile */
+  .slotTooltip {
+    bottom: auto;
+    top: calc(100% + 6px);
+    right: auto;
+    left: 0;
+    width: 200px;
+    max-width: 80vw;
+  }
 }

@@ -58,7 +58,7 @@
 
 .bookHint {
   font-family: 'Cinzel', serif;
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   letter-spacing: 0.35em;
   padding-left: 0.35em;
   color: var(--color-parchment);
@@ -68,6 +68,23 @@
   text-shadow: 0 0 12px rgba(0, 0, 0, 1);
   /* Annulé par la perspective du parent — on reset */
   transform: perspective(1100px) rotateX(-22deg);
+}
+
+/* ── Mobile (≤ 767px) ─────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .bookOnDesk {
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: 15%;
+  }
+
+  .bookOnDeskImg {
+    max-width: 75vw;
+    width: auto;
+    height: auto;
+  }
 }
 
 /* ─── VUE LECTURE ────────────────────────────────────────── */

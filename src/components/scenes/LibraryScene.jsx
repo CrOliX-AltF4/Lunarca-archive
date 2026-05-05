@@ -4,6 +4,7 @@ import BooksContainer from '../books/BooksContainer.jsx'
 import DustParticles from '../ui/DustParticles.jsx'
 import bgLibrary from '../../assets/backgrounds/bg_library.webp'
 import styles from './LibraryScene.module.css'
+import { dispatch } from '../../utils/dispatch.js'
 
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight']
 
@@ -28,9 +29,7 @@ export default function LibraryScene({ onNavigate }) {
       sequenceRef.current = [...sequenceRef.current, e.key].slice(-KONAMI.length)
       if (sequenceRef.current.join(',') === KONAMI.join(',')) {
         sequenceRef.current = []
-        window.dispatchEvent(new CustomEvent('natsume:trigger', {
-          detail: { trigger: 'easterEgg_konami', scene: 'library' },
-        }))
+        dispatch('easterEgg_konami', 'library')
       }
     }
     window.addEventListener('keydown', handleKey)
@@ -38,9 +37,7 @@ export default function LibraryScene({ onNavigate }) {
   }, [])
 
   const handleNatsumeTripleClick = () => {
-    window.dispatchEvent(new CustomEvent('natsume:trigger', {
-      detail: { trigger: 'easterEgg_lys', scene: 'natsume' },
-    }))
+    dispatch('easterEgg_lys', 'natsume')
     setLoreVisible(true)
     setTimeout(() => setLoreVisible(false), 4000)
   }
@@ -64,9 +61,6 @@ export default function LibraryScene({ onNavigate }) {
         animate={{ opacity: 1, y: 0, transition: { duration: 1, delay: 0.3 } }}
       >
         <h1 className={styles.hubTitle}>Lun'Λrkhive</h1>
-        <p className={styles.hubSub}>
-          Explorez des récits oubliés, scellés dans les pages du temps
-        </p>
       </motion.div>
 
       <motion.p
@@ -85,7 +79,7 @@ export default function LibraryScene({ onNavigate }) {
           },
         }}
       >
-        Choisissez un ouvrage
+        ···
       </motion.p>
 
       <BooksContainer onNavigate={onNavigate} onNatsumeTripleClick={handleNatsumeTripleClick} />

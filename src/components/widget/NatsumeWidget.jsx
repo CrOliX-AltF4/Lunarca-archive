@@ -1,14 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useNatsumeWidget from '../../hooks/useNatsumeWidget.js'
 import DialogueBubble from './DialogueBubble.jsx'
-
-const GAZE_DELAY = 5000
-
-function dispatch(trigger) {
-  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'global' } }))
-}
-
+import { dispatch } from '../../utils/dispatch.js'
 import natsumeIdle           from '../../assets/natsume/natsume_idle.png'
 import natsumeParle          from '../../assets/natsume/natsume_parle.png'
 import natsumeApprobation    from '../../assets/natsume/natsume_approbation.png'
@@ -16,6 +10,8 @@ import natsumeIrritation     from '../../assets/natsume/natsume_irritation.png'
 import natsumeSurprise       from '../../assets/natsume/natsume_surprise.png'
 import natsumeGene           from '../../assets/natsume/natsume_gene.png'
 import natsumeDisappointment from '../../assets/natsume/natsume_disappointment.png'
+
+const GAZE_DELAY = 5000
 
 const PORTRAITS = {
   idle:           natsumeIdle,
@@ -31,9 +27,11 @@ const PORTRAITS = {
 export default function NatsumeWidget({ currentScene }) {
   const { mood, dialogue } = useNatsumeWidget(currentScene)
   const gazeTimer = useRef(null)
+  const isMobile = useMemo(() => window.matchMedia('(max-width: 767px)').matches, [])
+  const portraitWidth = isMobile ? '140px' : '220px'
 
   const handleGazeStart = () => {
-    gazeTimer.current = setTimeout(() => dispatch('onGazeHeld'), GAZE_DELAY)
+    gazeTimer.current = setTimeout(() => dispatch('onGazeHeld', 'global'), GAZE_DELAY)
   }
   const handleGazeEnd = () => clearTimeout(gazeTimer.current)
 
@@ -62,7 +60,7 @@ export default function NatsumeWidget({ currentScene }) {
           exit={{ opacity: 0, x: 20, transition: { duration: 0.25 } }}
           onMouseEnter={handleGazeStart}
           onMouseLeave={handleGazeEnd}
-          style={{ width: '220px', height: 'auto', display: 'block', pointerEvents: 'auto' }}
+          style={{ width: portraitWidth, height: 'auto', display: 'block', pointerEvents: 'auto' }}
         />
       </AnimatePresence>
     </div>

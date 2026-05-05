@@ -6,12 +6,9 @@ import bgNatsume from '../../assets/backgrounds/bg_natsume.webp'
 import natsumeFullImg from '../../assets/natsume/natsume_full.png'
 import BackButton from '../ui/BackButton.jsx'
 import styles from './NatsumeScene.module.css'
+import { dispatch } from '../../utils/dispatch.js'
 
 gsap.registerPlugin(useGSAP)
-
-function dispatch(trigger) {
-  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene: 'natsume' } }))
-}
 
 const sceneVariants = {
   initial: { opacity: 0, scale: 0.97 },
@@ -49,7 +46,7 @@ export default function NatsumeScene({ onBack }) {
         w.total = 0
         if (total < 20) return
         w.cooldown = Date.now() + 5000
-        dispatch(total > 250 ? 'onScrollFast' : 'onScrollSlow')
+        dispatch(total > 250 ? 'onScrollFast' : 'onScrollSlow', 'natsume')
       }, 350)
     }
     window.addEventListener('wheel', onWheel, { passive: true })
@@ -144,9 +141,16 @@ function IncarnationSlots() {
             className={`nat-slot ${styles.slot} ${activeIdx === i ? styles.slotActive : ''}`}
             onMouseEnter={() => {
               setActiveIdx(i)
-              if (inc.trigger) dispatch(inc.trigger)
+              if (inc.trigger) dispatch(inc.trigger, 'natsume')
             }}
             onMouseLeave={() => setActiveIdx(null)}
+            onClick={() => setActiveIdx(activeIdx === i ? null : i)}
+            onFocus={() => setActiveIdx(i)}
+            onBlur={() => setActiveIdx(null)}
+            tabIndex={0}
+            role="button"
+            aria-expanded={activeIdx === i}
+            aria-label={inc.game}
           >
             <span className={styles.slotName}>{inc.game}</span>
             <span className={styles.slotYear}>{inc.year ?? '···'}</span>

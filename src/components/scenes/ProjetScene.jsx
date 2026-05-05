@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import bgProjet from '../../assets/backgrounds/bg_projet.webp'
 import BackButton from '../ui/BackButton.jsx'
+import devlogData from '../../data/devlog.json'
 import styles from './ProjetScene.module.css'
 
 gsap.registerPlugin(useGSAP)
@@ -28,13 +29,27 @@ const SYSTEM_ENTRIES = [
   { label: 'Statut',     value: 'Évolution continue' },
 ]
 
+const FR_MONTHS = {
+  'Janvier': '01',
+  'Février': '02',
+  'Mars': '03',
+  'Avril': '04',
+  'Mai': '05',
+  'Juin': '06',
+  'Juillet': '07',
+  'Août': '08',
+  'Septembre': '09',
+  'Octobre': '10',
+  'Novembre': '11',
+  'Décembre': '12',
+}
+
 const JOURNAL = [
-  { date: '2026.05', text: 'Refonte visuelle — scènes secondaires' },
-  { date: '2026.05', text: 'Interface narrative codex — v1' },
-  { date: '2026.04', text: 'Architecture locale-first validée' },
-  { date: '2026.04', text: 'Rupture — recommencement intégral' },
-  { date: '2026.03', text: "Première activation de l'instance" },
-  { date: '···',     text: 'Données antérieures non archivées' },
+  ...[...devlogData].reverse().map(entry => {
+    const [month, year] = entry.date.split(' ')
+    return { date: `${year}.${FR_MONTHS[month] || '??'}`, text: entry.title }
+  }),
+  { date: '···', text: 'Données antérieures non archivées' },
 ]
 
 export default function ProjetScene({ onBack }) {

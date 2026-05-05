@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { dispatch } from '../../utils/dispatch.js'
 
 const RUNE_LINKS = [
   {
@@ -36,10 +37,6 @@ const RUNE_LINKS = [
   },
 ]
 
-function dispatch(trigger, scene = 'contact') {
-  window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene } }))
-}
-
 export default function RuneStele() {
   const [activeId, setActiveId] = useState(null)
   const firstClickFiredRef = useRef(false)
@@ -50,7 +47,7 @@ export default function RuneStele() {
     e.stopPropagation()
     if (!firstClickFiredRef.current) {
       firstClickFiredRef.current = true
-      dispatch('onFirstRuneClick')
+      dispatch('onFirstRuneClick', 'contact')
     }
     setActiveId(activeId === id ? null : id)
   }
@@ -61,12 +58,12 @@ export default function RuneStele() {
       twitter: 'onLinkClick_twitter',
       twitch:  'onLinkClick_twitch',
     }
-    if (triggerMap[id]) dispatch(triggerMap[id])
+    if (triggerMap[id]) dispatch(triggerMap[id], 'contact')
 
     clickedLinksRef.current.add(id)
     const allIds = RUNE_LINKS.filter((l) => !l.discord).map((l) => l.id)
     if (allIds.every((id) => clickedLinksRef.current.has(id))) {
-      dispatch('onAllLinksClicked')
+      dispatch('onAllLinksClicked', 'contact')
     }
   }
 
@@ -82,7 +79,7 @@ export default function RuneStele() {
             link={link}
             isActive={activeId === link.id}
             onToggle={(e) => handleToggle(link.id, e)}
-            onHover={() => dispatch('onRuneHover')}
+            onHover={() => dispatch('onRuneHover', 'contact')}
           />
         ))}
       </div>
@@ -104,6 +101,7 @@ export default function RuneStele() {
 function RuneLine({ link, isActive, onToggle, onHover }) {
   return (
     <motion.button
+      aria-label={link.label}
       onClick={onToggle}
       onHoverStart={onHover}
       animate={{
@@ -159,6 +157,9 @@ function ItemPanel({ link, onClose, onLinkClick }) {
       }}
     >
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={link.label}
         initial={{ opacity: 0, y: 16, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: [0.2, 0, 0.2, 1] } }}
         exit={{ opacity: 0, y: 10, scale: 0.97, transition: { duration: 0.2 } }}
@@ -175,7 +176,7 @@ function ItemPanel({ link, onClose, onLinkClick }) {
         {/* Catégorie */}
         <p style={{
           fontFamily: 'Cinzel, serif',
-          fontSize: '0.6rem',
+          fontSize: '0.65rem',
           letterSpacing: '0.35em',
           paddingLeft: '0.35em',
           color: 'rgba(245,243,239,0.38)',
@@ -233,13 +234,13 @@ function ItemPanel({ link, onClose, onLinkClick }) {
         {/* Bouton action avec coins */}
         {link.discord ? (
           <CornerButton
-            label={copied ? '✓  Tag copié' : '→  Copier le tag'}
+            label={copied ? 'Tag copié' : 'Copier le tag'}
             onClick={handleCopy}
             muted={copied}
           />
         ) : (
           <CornerButton
-            label="→  Accéder"
+            label="Accéder"
             href={link.href}
             onNavigate={onLinkClick}
           />

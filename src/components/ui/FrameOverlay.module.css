@@ -65,3 +65,14 @@
   transform: scaleX(-1);
 }
 
+@media (max-width: 767px) {
+  .cornerTL,
+  .cornerTR,
+  .cornerBL,
+  .cornerBR,
+  .sideLeft,
+  .sideRight {
+    display: none;
+  }
+}
+
