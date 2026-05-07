@@ -103,7 +103,7 @@ export default function SystemMenu({ open, onClose, onResetSeal, onOpenAchieveme
                 opacity: 0.6,
               }}
             >
-              ✕  Refermer
+              Refermer
             </button>
           </motion.div>
         </motion.div>
