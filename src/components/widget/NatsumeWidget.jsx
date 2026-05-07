@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import useNatsumeWidget from '../../hooks/useNatsumeWidget.js'
 import DialogueBubble from './DialogueBubble.jsx'
 import { dispatch } from '../../utils/dispatch.js'
+import { SCENES } from '../../constants/scenes.js'
 import natsumeIdle           from '../../assets/natsume/natsume_idle.png'
 import natsumeParle          from '../../assets/natsume/natsume_parle.png'
 import natsumeApprobation    from '../../assets/natsume/natsume_approbation.png'
@@ -28,7 +29,7 @@ export default function NatsumeWidget({ currentScene }) {
   const { mood, dialogue } = useNatsumeWidget(currentScene)
   const gazeTimer = useRef(null)
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches)
-  const isNatsumeScene = currentScene === 'natsume'
+  const isNatsumeScene = currentScene === SCENES.NATSUME
   const portraitWidth = isNatsumeScene ? '160px' : (isMobile ? '140px' : '220px')
 
   useEffect(() => {
