@@ -3,17 +3,11 @@ import { motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import bgProjet from '../../assets/backgrounds/bg_projet.webp'
-import BackButton from '../ui/BackButton.jsx'
+import SceneShell from './SceneShell.jsx'
 import devlogData from '../../data/devlog.json'
 import styles from './ProjetScene.module.css'
 
 gsap.registerPlugin(useGSAP)
-
-const sceneVariants = {
-  initial: { opacity: 0, scale: 0.97 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
-  exit: { opacity: 0, scale: 0.97, transition: { duration: 0.6 } },
-}
 
 const MANIFESTE = [
   { text: "w-AI-fu est une architecture pour entités narratives persistantes — des présences qui mémorisent, évoluent, et maintiennent leur cohérence à travers le temps.", key: false, first: true },
@@ -56,6 +50,7 @@ export default function ProjetScene({ onBack }) {
   const containerRef = useRef(null)
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const tl = gsap.timeline({ delay: 0.5 })
     tl.from('.proj-title',     { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' })
       .from('.proj-rule',      { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
@@ -68,17 +63,7 @@ export default function ProjetScene({ onBack }) {
   }, { scope: containerRef })
 
   return (
-    <motion.div
-      ref={containerRef}
-      variants={sceneVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className={styles.scene}
-      style={{ backgroundImage: `url(${bgProjet})` }}
-    >
-      <div className={styles.overlay} />
-
+    <SceneShell bg={bgProjet} onBack={onBack} containerRef={containerRef}>
       <div className={styles.layout}>
         {/* ── Colonne gauche — manifeste ── */}
         <div className={styles.colLeft}>
@@ -140,8 +125,6 @@ export default function ProjetScene({ onBack }) {
           </div>
         </div>
       </div>
-
-      <BackButton onClick={onBack} />
-    </motion.div>
+    </SceneShell>
   )
 }

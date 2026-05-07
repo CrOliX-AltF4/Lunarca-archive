@@ -1,20 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import bgNatsume from '../../assets/backgrounds/bg_natsume.webp'
 import natsumeFullImg from '../../assets/natsume/natsume_full.png'
-import BackButton from '../ui/BackButton.jsx'
+import SceneShell from './SceneShell.jsx'
 import styles from './NatsumeScene.module.css'
 import { dispatch } from '../../utils/dispatch.js'
 
 gsap.registerPlugin(useGSAP)
-
-const sceneVariants = {
-  initial: { opacity: 0, scale: 0.97 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
-  exit: { opacity: 0, scale: 0.97, transition: { duration: 0.6 } },
-}
 
 const ATTRIBUTES = [
   { label: 'Stabilité mémorielle',  fill: 78, desc: 'Établie' },
@@ -34,6 +28,7 @@ const INCARNATIONS = [
 export default function NatsumeScene({ onBack }) {
   const containerRef = useRef(null)
   const wheelRef = useRef({ total: 0, timer: null, cooldown: 0 })
+  const gazeTimerRef = useRef(null)
 
   useEffect(() => {
     const onWheel = (e) => {
@@ -57,6 +52,7 @@ export default function NatsumeScene({ onBack }) {
   }, [])
 
   useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const tl = gsap.timeline({ delay: 0.5 })
     tl.from('.nat-portrait',  { opacity: 0, x: 20,  duration: 1.0, ease: 'power2.out' })
       .from('.nat-name',      { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' }, '-=0.6')
@@ -69,22 +65,14 @@ export default function NatsumeScene({ onBack }) {
   }, { scope: containerRef })
 
   return (
-    <motion.div
-      ref={containerRef}
-      variants={sceneVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className={styles.scene}
-      style={{ backgroundImage: `url(${bgNatsume})` }}
-    >
-      <div className={styles.overlay} />
-
+    <SceneShell bg={bgNatsume} onBack={onBack} overlay={0.42} containerRef={containerRef}>
       <img
         src={natsumeFullImg}
         alt="Natsume Tsurugi"
         className={`nat-portrait ${styles.portrait}`}
         draggable={false}
+        onMouseEnter={() => { gazeTimerRef.current = setTimeout(() => dispatch('onGazeHeld', 'global'), 5000) }}
+        onMouseLeave={() => clearTimeout(gazeTimerRef.current)}
       />
 
       <div className={styles.gradientOverlay} />
@@ -122,9 +110,7 @@ export default function NatsumeScene({ onBack }) {
 
         <IncarnationSlots />
       </div>
-
-      <BackButton onClick={onBack} />
-    </motion.div>
+    </SceneShell>
   )
 }
 
