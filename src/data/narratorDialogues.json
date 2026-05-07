@@ -2,121 +2,220 @@
   {
     "trigger": "intro_library",
     "scene": "library",
+    "type": "announce",
+    "side": "left",
     "sessionOnce": true,
     "entries": [
-      {
-        "text": "Ah. Vous êtes là. Le Narrateur ne s'attendait pas à ce que ça fonctionne aussi vite.",
-        "mood": null
-      },
-      {
-        "text": "Bienvenue dans la bibliothèque. Natsume est déjà là. Elle était là avant vous. Elle sera probablement là après.",
-        "mood": null
-      }
+      { "text": "Ah. Vous êtes là. Le Narrateur ne s'attendait pas à ce que ça fonctionne aussi vite." },
+      { "text": "Une bibliothèque. Le Narrateur avait prévu quelque chose de plus dramatique." }
     ]
   },
   {
     "trigger": "intro_natsume",
     "scene": "natsume",
+    "type": "comment",
+    "side": "right",
     "sessionOnce": true,
     "entries": [
-      {
-        "text": "Une fiche d'identité. Le Narrateur avait prévu quelque chose de plus dramatique pour cette révélation.",
-        "mood": null
-      },
-      {
-        "text": "Quinze ans. Le Narrateur trouve ça long. Natsume, visiblement, non.",
-        "mood": null
-      }
+      { "text": "Une fiche d'identité. Le Narrateur avait prévu quelque chose de plus dramatique pour cette révélation." },
+      { "text": "Quinze ans. Le Narrateur trouve ça long. Natsume, visiblement, non." }
     ]
   },
   {
     "trigger": "intro_projet",
     "scene": "projet",
+    "type": "announce",
+    "side": "left",
     "sessionOnce": true,
     "entries": [
-      {
-        "text": "L'archive du projet. Le Narrateur vous recommande la lecture attentive. Natsume n'a pas été consultée sur cette recommandation.",
-        "mood": null
-      },
-      {
-        "text": "Ce que vous lisez ici existe depuis plus longtemps que ce site. Le Narrateur le sait. Natsume aussi.",
-        "mood": null
-      }
+      { "text": "L'archive du projet. Ce que vous lisez ici existe depuis plus longtemps que ce site." },
+      { "text": "Le projet d'abord. Le Narrateur ne sait plus dans quel ordre vous faites les choses." }
     ]
   },
   {
     "trigger": "intro_devlog",
     "scene": "devlog",
+    "type": "announce",
+    "side": "right",
     "sessionOnce": true,
     "entries": [
-      {
-        "text": "Un journal de bord. Personnel. Le Narrateur vous rappelle que vous n'étiez pas censé en avoir accès.",
-        "mood": null
-      },
-      {
-        "text": "Le livre est sur la table. Le Narrateur vous déconseille de l'ouvrir. C'est une suggestion.",
-        "mood": null
-      }
+      { "text": "Un journal de bord. Personnel. Le Narrateur vous rappelle que vous n'étiez pas censé en avoir accès." },
+      { "text": "Le livre est là. Le Narrateur vous déconseille de l'ouvrir. C'est une suggestion." }
+    ]
+  },
+  {
+    "trigger": "intro_contact",
+    "scene": "contact",
+    "type": "announce",
+    "side": "center",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Tiens. Le Narrateur n'avait pas prévu ça maintenant. Ou si. Difficile à dire." }
     ]
   },
   {
     "trigger": "intro_contact_sealed",
     "scene": "library",
+    "type": "comment",
+    "side": "right",
     "sessionOnce": false,
     "entries": [
-      {
-        "text": "Pas encore. Le Narrateur est catégorique sur ce point, ce qui est rare.",
-        "mood": null
-      },
-      {
-        "text": "Ce livre résiste. Le Narrateur note votre tentative sans commentaire particulier.",
-        "mood": null
-      },
-      {
-        "text": "Il y a un ordre dans les choses. Le Narrateur n'en dira pas plus.",
-        "mood": null
-      }
+      { "text": "Pas encore. Le Narrateur est catégorique sur ce point, ce qui est rare." },
+      { "text": "Le Narrateur avait pourtant dit non. Enfin — il pensait l'avoir dit." },
+      { "text": "Le Narrateur observe en silence. Il n'a plus rien à ajouter." }
     ]
   },
   {
     "trigger": "contact_unsealed",
     "scene": "library",
+    "type": "aside",
+    "side": "bottom",
     "sessionOnce": true,
     "entries": [
-      {
-        "text": "Tiens. Le Narrateur n'avait pas prévu ça non plus. Enfin — si. Mais pas maintenant.",
-        "mood": null
-      }
+      { "text": "Tiens. Le Narrateur n'avait pas prévu ça non plus. Enfin — si. Mais pas maintenant." }
+    ]
+  },
+  {
+    "trigger": "onFirstClick_natsume",
+    "scene": "library",
+    "type": "comment",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Ah. Vous commencez par elle. Le Narrateur prend note. Discrètement." },
+      { "text": "Par elle d'abord. Le Narrateur ne commentera pas ce choix." }
+    ]
+  },
+  {
+    "trigger": "onFirstClick_projet",
+    "scene": "library",
+    "type": "comment",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le projet d'abord. Méthodique. Le Narrateur apprécie, dans l'ensemble." }
+    ]
+  },
+  {
+    "trigger": "onFirstClick_devlog",
+    "scene": "library",
+    "type": "comment",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le journal en premier. Le Narrateur trouve ça courageux. Ou indiscret. Les deux, probablement." }
+    ]
+  },
+  {
+    "trigger": "onFirstClick_contact",
+    "scene": "library",
+    "type": "comment",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le Contact en premier. Le Narrateur avait parié sur Natsume. Il avait tort, comme souvent." }
+    ]
+  },
+  {
+    "trigger": "onReturnToLibrary_1",
+    "scene": "global",
+    "type": "whisper",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "De retour. Le Narrateur note le mouvement sans commentaire particulier." }
+    ]
+  },
+  {
+    "trigger": "onReturnToLibrary_2",
+    "scene": "global",
+    "type": "whisper",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Encore. Le Narrateur apprécie la constance. Ou l'indécision. C'est la même chose." }
+    ]
+  },
+  {
+    "trigger": "onReturnToLibrary_3",
+    "scene": "global",
+    "type": "aside",
+    "side": "bottom",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le Narrateur a cessé de compter. Vous faites ce que vous voulez, visiblement." }
+    ]
+  },
+  {
+    "trigger": "onManifestKeyLine",
+    "scene": "projet",
+    "type": "whisper",
+    "side": "bottom",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le Narrateur trouve cette ligne particulièrement honnête." }
+    ]
+  },
+  {
+    "trigger": "onAllDevlogRead",
+    "scene": "devlog",
+    "type": "aside",
+    "side": "bottom",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Vous avez tout lu. Le Narrateur ne savait pas si vous le feriez." }
+    ]
+  },
+  {
+    "trigger": "onFirstRuneClick",
+    "scene": "contact",
+    "type": "whisper",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le Narrateur observe. Discrètement." }
+    ]
+  },
+  {
+    "trigger": "easterEgg_konami",
+    "scene": "library",
+    "type": "whisper",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Le Narrateur ne commente pas ça." }
+    ]
+  },
+  {
+    "trigger": "onEasterEggComplete",
+    "scene": "global",
+    "type": "whisper",
+    "side": "right",
+    "sessionOnce": true,
+    "entries": [
+      { "text": "Vous avez cherché. Partout. Le Narrateur n'avait pas de badge prévu pour ça." }
     ]
   },
   {
     "trigger": "onPlayerInactive",
     "scene": "global",
+    "type": "aside",
+    "side": "bottom",
     "sessionOnce": false,
     "entries": [
-      {
-        "text": "Le Narrateur attend. Il a le temps. Vous semblez aussi en avoir beaucoup.",
-        "mood": null
-      },
-      {
-        "text": "Rien. Le Narrateur apprécie le silence autant que Natsume. C'est la seule chose qu'ils ont en commun.",
-        "mood": null
-      },
-      {
-        "text": "Le Narrateur se demande si vous êtes encore là. La question est rhétorique.",
-        "mood": null
-      }
+      { "text": "Le Narrateur attend. Il a le temps. Vous semblez aussi en avoir beaucoup." },
+      { "text": "Rien. Le Narrateur apprécie le silence autant que Natsume. C'est la seule chose qu'ils ont en commun." },
+      { "text": "Le Narrateur se demande si vous êtes encore là. La question est rhétorique." }
     ]
   },
   {
     "trigger": "onAllScenesVisited",
     "scene": "global",
+    "type": "announce",
+    "side": "left",
     "sessionOnce": true,
     "entries": [
-      {
-        "text": "Vous avez regardé partout. Le Narrateur est impressionné. Non. Surpris. Ce n'est pas la même chose.",
-        "mood": null
-      }
+      { "text": "Vous avez regardé partout. Le Narrateur est impressionné. Non. Surpris. Ce n'est pas la même chose." }
     ]
   }
 ]

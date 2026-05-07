@@ -1,279 +1,136 @@
-.scene {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-}
+/* ── Ambient nucleus ─────────────────────────────────── */
+.scene { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.42);
+.nucleus {
+  position: absolute; width: 120px; opacity: 0.05; pointer-events: none; z-index: 1;
+  animation: nucleusDrift 90s linear infinite;
 }
+@keyframes nucleusDrift { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+/* ── Portrait ────────────────────────────────────────── */
 .portrait {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  height: 88vh;
-  width: auto;
-  display: block;
-  filter: drop-shadow(0 0 40px rgba(139, 0, 0, 0.25));
-  z-index: 1;
-  pointer-events: none;
-  user-select: none;
+  position: absolute; height: 70vh; width: auto; z-index: 2; pointer-events: none;
+  mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+  transition: all 0.3s ease;
 }
 
-.gradientOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.97) 0%,
-    rgba(0, 0, 0, 0.88) 35%,
-    rgba(0, 0, 0, 0.5) 55%,
-    rgba(0, 0, 0, 0.15) 75%,
-    rgba(0, 0, 0, 0.05) 100%
-  );
-  z-index: 2;
+/* ── Fragments ───────────────────────────────────────── */
+.fragmentsArea { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+
+/* ── Memory Crystal Fragments ────────────────────────── */
+.fragment {
+  position: absolute; top: var(--frag-top); left: var(--frag-left);
+  pointer-events: all; background: transparent; border: none; cursor: pointer;
+  padding: 1rem; transition: all 0.6s ease; display: flex; flex-direction: column; align-items: center;
 }
 
-.content {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 60%;
-  padding: 0 4% 0 6%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  z-index: 10;
+/* Crystal Shape: Using CSS polygon for a faceted look */
+.fragment::before {
+  content: '';
+  width: 20px; height: 20px;
+  background: linear-gradient(135deg, rgba(200, 170, 120, 0.8), rgba(120, 0, 0, 0.6));
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  box-shadow: 0 0 15px rgba(200, 170, 120, 0.4);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: crystalPulse 4s infinite ease-in-out;
 }
 
-/* ── Identity ─────────────────────────────────────────── */
-
-.name {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
-  letter-spacing: 0.12em;
-  color: var(--color-white-ink);
-  font-weight: 400;
-  margin-bottom: 0.6rem;
-  line-height: 1;
+@keyframes crystalPulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.1); filter: brightness(1.4); }
 }
 
-.rule {
-  width: 3rem;
-  height: 1px;
-  background: var(--color-accent);
-  margin-bottom: 0.75rem;
+.fragment:hover::before {
+  transform: scale(1.4) rotate(45deg);
+  box-shadow: 0 0 30px var(--color-accent);
 }
 
-.classBadge {
-  font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  color: var(--color-fog);
-  text-transform: uppercase;
-  margin-bottom: 1.2rem;
+/* Read/Active state: crystal dimming and flattening */
+.fragmentActive::before {
+  background: var(--color-fog);
+  transform: rotate(45deg) scale(0.6);
+  opacity: 0.5;
+  animation: none;
 }
 
-.fragmentMain {
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 0.92rem;
-  line-height: 1.75;
-  color: var(--color-parchment);
-  margin-bottom: 0.55rem;
+.fragmentTitle {
+  display: block; font-family: 'IM Fell English', serif; font-size: 1rem;
+  color: #e0dcd0; margin-top: 0.8rem; opacity: 0;
+  transition: opacity 0.5s ease;
+  text-shadow: 0 0 8px rgba(0,0,0,0.8);
 }
 
-.fragmentSub {
-  font-family: 'IM Fell English', serif;
-  font-size: 0.82rem;
-  line-height: 1.7;
-  color: var(--color-fog);
-  margin-bottom: 1.6rem;
+.fragmentActive .fragmentTitle { opacity: 1; color: var(--color-parchment); }
+
+/* ── Archival Panel ──────────────────────────────────── */
+.infoPanel {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 450px; background: rgba(20, 18, 15, 0.92); border: 1px solid var(--color-fog);
+  padding: 2.5rem; z-index: 10; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
 }
-
-/* ── Section label (shared) ───────────────────────────── */
-
-.sectionLabel {
-  display: block;
-  font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  color: var(--color-fog);
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-  opacity: 0.7;
+.infoTitle {
+  font-family: 'Cinzel', serif; color: var(--color-accent);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem;
 }
-
-/* ── Attributes ───────────────────────────────────────── */
-
-.attributesSection {
-  border-top: 1px solid var(--color-ash);
-  padding-top: 0.85rem;
-  margin-bottom: 1.3rem;
+.infoContent {
+  font-family: 'IM Fell English', serif; font-size: 1.1rem;
+  color: #dcd7c9; line-height: 1.8; font-style: italic;
 }
-
-.attrRow {
-  display: grid;
-  grid-template-columns: 158px 1fr 90px;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
+.closeBtn {
+  margin-top: 2rem; background: none; border: none; font-family: 'Cinzel', serif;
+  font-size: 0.7rem; letter-spacing: 0.3em; color: var(--color-fog);
+  text-transform: uppercase; cursor: pointer; transition: color 0.3s;
 }
-
-.attrLabel {
-  font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  color: var(--color-fog);
-  text-transform: uppercase;
-}
-
-.attrBarTrack {
-  position: relative;
-  height: 2px;
-  background: var(--color-ash);
-}
-
-.attrBarFill {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  background: var(--color-parchment);
-  opacity: 0.55;
-  transform-origin: left center;
-}
-
-.attrDesc {
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 0.7rem;
-  color: var(--color-fog);
-  text-align: right;
-}
-
-/* ── Incarnation slots ────────────────────────────────── */
-
-.slotsSection {
-  border-top: 1px solid var(--color-ash);
-  padding-top: 0.85rem;
-}
-
-.slotsRow {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.slot {
-  position: relative;
-  flex: 1;
-  border: 1px solid var(--color-ash);
-  padding: 0.5rem 0.55rem 0.45rem;
-  transition: border-color 0.2s, background 0.2s;
-}
-
-.slotActive {
-  border-color: rgba(136, 136, 136, 0.5);
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.slotName {
-  display: block;
-  font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  color: var(--color-fog);
-  text-transform: uppercase;
-  margin-bottom: 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.slotYear {
-  display: block;
-  font-family: 'IM Fell English', serif;
-  font-size: 0.82rem;
-  color: var(--color-parchment);
-  line-height: 1;
-}
-
-.slotTooltip {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  width: 210px;
-  background: rgba(10, 10, 10, 0.96);
-  border: 1px solid var(--color-ash);
-  padding: 0.5rem 0.65rem;
-  pointer-events: none;
-  z-index: 20;
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 0.73rem;
-  color: var(--color-parchment);
-  line-height: 1.55;
-}
+.closeBtn:hover { color: var(--color-accent); }
 
 /* ── Mobile (≤ 767px) ─────────────────────────────────── */
 
 @media (max-width: 767px) {
-  /* Portrait : fond atmosphérique atténué */
+  .nucleus {
+    left: 50%;
+    opacity: 0.05;
+  }
+
   .portrait {
-    height: 50vh;
-    opacity: 0.15;
+    height: 44vh;
+    right: -8%;
     filter: none;
+    transition: none;
+    opacity: 0.15 !important;
   }
 
-  /* Overlay gradient : renforcé pour lisibilité */
-  .gradientOverlay {
-    background: rgba(0, 0, 0, 0.9);
-  }
-
-  /* Contenu : pleine largeur + scroll interne */
-  .content {
-    width: 100%;
-    padding: 8% 5% 80px;
-    justify-content: flex-start;
+  .fragmentsArea {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 80px 5% 100px;
+    gap: 1.8rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    pointer-events: all;
   }
 
-  /* Attributs : colonnes réduites */
-  .attrRow {
-    grid-template-columns: 120px 1fr 70px;
-    gap: 0.5rem;
+  .fragment {
+    position: relative;
+    top: auto;
+    left: auto;
+    max-width: 100%;
+    opacity: 0.7;
+    padding: 0.4rem 0;
+    pointer-events: all;
   }
 
-  /* Slots : scroll horizontal */
-  .slotsRow {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-    gap: 0.35rem;
+  .fragment:hover {
+    opacity: 0.88;
   }
 
-  .slot {
-    min-width: 70px;
-    flex-shrink: 0;
-    padding: 0.6rem 0.4rem;
-  }
-
-  /* Tooltip slot : au-dessus sur mobile */
-  .slotTooltip {
-    bottom: auto;
-    top: calc(100% + 6px);
-    right: auto;
-    left: 0;
-    width: 200px;
-    max-width: 80vw;
+  .completionLine {
+    bottom: 11%;
+    max-width: 88%;
+    font-size: 0.76rem;
   }
 }

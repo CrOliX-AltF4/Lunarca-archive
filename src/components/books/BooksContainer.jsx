@@ -1,16 +1,17 @@
 import { useRef } from 'react'
 import BookItem from './BookItem.jsx'
 import { SCENES } from '../../constants/scenes.js'
-import bookNatsume from '../../assets/books/book_natsume.png'
-import bookProjet  from '../../assets/books/book_projet.png'
-import bookDevlog  from '../../assets/books/book_devlog.png'
-import bookContact from '../../assets/books/book_contact.png'
+import bookNatsume       from '../../assets/books/book_natsume.png'
+import bookProjet        from '../../assets/books/book_projet.png'
+import bookDevlog        from '../../assets/books/book_devlog.png'
+import bookContact       from '../../assets/books/book_contact.png'
+import bookContactLocked from '../../assets/books/book_contact_locked.png'
 
 const BOOKS_CONFIG = [
-  { id: SCENES.NATSUME, label: 'Natsume',      asset: bookNatsume, position: { left: '20%', top: '35%' }, floatDelay: 0   },
-  { id: SCENES.PROJET,  label: 'Projet w-AI-fu',asset: bookProjet,  position: { left: '37%', top: '30%' }, floatDelay: 0.8 },
-  { id: SCENES.DEVLOG,  label: 'Devlog',        asset: bookDevlog,  position: { left: '54%', top: '30%' }, floatDelay: 1.6 },
-  { id: SCENES.CONTACT, label: 'Contact',       asset: bookContact, position: { left: '71%', top: '35%' }, floatDelay: 2.4 },
+  { id: SCENES.NATSUME, label: 'Natsume',       asset: bookNatsume,  position: { left: '20%', top: '35%' }, floatDelay: 0   },
+  { id: SCENES.PROJET,  label: 'Projet w-AI-fu', asset: bookProjet,   position: { left: '37%', top: '30%' }, floatDelay: 0.8 },
+  { id: SCENES.DEVLOG,  label: 'Devlog',         asset: bookDevlog,   position: { left: '54%', top: '30%' }, floatDelay: 1.6 },
+  { id: SCENES.CONTACT, label: 'Contact',        asset: bookContact,  lockedAsset: bookContactLocked, position: { left: '71%', top: '35%' }, floatDelay: 2.4 },
 ]
 
 const RAPID_WINDOW = 1500

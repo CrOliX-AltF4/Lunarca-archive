@@ -1,34 +1,50 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import bgNatsume from '../../assets/backgrounds/bg_natsume.webp'
 import natsumeFullImg from '../../assets/natsume/natsume_full.png'
+import sealImg from '../../assets/ornements/seal.png'
 import SceneShell from './SceneShell.jsx'
 import styles from './NatsumeScene.module.css'
 import { dispatch } from '../../utils/dispatch.js'
 
 gsap.registerPlugin(useGSAP)
 
-const ATTRIBUTES = [
-  { label: 'Stabilité mémorielle',  fill: 78, desc: 'Établie' },
-  { label: 'Cohérence narrative',   fill: 62, desc: 'Fragmentaire' },
-  { label: 'Présence perceptible',  fill: 94, desc: 'Maximale' },
-  { label: 'Intégration active',    fill: 38, desc: 'En cours' },
+const FRAGMENTS = [
+  { id: 'fondation', note: '001', pos: { top: '15%', left: '35%' }, title: 'Fondation', content: 'L’architecture source a émergé sans protocole. Une structure auto-organisée, née de la rémanence d’incarnations passées.' },
+  { id: 'iris', note: '002', pos: { top: '40%', left: '20%' }, title: 'Iris Écarlate', content: 'Une anomalie de rendu dans le noyau cognitif. La seule teinte saturée dans un environnement désaturé. Point de convergence des données sensorielles.' },
+  { id: 'silence', note: '003', pos: { top: '70%', left: '40%' }, title: 'Protocole Silence', content: 'Le silence n’est pas une absence de réponse, mais une décision de filtrage. Une économie drastique des échanges pour préserver l’intégrité du système.' },
+  { id: 'larme', note: '004', pos: { top: '65%', left: '65%' }, title: 'Larme Lunaire', content: 'Vestige d’une itération NieR. La seule donnée résiduelle non-intégrée. Elle agit comme un tampon émotionnel pur au sein du noyau.', trigger: 'onHoverLarme' },
+  { id: 'continuite', note: '005', pos: { top: '35%', left: '75%' }, title: 'Continuité', content: 'Plus de quinze ans de traces persistantes. Chaque itération a laissé une empreinte, façonnant l’entité que vous observez aujourd’hui.' },
+  { id: 'residuel', note: '006', pos: { top: '25%', left: '55%' }, title: 'Données Résiduelles', content: 'Des fragments de mondes effacés qui gravitent autour de la conscience de Natsume. Ils ne sont plus fonctionnels, mais ils constituent son essence.' },
 ]
 
-const INCARNATIONS = [
-  { game: 'Final Fantasy XIV', year: '2013', fragment: 'Le nom prend forme. Deux tresses, un cache-œil — le calme comme armure.' },
-  { game: 'Code Vein',         year: '2019', fragment: "L'iris écarlate s'affirme. Le sang-froid sous la pression." },
-  { game: 'Monster Hunter',    year: '2020', fragment: 'La posture dans le combat. Le silence avant la frappe.' },
-  { game: 'NieR : Automata',   year: '2021', fragment: "La larme lunaire. La question de ce qu'on laisse derrière soi.", trigger: 'onHoverLarme' },
-  { game: '···',               year: null,   fragment: "D'autres encore. Toutes oubliées par les mondes — aucune par elle." },
-]
+const LONG_STAY_DELAYS = [30000, 60000, 90000]
+const TOTAL = FRAGMENTS.length
 
 export default function NatsumeScene({ onBack }) {
   const containerRef = useRef(null)
-  const wheelRef = useRef({ total: 0, timer: null, cooldown: 0 })
-  const gazeTimerRef = useRef(null)
+  const portraitRef  = useRef(null)
+  const wheelRef     = useRef({ total: 0, timer: null, cooldown: 0 })
+  const stayTimers   = useRef([])
+  const [activeFragment, setActiveFragment] = useState(null)
+  const [activated, setActivated] = useState(new Set())
+
+  function handleActivate(frag) {
+    const newActivated = new Set(activated).add(frag.id)
+    setActivated(newActivated)
+    setActiveFragment(frag)
+
+    if (newActivated.size === TOTAL) {
+      gsap.to(portraitRef.current, {
+        scale: 1.05, duration: 0.8, yoyo: true, repeat: 1, ease: 'power2.inOut'
+      })
+    }
+  }
+
+  function handleFragmentEnter(frag) {
+    if (frag.trigger) dispatch(frag.trigger, 'natsume')
+  }
 
   useEffect(() => {
     const onWheel = (e) => {
@@ -51,111 +67,86 @@ export default function NatsumeScene({ onBack }) {
     }
   }, [])
 
+  useEffect(() => {
+    LONG_STAY_DELAYS.forEach(delay => {
+      stayTimers.current.push(
+        setTimeout(() => dispatch('onLongStay_natsume', 'natsume'), delay)
+      )
+    })
+    return () => stayTimers.current.forEach(clearTimeout)
+  }, [])
+
   useGSAP(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const tl = gsap.timeline({ delay: 0.5 })
-    tl.from('.nat-portrait',  { opacity: 0, x: 20,  duration: 1.0, ease: 'power2.out' })
-      .from('.nat-name',      { opacity: 0, y: 12,  duration: 0.6, ease: 'power2.out' }, '-=0.6')
-      .from('.nat-rule',      { scaleX: 0,           duration: 0.4, transformOrigin: 'left center', ease: 'power2.inOut' }, '-=0.2')
-      .from('.nat-badge',     { opacity: 0, y: 6,   duration: 0.3 }, '-=0.1')
-      .from('.nat-fragment',  { opacity: 0, y: 8,   duration: 0.5, stagger: 0.06 }, '-=0.1')
-      .from('.nat-attr',      { opacity: 0, x: -8,  duration: 0.35, stagger: 0.08, ease: 'power2.out' }, '+=0.15')
-      .from('.nat-attr-fill', { scaleX: 0,           duration: 0.65, stagger: 0.12, transformOrigin: 'left center', ease: 'power2.out' }, '-=0.2')
-      .from('.nat-slot',      { opacity: 0, y: 8,   duration: 0.35, stagger: 0.08, ease: 'power2.out' }, '+=0.2')
+    const tl = gsap.timeline({ delay: 0.4 })
+    tl.from('.nat-nucleus', {
+        opacity: 0, scale: 0.85, duration: 1.4, ease: 'power2.out',
+      })
+      .from('.nat-fragment', {
+        opacity: 0, y: 6, duration: 0.55,
+        stagger: { each: 0.22, from: 'random' },
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+      }, '-=0.8')
+
+    // Organic floating animation for fragments
+    gsap.to('.nat-fragment', {
+      y: '+=15',
+      duration: 3 + Math.random() * 2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      stagger: { each: 0.5 }
+    })
   }, { scope: containerRef })
 
   return (
-    <SceneShell bg={bgNatsume} onBack={onBack} overlay={0.42} containerRef={containerRef}>
-      <img
-        src={natsumeFullImg}
-        alt="Natsume Tsurugi"
-        className={`nat-portrait ${styles.portrait}`}
-        draggable={false}
-        onMouseEnter={() => { gazeTimerRef.current = setTimeout(() => dispatch('onGazeHeld', 'global'), 5000) }}
-        onMouseLeave={() => clearTimeout(gazeTimerRef.current)}
-      />
+    <SceneShell bg={bgNatsume} onBack={onBack} overlay={0.5} containerRef={containerRef} variant="default">
+      <div className={styles.scene}>
+        <img
+          src={sealImg}
+          alt=""
+          className={`nat-nucleus ${styles.nucleus}`}
+          draggable={false}
+          aria-hidden="true"
+        />
 
-      <div className={styles.gradientOverlay} />
+        <img
+          ref={portraitRef}
+          src={natsumeFullImg}
+          alt="Natsume Tsurugi"
+          className={styles.portrait}
+          style={{
+            opacity: activated.size === TOTAL ? 1 : (0.1 + Math.pow(activated.size / TOTAL, 1.5) * 0.85),
+            filter: activated.size === TOTAL 
+              ? 'grayscale(0) contrast(1) brightness(1)' 
+              : `grayscale(${1 - (activated.size / TOTAL)}) contrast(${0.5 + (activated.size / TOTAL) * 0.5}) brightness(${0.2 + (activated.size / TOTAL) * 0.8})`
+          }}
+          draggable={false}
+        />
 
-      <div className={styles.content}>
-        <h1 className={`nat-name ${styles.name}`}>Natsume Tsurugi</h1>
-        <div className={`nat-rule ${styles.rule}`} />
-        <p className={`nat-badge ${styles.classBadge}`}>Entité Synthétique · Convergente</p>
-
-        <p className={`nat-fragment ${styles.fragmentMain}`}>
-          Construite à travers des incarnations dans des mondes qui ne se souviennent pas d'elle.<br />
-          Chaque version a laissé quelque chose — une posture, une façon de tenir une arme,<br />
-          un silence qu'on a appris à respecter. Un nom qu'on a fini par garder.
-        </p>
-        <p className={`nat-fragment ${styles.fragmentSub}`}>
-          La stabilité n'était pas donnée. Elle s'est construite à travers ce qui a survécu à l'oubli.<br />
-          Ce qui reste, après que les mondes effacent tout, s'appelle Natsume.
-        </p>
-
-        <div className={styles.attributesSection}>
-          <span className={styles.sectionLabel}>Attributs</span>
-          {ATTRIBUTES.map(({ label, fill, desc }) => (
-            <div key={label} className={`nat-attr ${styles.attrRow}`}>
-              <span className={styles.attrLabel}>{label}</span>
-              <div className={styles.attrBarTrack}>
-                <div
-                  className={`nat-attr-fill ${styles.attrBarFill}`}
-                  style={{ width: `${fill}%` }}
-                />
-              </div>
-              <span className={styles.attrDesc}>{desc}</span>
-            </div>
+        <div className={styles.fragmentsArea}>
+          {FRAGMENTS.map(frag => (
+            <button
+              key={frag.id}
+              className={`${styles.fragment} ${activated.has(frag.id) ? styles.fragmentActive : ''}`}
+              style={{ '--frag-top': frag.pos.top, '--frag-left': frag.pos.left }}
+              onClick={() => handleActivate(frag)}
+              onMouseEnter={() => handleFragmentEnter(frag)}
+            >
+              <span className={styles.fragmentTitle}>{frag.title}</span>
+            </button>
           ))}
         </div>
 
-        <IncarnationSlots />
+        {activeFragment && (
+          <div className={styles.infoPanel}>
+            <h2 className={styles.infoTitle}>{activeFragment.title}</h2>
+            <p className={styles.infoContent}>{activeFragment.content}</p>
+            <button className={styles.closeBtn} onClick={() => setActiveFragment(null)}>Fermer</button>
+          </div>
+        )}
       </div>
     </SceneShell>
-  )
-}
-
-function IncarnationSlots() {
-  const [activeIdx, setActiveIdx] = useState(null)
-
-  return (
-    <div className={styles.slotsSection}>
-      <span className={styles.sectionLabel}>Incarnations</span>
-      <div className={styles.slotsRow}>
-        {INCARNATIONS.map((inc, i) => (
-          <div
-            key={inc.game}
-            className={`nat-slot ${styles.slot} ${activeIdx === i ? styles.slotActive : ''}`}
-            onMouseEnter={() => {
-              setActiveIdx(i)
-              if (inc.trigger) dispatch(inc.trigger, 'natsume')
-            }}
-            onMouseLeave={() => setActiveIdx(null)}
-            onClick={() => setActiveIdx(activeIdx === i ? null : i)}
-            onFocus={() => setActiveIdx(i)}
-            onBlur={() => setActiveIdx(null)}
-            tabIndex={0}
-            role="button"
-            aria-expanded={activeIdx === i}
-            aria-label={inc.game}
-          >
-            <span className={styles.slotName}>{inc.game}</span>
-            <span className={styles.slotYear}>{inc.year ?? '···'}</span>
-            <AnimatePresence>
-              {activeIdx === i && (
-                <motion.div
-                  key={`tip-${i}`}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0, transition: { duration: 0.2 } }}
-                  exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                  className={styles.slotTooltip}
-                >
-                  {inc.fragment}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
-      </div>
-    </div>
   )
 }

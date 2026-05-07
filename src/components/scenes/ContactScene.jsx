@@ -1,25 +1,12 @@
 import { motion } from 'framer-motion'
 import bgContact from '../../assets/backgrounds/bg_contact.webp'
-import BackButton from '../ui/BackButton.jsx'
+import SceneShell from './SceneShell.jsx'
 import RuneStele from '../contact/RuneStele.jsx'
 import styles from './ContactScene.module.css'
 
-const sceneVariants = {
-  initial: { opacity: 0, scale: 0.97 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
-  exit: { opacity: 0, scale: 0.97, transition: { duration: 0.6 } },
-}
-
 export default function ContactScene({ onBack }) {
   return (
-    <motion.div
-      variants={sceneVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className={styles.scene}
-      style={{ backgroundImage: `url(${bgContact})` }}
-    >
+    <SceneShell bg={bgContact} onBack={onBack} overlay={0}>
       <div className={styles.vignette} />
 
       <motion.div
@@ -29,8 +16,6 @@ export default function ContactScene({ onBack }) {
       >
         <RuneStele />
       </motion.div>
-
-      <BackButton onClick={onBack} />
-    </motion.div>
+    </SceneShell>
   )
 }

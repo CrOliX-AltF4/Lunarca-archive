@@ -10,37 +10,48 @@
 ```
 src/
 ├── assets/
-│   ├── backgrounds/     bg_library, bg_natsume, bg_projet, bg_devlog, bg_contact, bg_intro, bg_intro2
-│   ├── books/           book_natsume, book_projet, book_devlog, book_contact
-│   ├── natsume/         natsume_idle, natsume_parle, natsume_approbation, natsume_irritation,
-│   │                    natsume_surprise, natsume_gene, natsume_disappointment, natsume_full (inutilisé)
+│   ├── backgrounds/     bg_library, bg_natsume, bg_projet, bg_devlog, bg_book,
+│   │                    bg_contact, bg_intro, bg_intro2
+│   ├── books/           book_natsume, book_projet, book_devlog, book_contact,
+│   │                    book_memento_open
+│   ├── natsume/         natsume_idle, natsume_parle, natsume_approbation,
+│   │                    natsume_irritation, natsume_surprise, natsume_gene,
+│   │                    natsume_disappointment, natsume_full (NatsumeScene portrait)
 │   └── ornements/       seal, seal_crack1, seal_crack2, frame_corner, frame_side
 │
 ├── components/
 │   ├── scenes/
-│   │   ├── LibraryScene.jsx + .module.css    hub principal, DustParticles, Konami, easterEgg_lys
-│   │   ├── NatsumeScene.jsx + .module.css    RPG character sheet — stat bars + incarnation slots
-│   │   ├── ProjetScene.jsx + .module.css     console archive 2 colonnes — manifeste + système
-│   │   ├── DevlogScene.jsx + .module.css     wrapper devlog
-│   │   └── ContactScene.jsx + .module.css    fond + RuneStele
+│   │   ├── LibraryScene.jsx + .module.css    hub principal, DustParticles, Konami,
+│   │   │                                      easterEgg_lys, Contact scellé (à impl.)
+│   │   ├── NatsumeScene.jsx + .module.css    RPG character sheet — portrait full,
+│   │   │                                      stat bars, incarnation slots
+│   │   ├── ProjetScene.jsx + .module.css     archive 2 colonnes — manifeste + système
+│   │   ├── DevlogScene.jsx + .module.css     bureau → livre (DeskView / ReadingView)
+│   │   └── ContactScene.jsx + .module.css    fond + RuneStele (scellé par défaut, à impl.)
 │   ├── books/
-│   │   ├── BookItem.jsx          hover 3s → onBookHoverLong, single/triple clic
-│   │   └── BooksContainer.jsx    rapid click detection (4 livres / 1.5s → onBooksRapidClick)
+│   │   ├── BookItem.jsx          hover 3s → onBookHoverLong, single/triple clic,
+│   │   │                          résistance Contact scellé (à impl.)
+│   │   └── BooksContainer.jsx    rapid click detection (BUG: mappe index pas IDs)
 │   ├── widget/
-│   │   ├── NatsumeWidget.jsx     AnimatePresence mode="wait", 7 portraits, masqué sur scène natsume
-│   │   └── DialogueBubble.jsx    bulle dialogue BD style
+│   │   ├── NatsumeWidget.jsx     AnimatePresence mode="wait", 7 portraits,
+│   │   │                          masqué sur scène natsume, isMobile non-réactif (BUG)
+│   │   └── DialogueBubble.jsx    bulle dialogue BD style, typewriter 28ms/char
+│   ├── narrator/                  ── À CRÉER ──
+│   │   ├── NarratorNote.jsx      feuille qui glisse depuis bord d'écran
+│   │   └── NarratorNote.module.css
 │   ├── devlog/
 │   │   └── DevlogBook.jsx        page gauche liste / reliure / page droite scroll,
-│   │                             scroll velocity, onAllDevlogRead, trophy scroll
+│   │                              scroll velocity, onAllDevlogRead, trophy scroll
 │   ├── contact/
 │   │   └── RuneStele.jsx         4 runes cliquables, ItemPanel overlay, CornerButton,
-│   │                             Discord copy, triggers câblés
+│   │                              Discord copy, triggers câblés
 │   └── ui/
 │       ├── SealIntro.jsx         intro 3 clics (seal → crack1 → crack2 → bg_intro2)
+│       │                          retour visit : démarre à crack2 (1 clic)
 │       ├── BackButton.jsx
 │       ├── DustParticles.jsx     particules CSS LibraryScene uniquement
 │       ├── FrameOverlay.jsx      coins + bordures decoratifs
-│       ├── Footer.jsx            bas de page, accès SystemMenu
+│       ├── Footer.jsx            bas de page, accès SystemMenu (◈)
 │       ├── SystemMenu.jsx        grain toggle, reset seal, achievements
 │       ├── AchievementsPanel.jsx panneau achievements
 │       ├── TrophyNotification.jsx notification style jeu
@@ -48,25 +59,28 @@ src/
 │
 ├── hooks/
 │   ├── useNatsumeWidget.js   busyRef, TRANSITION_LOCK 700ms, TRIGGER_COOLDOWN 500ms,
-│   │                         idle 30s + indifférence 60s + cursor idle 120s,
-│   │                         onReturnVisit (localStorage), onMidnight, dblclick, copy,
-│   │                         findEntry() → filter() + Math.random() (variantes)
+│   │                          idle 30s + indifférence 60s + cursor idle 120s,
+│   │                          onReturnVisit (localStorage), onMidnight, dblclick, copy,
+│   │                          findEntry() → filter() + Math.random() (variantes)
+│   ├── useNarrator.js        ── À CRÉER ── triggers Narrateur, moins aléatoire,
+│   │                          narrative beats + réactif actions/inactions
 │   └── useAchievements.js    écoute natsume:trigger, unlock via achievements.js
 │
 ├── data/
-│   ├── dialogues.json        70+ entrées, 2-3 variantes par trigger, sessionOnce flag
-│   ├── idleDialogues.json    15-18 entrées par scène, 5 scènes
-│   ├── achievements.js       6 achievements : easterEgg_konami, onAllLinksClicked,
-│   │                         onAllDevlogRead, easterEgg_lys, onGazeHeld, onCartographer
-│   └── devlog.json           3 entrées (mars / avril / mai 2026) — projet w-AI-fu
+│   ├── dialogues.json          70+ entrées, 2-3 variantes par trigger, sessionOnce flag
+│   ├── idleDialogues.json      15-18 entrées par scène, 5 scènes
+│   ├── narratorDialogues.json  ── À CRÉER ── entrées Narrateur par scène et trigger
+│   ├── achievements.js         6 achievements : easterEgg_konami, onAllLinksClicked,
+│   │                            onAllDevlogRead, easterEgg_lys, onGazeHeld, onCartographer
+│   └── devlog.json             3 entrées (mars / avril / mai 2026) — projet w-AI-fu
 │
 └── constants/
-    └── scenes.js             SCENES enum — source de vérité
+    └── scenes.js               SCENES enum — source de vérité
 ```
 
 ---
 
-## WIDGET — GARDES-FOUS
+## WIDGET NATSUME — GARDES-FOUS
 
 | Constante | Valeur | Rôle |
 |-----------|--------|------|
@@ -79,6 +93,29 @@ src/
 `busyRef` bloque tout nouveau trigger pendant une interaction active.
 `force: true` bypass pour `onEnter` (une seule fois par changement de scène).
 Cleanup de scène : `setDialogue(null)` + `setMood('idle')` immédiat.
+
+---
+
+## NARRATEUR — SYSTÈME
+
+Le Narrateur est une voix distincte de Natsume. Ses interventions glissent depuis le bord de l'écran via `NarratorNote`. Natsume peut réagir à ses paroles — lui ne répond jamais à Natsume.
+
+| Constante | Valeur cible | Rôle |
+|-----------|-------------|------|
+| `NARRATOR_ENTRY_DELAY` | ~800ms après entrée scène | Laisser Natsume parler d'abord |
+| `NARRATOR_MIN_INTERVAL` | ~3s | Éviter le chevauchement avec Natsume |
+
+**Position par scène (bord d'entrée du NarratorNote) :**
+
+| Scène | Bord d'entrée |
+|-------|--------------|
+| Library | haut-gauche |
+| Natsume | gauche |
+| Projet | bas-gauche |
+| Devlog (bureau) | haut-droite |
+| Contact | haut |
+
+**Événement dispatch :** `window.dispatchEvent(new CustomEvent('narrator:trigger', { detail: { trigger, scene } }))`
 
 ---
 
@@ -97,7 +134,7 @@ disappointment natsume_disappointment.png
 
 ---
 
-## TRIGGERS CÂBLÉS
+## TRIGGERS NATSUME CÂBLÉS
 
 | Trigger | Scène | Condition |
 |---------|-------|-----------|
@@ -105,12 +142,12 @@ disappointment natsume_disappointment.png
 | `onBookHover` | library | hover livre |
 | `onBookHoverLong` | library | hover 3s |
 | `onBookClick` | library | single click |
-| `onBooksRapidClick` | library | 4 livres cliqués en 1.5s |
+| `onBooksRapidClick` | library | 4 clics livres en 1.5s (BUG: mappe index pas IDs) |
 | `onScrollSlow` | natsume | wheel < 250px en 350ms |
 | `onScrollFast` | natsume, devlog | wheel > 250px OU velocity > 1.2px/ms |
 | `onHoverLarme` | natsume | hover slot NieR dans IncarnationSlots |
 | `onAllDevlogRead` | devlog | toutes les entrées cliquées |
-| `onLinkClick_twitch` | projet | clic lien Twitch |
+| `onLinkClick_twitch` | projet | clic lien Twitch (entrée dialogues.json à vérifier) |
 | `onRuneHover` | contact | hover rune |
 | `onFirstRuneClick` | contact | premier clic rune |
 | `onLinkClick_github` | contact | clic GitHub |
@@ -127,10 +164,25 @@ disappointment natsume_disappointment.png
 | `onSealReset` | global | reset seal |
 | `onGazeHeld` | global | 5s sur œil Natsume |
 | `easterEgg_konami` | library | ↑↑↓↓←→←→ |
-| `easterEgg_lys` | natsume | triple clic livre Natsume |
+| `easterEgg_lys` | natsume | triple clic livre Natsume (dispatché depuis library) |
 | `onEasterEggComplete` | global | tous eggs trouvés *(tracking non implémenté)* |
 
-Dispatch : `window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { trigger, scene } }))`
+---
+
+## TRIGGERS NARRATEUR — PLAN (à implémenter)
+
+| Trigger | Scène | Condition | Type |
+|---------|-------|-----------|------|
+| `intro_library` | library | première visite tous temps | beat narratif |
+| `intro_natsume` | natsume | première entrée scène | beat narratif |
+| `intro_projet` | projet | première entrée scène | beat narratif |
+| `intro_devlog` | devlog | première entrée scène | beat narratif |
+| `intro_contact_sealed` | library | clic sur Contact scellé | réactif |
+| `contact_unsealed` | library | Contact se déscelle | beat narratif |
+| `onPlayerInactive` | global | inactivité prolongée (>45s) | réactif |
+| `onAllScenesVisited` | global | Cartographer atteint | beat narratif |
+
+*(Liste indicative — à enrichir avec les dialogues)*
 
 ---
 
@@ -151,24 +203,35 @@ Dispatch : `window.dispatchEvent(new CustomEvent('natsume:trigger', { detail: { 
 ## NAVIGATION
 
 ```
-SealIntro (3 clics, 1 si return visit prévu) → App
+SealIntro (3 clics, 1 si return visit) → App
 App → LibraryScene (hub)
 LibraryScene → [clic livre] → scène secondaire
 Scène secondaire → [BackButton] → LibraryScene
+
+Contact : scellé par défaut → résistance au clic → déblocage par condition narrative (TBD)
 
 Hash routing : window.location.hash = currentScene (App.jsx)
 React.lazy + Suspense sur toutes les scènes
 NatsumeWidget masqué si currentScene === SCENES.NATSUME
 Cartographer tracking : visitedScenesRef (Set) dans App.jsx
+
+Return visit : SealIntro démarre à clicks=2 (crack2) ✓
+Reprise dernière scène : resolveInitialScene() lit lunarca_last_scene ✓
 ```
 
 ---
 
 ## DETTE TECHNIQUE
 
-| Item | Action requise |
-|------|---------------|
-| `onLinkClick_twitch` RuneStele | Ajouter rune Twitch dans Contact OU retirer le trigger JSON |
-| `natsume_full.png` | Intégrer dans NatsumeScene ou supprimer de l'assets |
-| `onEasterEggComplete` | Implémenter tracking des 3 eggs pour déclencher le trigger |
-| Lien Twitch ProjetScene | `twitch.tv/natsumetsurugi` — à vérifier quand chaîne active |
+| Item | Priorité | Action requise |
+|------|----------|---------------|
+| `onEasterEggComplete` tracking | moyenne | Implémenter suivi des 3 eggs pour déclencher le trigger |
+| Lien Twitch ProjetScene | basse | Vérifier URL quand chaîne active |
+| Alt text sur tous `<img>` | haute | Accessibilité baseline avant déploiement |
+| Font loading `font-display: swap` | moyenne | Évite FOUT |
+| Open Graph + og-preview | moyenne | Asset portrait + fond à générer |
+| Mobile fix global | haute | Grain/particules off sur `@media (hover: none)`, NatsumeWidget safe |
+| Contact scellé — mécanique | haute | Condition TBD, résistance livre, déblocage |
+| NarratorNote composant | haute | Nouveau composant à créer |
+| useNarrator hook | haute | Nouveau hook à créer |
+| narratorDialogues.json | haute | Données Narrateur à rédiger |

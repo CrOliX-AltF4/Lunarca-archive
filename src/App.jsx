@@ -1,17 +1,19 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import SealIntro     from './components/ui/SealIntro.jsx'
-import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
-import NarratorNote  from './components/narrator/NarratorNote.jsx'
-import FrameOverlay  from './components/ui/FrameOverlay.jsx'
-import Footer        from './components/ui/Footer.jsx'
-import SystemMenu    from './components/ui/SystemMenu.jsx'
-import CustomCursor        from './components/ui/CustomCursor.jsx'
-import TrophyNotification  from './components/ui/TrophyNotification.jsx'
-import AchievementsPanel   from './components/ui/AchievementsPanel.jsx'
-import useAchievements     from './hooks/useAchievements.js'
-import useNarrator         from './hooks/useNarrator.js'
-import { SCENES }          from './constants/scenes.js'
+import SealIntro              from './components/ui/SealIntro.jsx'
+import NarratorIntroOverlay   from './components/ui/NarratorIntroOverlay.jsx'
+import NatsumeWidget          from './components/widget/NatsumeWidget.jsx'
+import NarratorNote           from './components/narrator/NarratorNote.jsx'
+import FrameOverlay           from './components/ui/FrameOverlay.jsx'
+import Footer                 from './components/ui/Footer.jsx'
+import SystemMenu             from './components/ui/SystemMenu.jsx'
+import CustomCursor           from './components/ui/CustomCursor.jsx'
+import TrophyNotification     from './components/ui/TrophyNotification.jsx'
+import AchievementsPanel      from './components/ui/AchievementsPanel.jsx'
+import useAchievements        from './hooks/useAchievements.js'
+import useNarrator            from './hooks/useNarrator.js'
+import useNarrativeState      from './hooks/useNarrativeState.js'
+import { SCENES }             from './constants/scenes.js'
 
 const LibraryScene = lazy(() => import('./components/scenes/LibraryScene.jsx'))
 const NatsumeScene = lazy(() => import('./components/scenes/NatsumeScene.jsx'))
@@ -36,93 +38,112 @@ function SceneFallback() {
   )
 }
 
-// Résout le hash d'entrée — null si invalide ou absent
 function resolveHashScene() {
   const h = window.location.hash.replace('#', '')
   return Object.values(SCENES).includes(h) ? h : null
 }
 
-function resolveInitialScene(hashScene) {
-  if (hashScene) return hashScene
-  const returning = parseInt(localStorage.getItem('lunarca_seal') || '0') > 0
-  if (returning) {
-    const last = localStorage.getItem('lunarca_last_scene')
-    if (last && Object.values(SCENES).includes(last)) return last
-  }
-  return SCENES.LIBRARY
+function resolveIntroVariant() {
+  const hasVisited = !!localStorage.getItem('lunarca_has_visited')
+  if (!hasVisited) return 'first'
+  if (new Date().getHours() === 0) return 'night'
+  return 'return'
 }
 
 export default function App() {
   const hashScene = resolveHashScene()
 
-  // Direct URL (A2) → bypass SealIntro, atterrissage direct
-  const [archiveOpen, setArchiveOpen] = useState(!!hashScene)
-  const [currentScene, setCurrentScene] = useState(() => resolveInitialScene(hashScene))
-  const [devlogReading, setDevlogReading] = useState(false)
+  const [introPhase, setIntroPhase]         = useState(hashScene ? 'archive' : 'seal')
+  const [currentScene, setCurrentScene]     = useState(hashScene ?? SCENES.LIBRARY)
+  const [devlogReading, setDevlogReading]   = useState(false)
   const [systemMenuOpen, setSystemMenuOpen] = useState(false)
   const [achievementsOpen, setAchievementsOpen] = useState(false)
-  const [isContactSealed, setIsContactSealed] = useState(
-    () => !localStorage.getItem('lunarca_contact_unsealed')
-  )
+
+  const introVariant = useRef(resolveIntroVariant())
+  const archiveOpen  = introPhase === 'archive'
+
+  const {
+    isContactSealed,
+    recordScene,
+    recordDevlogProgress,
+    recordGazeHeld,
+    recordContactAttempt,
+    resetAll,
+  } = useNarrativeState()
+
   const achievement = useAchievements()
-  const { text: narratorText, clear: clearNarrator } = useNarrator(currentScene)
+  const { text: narratorText, type: narratorType, side: narratorSide, clear: clearNarrator } = useNarrator(currentScene)
 
-  const sealInitialClicks = parseInt(localStorage.getItem('lunarca_seal') || '0') >= 3 ? 2 : 0
-  const visitedScenesRef  = useRef(new Set())
-  const cartographerFired = useRef(false)
-
-  const handleSealComplete = useCallback(() => setArchiveOpen(true), [])
-  const navigate = useCallback((scene) => setCurrentScene(scene), [])
-  const goBack   = useCallback(() => setCurrentScene(SCENES.LIBRARY), [])
-  const handleResetSeal = useCallback(() => {
-    localStorage.removeItem('lunarca_contact_unsealed')
-    setIsContactSealed(true)
-    setArchiveOpen(false)
+  // Transitions d'intro
+  const handleSealComplete  = useCallback(() => setIntroPhase('narrator'), [])
+  const handleIntroComplete = useCallback(() => {
+    localStorage.setItem('lunarca_has_visited', Date.now().toString())
+    setIntroPhase('archive')
   }, [])
 
+  // Navigation — recordScene ici uniquement (évite le double-appel via useEffect)
+  const navigate = useCallback((scene) => {
+    recordScene(scene)
+    setCurrentScene(scene)
+  }, [recordScene])
+
+  const goBack = useCallback(() => {
+    recordScene(SCENES.LIBRARY)
+    setCurrentScene(SCENES.LIBRARY)
+  }, [recordScene])
+
+  // Enregistrement initial (Library) quand l'archive s'ouvre
+  useEffect(() => {
+    if (archiveOpen) recordScene(SCENES.LIBRARY)
+  }, [archiveOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Hash + last scene persistence
   useEffect(() => {
     if (!archiveOpen) return
     window.location.hash = currentScene
     localStorage.setItem('lunarca_last_scene', currentScene)
   }, [currentScene, archiveOpen])
 
+  // Reset seal
+  const handleResetSeal = useCallback(() => {
+    resetAll()
+    setCurrentScene(SCENES.LIBRARY)
+    setIntroPhase('seal')
+  }, [resetAll])
+
+  // Natsume events → narrative state
   useEffect(() => {
-    let tid
-    if (!archiveOpen || cartographerFired.current) return () => clearTimeout(tid)
-    const sections = [SCENES.NATSUME, SCENES.PROJET, SCENES.DEVLOG, SCENES.CONTACT]
-    visitedScenesRef.current.add(currentScene)
-    if (sections.every(s => visitedScenesRef.current.has(s))) {
-      cartographerFired.current = true
-      window.dispatchEvent(new CustomEvent('natsume:trigger', {
-        detail: { trigger: 'onCartographer', scene: 'global' },
-      }))
-      window.dispatchEvent(new CustomEvent('narrator:trigger', {
-        detail: { trigger: 'onAllScenesVisited', scene: 'global' },
-      }))
-      if (!localStorage.getItem('lunarca_contact_unsealed')) {
-        localStorage.setItem('lunarca_contact_unsealed', '1')
-        setIsContactSealed(false)
-        tid = setTimeout(() => {
-          window.dispatchEvent(new CustomEvent('narrator:trigger', {
-            detail: { trigger: 'contact_unsealed', scene: 'library' },
-          }))
-        }, 2000)
+    const handler = (e) => {
+      const { trigger } = e.detail ?? {}
+      if (trigger === 'onGazeHeld')      recordGazeHeld()
+      if (trigger === 'onDevlogProgress') recordDevlogProgress()
+      if (trigger === 'onContactSealAttempt') {
+        const idx = recordContactAttempt() - 1
+        window.dispatchEvent(new CustomEvent('narrator:trigger', {
+          detail: { trigger: 'intro_contact_sealed', scene: 'library', index: idx },
+        }))
       }
     }
-    return () => clearTimeout(tid)
-  }, [currentScene, archiveOpen])
+    window.addEventListener('natsume:trigger', handler)
+    return () => window.removeEventListener('natsume:trigger', handler)
+  }, [recordGazeHeld, recordDevlogProgress, recordContactAttempt])
 
   return (
     <div style={{ width: '100vw', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
-
       <CustomCursor />
 
       <AnimatePresence>
-        {!archiveOpen && (
-          <SealIntro
-            key="seal"
-            initialClicks={sealInitialClicks}
-            onComplete={handleSealComplete}
+        {introPhase === 'seal' && (
+          <SealIntro key="seal" initialClicks={0} onComplete={handleSealComplete} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {introPhase === 'narrator' && (
+          <NarratorIntroOverlay
+            key="narrator-intro"
+            variant={introVariant.current}
+            onComplete={handleIntroComplete}
           />
         )}
       </AnimatePresence>
@@ -146,8 +167,14 @@ export default function App() {
               <ContactScene key="contact" onBack={goBack} />
             )}
           </AnimatePresence>
+
           <NatsumeWidget currentScene={currentScene} />
-          <NarratorNote text={narratorText} onDone={clearNarrator} />
+          <NarratorNote
+            text={narratorText}
+            type={narratorType}
+            side={narratorSide}
+            onDone={clearNarrator}
+          />
           {!devlogReading && <FrameOverlay />}
           <Footer currentScene={currentScene} onSystemMenuOpen={() => setSystemMenuOpen(true)} />
           <SystemMenu
@@ -171,7 +198,6 @@ export default function App() {
           </AnimatePresence>
         </Suspense>
       )}
-
     </div>
   )
 }

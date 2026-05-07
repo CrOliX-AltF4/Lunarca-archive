@@ -22,7 +22,9 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(C:/Users/Loric/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Skill(ruflo-workflows:workflow-create)",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('C:/code/Lunarca/src/data/narratorDialogues.json'\\), null, 2\\)\\)\")"
     ],
     "deny": [
       "Bash(rm -rf *)",

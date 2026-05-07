@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 import { dispatch } from '../../utils/dispatch.js'
 
 export default function BookItem({ book, onClick, onTripleClick, sealed = false }) {
   const clickDataRef = useRef({ count: 0, timer: null })
   const hoverLongRef = useRef(null)
   const shakeRef = useRef(null)
-  const [flipping, setFlipping] = useState(false)
+  const containerRef = useRef(null)
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches)
+  const [isHovered, setIsHovered] = useState(false)
   const imgWidth = isMobile ? '90px' : '120px'
 
   useEffect(() => {
@@ -17,6 +19,17 @@ export default function BookItem({ book, onClick, onTripleClick, sealed = false 
     mql.addEventListener('change', handler)
     return () => mql.removeEventListener('change', handler)
   }, [])
+
+  useGSAP(() => {
+    gsap.set(containerRef.current, { clipPath: 'inset(0% 0% 0% 0%)' })
+    gsap.to(containerRef.current, {
+      y: '+=10',
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    })
+  }, { scope: containerRef })
 
   const handleClick = () => {
     if (sealed) {
@@ -30,9 +43,6 @@ export default function BookItem({ book, onClick, onTripleClick, sealed = false 
           .to(shakeRef.current, { x: 0, rotation: 0, duration: 0.1, ease: 'power2.inOut' })
       }
       dispatch('onContactSealAttempt', 'library')
-      window.dispatchEvent(new CustomEvent('narrator:trigger', {
-        detail: { trigger: 'intro_contact_sealed', scene: 'library' },
-      }))
       return
     }
 
@@ -49,8 +59,20 @@ export default function BookItem({ book, onClick, onTripleClick, sealed = false 
     data.timer = setTimeout(() => {
       if (data.count === 1) {
         dispatch('onBookClick', book.id)
-        setFlipping(true)
-        setTimeout(() => onClick(), 150)
+
+        // Dispersion animation: rotate and shrink towards center
+        gsap.timeline({ onComplete: () => onClick() })
+          .to(containerRef.current, { 
+            rotate: 15,
+            scale: 0.5,
+            clipPath: 'inset(50% 50% 50% 50%)',
+            duration: 0.5, 
+            ease: 'power2.inOut' 
+          })
+          .to(containerRef.current, { 
+            opacity: 0, 
+            duration: 0.1 
+          }, '-=0.1')
       }
       data.count = 0
     }, 300)
@@ -58,6 +80,7 @@ export default function BookItem({ book, onClick, onTripleClick, sealed = false 
 
   const handleHoverStart = () => {
     if (sealed) return
+    setIsHovered(true)
     dispatch('onBookHover', book.id)
     hoverLongRef.current = setTimeout(() => {
       dispatch('onBookHoverLong', book.id)
@@ -65,41 +88,26 @@ export default function BookItem({ book, onClick, onTripleClick, sealed = false 
   }
 
   const handleHoverEnd = () => {
+    setIsHovered(false)
     clearTimeout(hoverLongRef.current)
   }
-
   return (
     <div ref={shakeRef} style={{ position: 'absolute', left: book.position.left, top: book.position.top }}>
       <motion.div
+        ref={containerRef}
         onClick={handleClick}
         onHoverStart={handleHoverStart}
         onHoverEnd={handleHoverEnd}
         style={{ transformOrigin: 'bottom center', perspective: '500px' }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={flipping ? {
-          rotateY: -28, scaleX: 0.82, opacity: 0.6, y: 0,
-          transition: { duration: 0.14, ease: 'easeIn' },
-        } : {
-          opacity: sealed ? 0.35 : 1,
-          y: sealed ? 0 : [0, -8, 0],
-          filter: sealed
-            ? 'grayscale(0.7) drop-shadow(0 0 0px rgba(0,0,0,0))'
-            : 'drop-shadow(0 0 0px rgba(245,243,239,0))',
-          transition: {
-            opacity: { duration: 0.8, delay: book.floatDelay * 0.3 },
-            y: sealed ? {} : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: book.floatDelay },
-            filter: { duration: 0.3 },
-          },
-        }}
-        whileHover={flipping || sealed ? {} : {
-          scale: 1.05,
-          filter: 'drop-shadow(0 0 14px rgba(245,243,239,0.5))',
-          transition: { duration: 0.2 },
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: 1,
+          filter: isHovered && !sealed ? 'drop-shadow(0 0 14px rgba(245,243,239,0.5)) brightness(1.2)' : 'drop-shadow(0 0 0px rgba(0,0,0,0))'
         }}
         whileTap={{ scale: sealed ? 1 : 0.97 }}
       >
         <img
-          src={book.asset}
+          src={sealed && book.lockedAsset ? book.lockedAsset : book.asset}
           alt={book.label}
           style={{ width: imgWidth, height: 'auto', display: 'block' }}
         />
@@ -111,7 +119,6 @@ export default function BookItem({ book, onClick, onTripleClick, sealed = false 
           marginTop: '0.5rem',
           color: sealed ? 'var(--color-fog)' : 'var(--color-parchment)',
           textShadow: '0 0 8px rgba(0,0,0,0.8)',
-          opacity: sealed ? 0.5 : 1,
         }}>
           {book.label}
         </p>

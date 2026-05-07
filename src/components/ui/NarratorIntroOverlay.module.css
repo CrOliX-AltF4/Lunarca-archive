@@ -1,0 +1,52 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  pointer-events: none;
+}
+
+.textBox {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 520px;
+  padding: 0 2rem;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phase {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  letter-spacing: 0.12em;
+  color: var(--color-parchment);
+  line-height: 1.7;
+  text-align: center;
+  margin: 0;
+}
+
+.hint {
+  position: absolute;
+  bottom: 2.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--color-fog);
+  opacity: 0.35;
+  text-transform: uppercase;
+  pointer-events: none;
+}

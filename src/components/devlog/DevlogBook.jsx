@@ -57,10 +57,16 @@ export default function DevlogBook({ onClose }) {
     setActiveEntry(entry)
     setActiveIdx(idx)
     setBookState('READING')
-    readRef.current.add(entry.id)
+    if (!readRef.current.has(entry.id)) {
+      readRef.current.add(entry.id)
+      dispatchDevlog('onDevlogProgress')
+    }
     if (!allReadFiredRef.current && readRef.current.size >= devlogData.length) {
       allReadFiredRef.current = true
       dispatchDevlog('onAllDevlogRead')
+      window.dispatchEvent(new CustomEvent('narrator:trigger', {
+        detail: { trigger: 'onAllDevlogRead', scene: 'devlog' },
+      }))
     }
   }
 

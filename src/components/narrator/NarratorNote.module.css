@@ -1,0 +1,23 @@
+.note {
+  position: fixed;
+  z-index: 70;
+  max-width: 300px;
+  padding: 0.75rem 1.1rem;
+  background: rgba(8, 8, 8, 0.92);
+  border: 1px solid var(--color-ash);
+  pointer-events: none;
+  rotate: -1.2deg;
+
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--color-fog);
+  line-height: 1.65;
+}
+
+@media (max-width: 767px) {
+  .note {
+    max-width: 75vw;
+    font-size: 0.68rem;
+  }
+}
