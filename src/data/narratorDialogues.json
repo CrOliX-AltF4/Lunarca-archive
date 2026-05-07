@@ -1,0 +1,122 @@
+[
+  {
+    "trigger": "intro_library",
+    "scene": "library",
+    "sessionOnce": true,
+    "entries": [
+      {
+        "text": "Ah. Vous êtes là. Le Narrateur ne s'attendait pas à ce que ça fonctionne aussi vite.",
+        "mood": null
+      },
+      {
+        "text": "Bienvenue dans la bibliothèque. Natsume est déjà là. Elle était là avant vous. Elle sera probablement là après.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "intro_natsume",
+    "scene": "natsume",
+    "sessionOnce": true,
+    "entries": [
+      {
+        "text": "Une fiche d'identité. Le Narrateur avait prévu quelque chose de plus dramatique pour cette révélation.",
+        "mood": null
+      },
+      {
+        "text": "Quinze ans. Le Narrateur trouve ça long. Natsume, visiblement, non.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "intro_projet",
+    "scene": "projet",
+    "sessionOnce": true,
+    "entries": [
+      {
+        "text": "L'archive du projet. Le Narrateur vous recommande la lecture attentive. Natsume n'a pas été consultée sur cette recommandation.",
+        "mood": null
+      },
+      {
+        "text": "Ce que vous lisez ici existe depuis plus longtemps que ce site. Le Narrateur le sait. Natsume aussi.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "intro_devlog",
+    "scene": "devlog",
+    "sessionOnce": true,
+    "entries": [
+      {
+        "text": "Un journal de bord. Personnel. Le Narrateur vous rappelle que vous n'étiez pas censé en avoir accès.",
+        "mood": null
+      },
+      {
+        "text": "Le livre est sur la table. Le Narrateur vous déconseille de l'ouvrir. C'est une suggestion.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "intro_contact_sealed",
+    "scene": "library",
+    "sessionOnce": false,
+    "entries": [
+      {
+        "text": "Pas encore. Le Narrateur est catégorique sur ce point, ce qui est rare.",
+        "mood": null
+      },
+      {
+        "text": "Ce livre résiste. Le Narrateur note votre tentative sans commentaire particulier.",
+        "mood": null
+      },
+      {
+        "text": "Il y a un ordre dans les choses. Le Narrateur n'en dira pas plus.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "contact_unsealed",
+    "scene": "library",
+    "sessionOnce": true,
+    "entries": [
+      {
+        "text": "Tiens. Le Narrateur n'avait pas prévu ça non plus. Enfin — si. Mais pas maintenant.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "onPlayerInactive",
+    "scene": "global",
+    "sessionOnce": false,
+    "entries": [
+      {
+        "text": "Le Narrateur attend. Il a le temps. Vous semblez aussi en avoir beaucoup.",
+        "mood": null
+      },
+      {
+        "text": "Rien. Le Narrateur apprécie le silence autant que Natsume. C'est la seule chose qu'ils ont en commun.",
+        "mood": null
+      },
+      {
+        "text": "Le Narrateur se demande si vous êtes encore là. La question est rhétorique.",
+        "mood": null
+      }
+    ]
+  },
+  {
+    "trigger": "onAllScenesVisited",
+    "scene": "global",
+    "sessionOnce": true,
+    "entries": [
+      {
+        "text": "Vous avez regardé partout. Le Narrateur est impressionné. Non. Surpris. Ce n'est pas la même chose.",
+        "mood": null
+      }
+    ]
+  }
+]
