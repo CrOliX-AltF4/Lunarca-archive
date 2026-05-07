@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import SealIntro     from './components/ui/SealIntro.jsx'
 import NatsumeWidget from './components/widget/NatsumeWidget.jsx'
+import NarratorNote  from './components/narrator/NarratorNote.jsx'
 import FrameOverlay  from './components/ui/FrameOverlay.jsx'
 import Footer        from './components/ui/Footer.jsx'
 import SystemMenu    from './components/ui/SystemMenu.jsx'
@@ -9,6 +10,7 @@ import CustomCursor        from './components/ui/CustomCursor.jsx'
 import TrophyNotification  from './components/ui/TrophyNotification.jsx'
 import AchievementsPanel   from './components/ui/AchievementsPanel.jsx'
 import useAchievements     from './hooks/useAchievements.js'
+import useNarrator         from './hooks/useNarrator.js'
 import { SCENES }          from './constants/scenes.js'
 
 const LibraryScene = lazy(() => import('./components/scenes/LibraryScene.jsx'))
@@ -59,7 +61,11 @@ export default function App() {
   const [devlogReading, setDevlogReading] = useState(false)
   const [systemMenuOpen, setSystemMenuOpen] = useState(false)
   const [achievementsOpen, setAchievementsOpen] = useState(false)
+  const [isContactSealed, setIsContactSealed] = useState(
+    () => !localStorage.getItem('lunarca_contact_unsealed')
+  )
   const achievement = useAchievements()
+  const { text: narratorText, clear: clearNarrator } = useNarrator(currentScene)
 
   const sealInitialClicks = parseInt(localStorage.getItem('lunarca_seal') || '0') >= 3 ? 2 : 0
   const visitedScenesRef  = useRef(new Set())
@@ -68,6 +74,11 @@ export default function App() {
   const handleSealComplete = useCallback(() => setArchiveOpen(true), [])
   const navigate = useCallback((scene) => setCurrentScene(scene), [])
   const goBack   = useCallback(() => setCurrentScene(SCENES.LIBRARY), [])
+  const handleResetSeal = useCallback(() => {
+    localStorage.removeItem('lunarca_contact_unsealed')
+    setIsContactSealed(true)
+    setArchiveOpen(false)
+  }, [])
 
   useEffect(() => {
     if (!archiveOpen) return
@@ -84,6 +95,18 @@ export default function App() {
       window.dispatchEvent(new CustomEvent('natsume:trigger', {
         detail: { trigger: 'onCartographer', scene: 'global' },
       }))
+      window.dispatchEvent(new CustomEvent('narrator:trigger', {
+        detail: { trigger: 'onAllScenesVisited', scene: 'global' },
+      }))
+      if (!localStorage.getItem('lunarca_contact_unsealed')) {
+        localStorage.setItem('lunarca_contact_unsealed', '1')
+        setIsContactSealed(false)
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('narrator:trigger', {
+            detail: { trigger: 'contact_unsealed', scene: 'library' },
+          }))
+        }, 2000)
+      }
     }
   }, [currentScene, archiveOpen])
 
@@ -106,7 +129,7 @@ export default function App() {
         <Suspense fallback={<SceneFallback />}>
           <AnimatePresence mode="wait">
             {currentScene === SCENES.LIBRARY && (
-              <LibraryScene key="library" onNavigate={navigate} />
+              <LibraryScene key="library" onNavigate={navigate} isContactSealed={isContactSealed} />
             )}
             {currentScene === SCENES.NATSUME && (
               <NatsumeScene key="natsume" onBack={goBack} />
@@ -121,13 +144,14 @@ export default function App() {
               <ContactScene key="contact" onBack={goBack} />
             )}
           </AnimatePresence>
-          {currentScene !== SCENES.NATSUME && <NatsumeWidget currentScene={currentScene} />}
+          <NatsumeWidget currentScene={currentScene} />
+          <NarratorNote text={narratorText} onDone={clearNarrator} />
           {!devlogReading && <FrameOverlay />}
           <Footer currentScene={currentScene} onSystemMenuOpen={() => setSystemMenuOpen(true)} />
           <SystemMenu
             open={systemMenuOpen}
             onClose={() => setSystemMenuOpen(false)}
-            onResetSeal={() => setArchiveOpen(false)}
+            onResetSeal={handleResetSeal}
             onOpenAchievements={() => setAchievementsOpen(true)}
           />
           <AchievementsPanel
