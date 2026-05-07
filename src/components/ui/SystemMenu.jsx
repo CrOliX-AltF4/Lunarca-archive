@@ -67,24 +67,24 @@ export default function SystemMenu({ open, onClose, onResetSeal, onOpenAchieveme
               textTransform: 'uppercase',
               marginBottom: '1.8rem',
             }}>
-              Paramètres de l'archive
+              Registre du Gardien
             </p>
 
             <MenuRow
-              label="Texture de grain"
-              value={grainOn ? 'Active' : 'Désactivée'}
+              label="Résidu mémoriel"
+              value={grainOn ? 'Présent' : 'Effacé'}
               onClick={() => setGrainOn((v) => !v)}
             />
 
             <MenuRow
-              label="Trophées"
+              label="Résonances"
               value="Consulter"
               onClick={() => { onClose(); onOpenAchievements?.() }}
             />
 
             <MenuRow
-              label="Mémoire du sceau"
-              value="Réinitialiser"
+              label="Réinitialiser"
+              value="Tout effacer"
               danger
               onClick={handleResetSeal}
             />
@@ -103,7 +103,7 @@ export default function SystemMenu({ open, onClose, onResetSeal, onOpenAchieveme
                 opacity: 0.6,
               }}
             >
-              ✕  Fermer
+              ✕  Refermer
             </button>
           </motion.div>
         </motion.div>
