@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useNatsumeWidget from '../../hooks/useNatsumeWidget.js'
 import DialogueBubble from './DialogueBubble.jsx'
@@ -27,8 +27,16 @@ const PORTRAITS = {
 export default function NatsumeWidget({ currentScene }) {
   const { mood, dialogue } = useNatsumeWidget(currentScene)
   const gazeTimer = useRef(null)
-  const isMobile = useMemo(() => window.matchMedia('(max-width: 767px)').matches, [])
-  const portraitWidth = isMobile ? '140px' : '220px'
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches)
+  const isNatsumeScene = currentScene === 'natsume'
+  const portraitWidth = isNatsumeScene ? '160px' : (isMobile ? '140px' : '220px')
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 767px)')
+    const handler = (e) => setIsMobile(e.matches)
+    mql.addEventListener('change', handler)
+    return () => mql.removeEventListener('change', handler)
+  }, [])
 
   const handleGazeStart = () => {
     gazeTimer.current = setTimeout(() => dispatch('onGazeHeld', 'global'), GAZE_DELAY)
