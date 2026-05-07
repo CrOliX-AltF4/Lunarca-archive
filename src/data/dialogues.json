@@ -91,7 +91,8 @@
 
   { "trigger": "onMidnight",         "scene": "global", "text": "La bibliothèque change à cette heure.", "mood": "parle", "sessionOnce": true },
 
-  { "trigger": "onEasterEggComplete","scene": "global", "text": "Tu as tout trouvé.", "mood": "surprise" },
+  { "trigger": "onEasterEggComplete", "scene": "global", "text": "Tu as cherché. Je n'avais pas décidé si c'était bien.", "mood": "gene", "sessionOnce": true },
+  { "trigger": "onEasterEggComplete", "scene": "global", "text": "Tout.", "mood": "surprise", "sessionOnce": true },
 
   { "trigger": "onGrainOn",   "scene": "global", "text": null, "mood": "approbation" },
   { "trigger": "onGrainOff",  "scene": "global", "text": "Moins de texture. Bien.", "mood": "parle" },

@@ -5,6 +5,7 @@ export const ACHIEVEMENTS = {
   easterEgg_lys:     { title: 'Ce n\'est pas pour toi', description: 'Elle t\'a prévenu.' },
   onGazeHeld:        { title: 'Regard fixe',            description: 'Cinq secondes de trop.' },
   onCartographer:    { title: 'Cartographe',            description: 'Chaque section visitée.' },
+  onEasterEggComplete: { title: 'Tu as cherché',        description: 'Tout trouvé. Elle l\'a noté.' },
 }
 
 const KEY = 'lunarca_achievements'
