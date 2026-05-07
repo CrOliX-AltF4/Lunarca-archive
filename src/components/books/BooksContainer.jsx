@@ -15,17 +15,17 @@ const BOOKS_CONFIG = [
 
 const RAPID_WINDOW = 1500
 
-export default function BooksContainer({ onNavigate, onNatsumeTripleClick }) {
+export default function BooksContainer({ onNavigate, onNatsumeTripleClick, isContactSealed = true }) {
   const rapidRef = useRef({ clicks: [], fired: false })
 
   const handleBookClick = (id) => {
     const state = rapidRef.current
     const now = Date.now()
-    state.clicks = state.clicks.filter((t) => now - t < RAPID_WINDOW)
-    state.clicks.push(now)
+    state.clicks = state.clicks.filter((c) => now - c.time < RAPID_WINDOW)
+    state.clicks.push({ time: now, id })
 
-    const uniqueBooks = new Set(state.clicks.map((_, i) => i))
-    if (!state.fired && state.clicks.length >= BOOKS_CONFIG.length) {
+    const uniqueIds = new Set(state.clicks.map((c) => c.id))
+    if (!state.fired && uniqueIds.size >= BOOKS_CONFIG.length) {
       state.fired = true
       window.dispatchEvent(new CustomEvent('natsume:trigger', {
         detail: { trigger: 'onBooksRapidClick', scene: 'library' },
@@ -44,6 +44,7 @@ export default function BooksContainer({ onNavigate, onNatsumeTripleClick }) {
           book={book}
           onClick={() => handleBookClick(book.id)}
           onTripleClick={book.id === SCENES.NATSUME ? onNatsumeTripleClick : undefined}
+          sealed={book.id === SCENES.CONTACT && isContactSealed}
         />
       ))}
     </div>

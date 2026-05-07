@@ -20,7 +20,7 @@ const sceneVariants = {
   exit: { opacity: 0, transition: { duration: 0.6 } },
 }
 
-export default function LibraryScene({ onNavigate }) {
+export default function LibraryScene({ onNavigate, isContactSealed }) {
   const [loreVisible, setLoreVisible] = useState(false)
   const sequenceRef = useRef([])
 
@@ -82,7 +82,11 @@ export default function LibraryScene({ onNavigate }) {
         ···
       </motion.p>
 
-      <BooksContainer onNavigate={onNavigate} onNatsumeTripleClick={handleNatsumeTripleClick} />
+      <BooksContainer
+        onNavigate={onNavigate}
+        onNatsumeTripleClick={handleNatsumeTripleClick}
+        isContactSealed={isContactSealed}
+      />
 
       <AnimatePresence>
         {loreVisible && (

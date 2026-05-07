@@ -40,6 +40,10 @@
   { "trigger": "onBooksRapidClick", "scene": "library", "text": "Inutile.", "mood": "irritation" },
   { "trigger": "onBooksRapidClick", "scene": "library", "text": "Tu n'as pas besoin de tout ouvrir en même temps.", "mood": "irritation" },
 
+  { "trigger": "onContactSealAttempt", "scene": "library", "text": null, "mood": "irritation" },
+  { "trigger": "onContactSealAttempt", "scene": "library", "text": "Non.", "mood": "irritation" },
+  { "trigger": "onContactSealAttempt", "scene": "library", "text": "Pas encore.", "mood": "idle" },
+
   { "trigger": "onScrollSlow", "scene": "natsume", "text": "Tu prends le temps.", "mood": "approbation" },
   { "trigger": "onScrollSlow", "scene": "natsume", "text": "Bien. Il y a des choses à comprendre ici.", "mood": "approbation" },
   { "trigger": "onScrollSlow", "scene": "natsume", "text": "Tu lis.", "mood": "idle" },
