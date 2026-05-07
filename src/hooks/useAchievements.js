@@ -9,6 +9,7 @@ export default function useAchievements() {
   useEffect(() => {
     const unlocked = getUnlocked()
     const eggsFoundThisSession = new Set()
+    let eggTid
 
     const handler = (e) => {
       const { trigger } = e.detail
@@ -22,7 +23,7 @@ export default function useAchievements() {
       if (EGGS.has(trigger)) {
         eggsFoundThisSession.add(trigger)
         if (eggsFoundThisSession.size >= EGGS.size && !unlocked.has('onEasterEggComplete')) {
-          setTimeout(() => {
+          eggTid = setTimeout(() => {
             window.dispatchEvent(new CustomEvent('natsume:trigger', {
               detail: { trigger: 'onEasterEggComplete', scene: 'global' },
             }))
@@ -32,7 +33,10 @@ export default function useAchievements() {
     }
 
     window.addEventListener('natsume:trigger', handler)
-    return () => window.removeEventListener('natsume:trigger', handler)
+    return () => {
+      window.removeEventListener('natsume:trigger', handler)
+      clearTimeout(eggTid)
+    }
   }, [])
 
   return pending
