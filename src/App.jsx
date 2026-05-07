@@ -87,7 +87,8 @@ export default function App() {
   }, [currentScene, archiveOpen])
 
   useEffect(() => {
-    if (!archiveOpen || cartographerFired.current) return
+    let tid
+    if (!archiveOpen || cartographerFired.current) return () => clearTimeout(tid)
     const sections = [SCENES.NATSUME, SCENES.PROJET, SCENES.DEVLOG, SCENES.CONTACT]
     visitedScenesRef.current.add(currentScene)
     if (sections.every(s => visitedScenesRef.current.has(s))) {
@@ -101,13 +102,14 @@ export default function App() {
       if (!localStorage.getItem('lunarca_contact_unsealed')) {
         localStorage.setItem('lunarca_contact_unsealed', '1')
         setIsContactSealed(false)
-        setTimeout(() => {
+        tid = setTimeout(() => {
           window.dispatchEvent(new CustomEvent('narrator:trigger', {
             detail: { trigger: 'contact_unsealed', scene: 'library' },
           }))
         }, 2000)
       }
     }
+    return () => clearTimeout(tid)
   }, [currentScene, archiveOpen])
 
   return (
